@@ -1,0 +1,30 @@
+{
+  "name": "@juggle/resize-observer",
+  "version": "0.1.0",
+  "description": "ResizeObserver class based on the draft specification",
+  "main": "./lib/ResizeObserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/juggle/resize-observer.git"
+  },
+  "keywords": [
+    "resize",
+    "observer",
+    "window",
+    "document",
+    "onresize",
+    "element",
+    "component",
+    "polyfill",
+    "ponyfill"
+  ],
+  "author": "Juggle",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/juggle/resize-observer/issues"
+  },
+  "homepage": "https://github.com/juggle/resize-observer#readme"
+}
