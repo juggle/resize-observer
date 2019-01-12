@@ -2,6 +2,8 @@
 
 A polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
 
+> This is currently a work in progress and should be used for **testing only** at this stage.
+
 ## Installation
 ```shell
 npm i @juggle/resize-observer
