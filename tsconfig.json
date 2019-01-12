@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "es2015",
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "composite": true,
+    "removeComments": true,
+    "strict": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true
+  }
+}
