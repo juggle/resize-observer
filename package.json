@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "ResizeObserver class based on the draft specification",
   "main": "./lib/ResizeObserver.js",
+  "files": [
+    "lib/*",
+    "src/*"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
