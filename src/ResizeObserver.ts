@@ -3,7 +3,7 @@ import ResizeObserverCallback from './ResizeObserverCallback';
 
 export default class ResizeObserver {
 
-  private constructor (callback: ResizeObserverCallback) {
+  public constructor (callback: ResizeObserverCallback) {
     ResizeObserverController.connect(this, callback);
   }
 
