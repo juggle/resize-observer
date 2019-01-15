@@ -15,6 +15,7 @@
     "url": "git+ssh://git@github.com/juggle/resize-observer.git"
   },
   "keywords": [
+    "ResizeObserver",
     "resize",
     "observer",
     "window",
@@ -22,8 +23,17 @@
     "onresize",
     "element",
     "component",
+    "web components",
+    "webcomponents",
     "polyfill",
-    "ponyfill"
+    "ponyfill",
+    "event",
+    "vue",
+    "react",
+    "angular",
+    "polymer",
+    "lit",
+    "html"
   ],
   "author": "Juggle",
   "license": "Apache-2.0",
