@@ -10,6 +10,8 @@ jobs:
           command: npm install
       - run:
           name: Run tests with JUnit as reporter
-          command: npm test -- --ci
+          command: npm test -- --ci --runInBand
           environment:
             JEST_JUNIT_OUTPUT: "reports/junit/js-test-results.xml"
+      - store_test_results:
+            path: /tmp/test-results
