@@ -1,5 +1,8 @@
 # ResizeObserver
 
+[![CircleCI](https://circleci.com/gh/juggle/resize-observer.svg?style=svg)](https://circleci.com/gh/juggle/resize-observer)
+[![Coverage Status](https://coveralls.io/repos/github/juggle/resize-observer/badge.svg?branch=master)](https://coveralls.io/github/juggle/resize-observer?branch=master)
+
 A polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
 
 > This is currently a work in progress and should be used for **testing only** at this stage.
