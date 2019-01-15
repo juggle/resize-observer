@@ -45,6 +45,22 @@ describe('ResizeObserver', () => {
       });
       ro.observe(el1);
     });
+    it('Should not observe the same element more than once', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        expect(entries[0].contentRect).toMatchObject({
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0
+        });
+        done();
+      });
+      ro.observe(el1);
+      ro.observe(el1);
+    });
     it('Should fire observer when width changes.', (done) => {
       let count = 0;
       ro = new ResizeObserver((entries, observer) =>  {
@@ -127,6 +143,18 @@ describe('ResizeObserver', () => {
       ro.observe(el2);
       ro.unobserve(el2);
     });
+    it('Should handle multiple unobserve calls.', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        done();
+      });
+      ro.observe(el1);
+      ro.observe(el2);
+      ro.unobserve(el2);
+      ro.unobserve(el2);
+    });
     it('Should disconnect correctly.', (done) => {
       ro = new ResizeObserver((entries, observer) => {
         expect(false).toBe(true);
@@ -141,7 +169,37 @@ describe('ResizeObserver', () => {
         expect(observer).toBe(ro);
         done();
       });
+      setTimeout(done, 500);
+    });
+    it('Should handle multiple disconnects.', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(false).toBe(true);
+        done(); // Should never be called
+      });
       ro.observe(el1);
+      ro.disconnect();
+      ro.disconnect();
+      setTimeout(done, 500);
+    });
+    it('Should not allow new observations after a discontect.', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(false).toBe(true);
+        done(); // Should never be called
+      });
+      ro.observe(el1);
+      ro.disconnect();
+      ro.observe(el1);
+      setTimeout(done, 500);
+    });
+    it('Should not fail to unobserve after disconnection.', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(false).toBe(true);
+        done(); // Should never be called
+      });
+      ro.observe(el1);
+      ro.disconnect();
+      ro.unobserve(el1);
+      setTimeout(done, 500);
     });
   });
 
