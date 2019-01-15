@@ -1,7 +1,7 @@
 {
   "name": "@juggle/resize-observer",
   "version": "0.1.1",
-  "description": "ResizeObserver class based on the draft specification",
+  "description": "ResizeObserver - Based on the official draft specification",
   "main": "./lib/ResizeObserver.js",
   "files": [
     "lib/*",
