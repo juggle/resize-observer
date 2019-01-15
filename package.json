@@ -8,7 +8,7 @@
     "src/*"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,14 @@
   "bugs": {
     "url": "https://github.com/juggle/resize-observer/issues"
   },
-  "homepage": "https://github.com/juggle/resize-observer#readme"
+  "homepage": "https://github.com/juggle/resize-observer#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.12",
+    "jest": "^23.6.0",
+    "jest-cli": "^23.6.0",
+    "jsdom": "^13.1.0",
+    "sinon": "^7.2.2",
+    "ts-jest": "^23.10.5",
+    "typescript": "^3.2.2"
+  }
 }
