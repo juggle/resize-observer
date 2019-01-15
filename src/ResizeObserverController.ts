@@ -48,7 +48,7 @@ export default class ResizeObserverController {
       .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
       if (index === -1) {
         detail.observationTargets.push(new ResizeObservation(target));
-        DOMInteractions.notify(); // Notify new observation
+        notify(); // Notify new observation
       }
     }
   }
@@ -71,6 +71,22 @@ export default class ResizeObserverController {
   }
 }
 
+let frameId: number;
+let extraFrames = 0;
+const notify = () => {
+  cancelAnimationFrame(frameId);
+  frameId = requestAnimationFrame(() => {
+    if (dispatch()) {
+      extraFrames = 0;
+      notify();
+    }
+    else if (extraFrames < 60) {
+      extraFrames += 1;
+      notify();
+    }
+  });
+}
+
 const dispatch = () => {
   let count = 0;
   resizeObservers.forEach((ro: ResizeObserverDetail) => {
@@ -88,4 +104,4 @@ const dispatch = () => {
   return count;
 }
 
-DOMInteractions.watch(dispatch);
+DOMInteractions.watch(notify);

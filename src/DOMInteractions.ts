@@ -1,22 +1,6 @@
 type StandardCallback = () => any;
 const watchers: StandardCallback[] = [];
 
-let frameId: number;
-let extraFrames = 0;
-const notify = () => {
-  cancelAnimationFrame(frameId);
-  frameId = requestAnimationFrame(() => {
-    if (dispatch()) {
-      extraFrames = 0;
-      notify();
-    }
-    else if (extraFrames < 60) {
-      extraFrames += 1;
-      notify();
-    }
-  });
-}
-
 const dispatch: StandardCallback = () => {
   watchers.forEach((watcher: StandardCallback) => watcher());
 }
@@ -25,31 +9,28 @@ export default class DOMInteractions {
   public static watch (callback: StandardCallback) {
     watchers.push(callback);
   }
-  public static notify () {
-    notify();
-  }
 }
 
 // Listen to interaction
-document.addEventListener('keyup', notify, true);
-document.addEventListener('keydown', notify, true);
-document.addEventListener('mouseup', notify, true);
-document.addEventListener('mousedown', notify, true);
-document.addEventListener('mouseover', notify, true);
-document.addEventListener('blur', notify, true);
-document.addEventListener('focus', notify, true);
+document.addEventListener('keyup', dispatch, true);
+document.addEventListener('keydown', dispatch, true);
+document.addEventListener('mouseup', dispatch, true);
+document.addEventListener('mousedown', dispatch, true);
+document.addEventListener('mouseover', dispatch, true);
+document.addEventListener('blur', dispatch, true);
+document.addEventListener('focus', dispatch, true);
 
 // Listen to transitions and animations
-document.addEventListener('transitionend', notify, true);
-document.addEventListener('animationend', notify, true);
-document.addEventListener('animationstart', notify, true);
-document.addEventListener('animationiteration', notify, true);
+document.addEventListener('transitionend', dispatch, true);
+document.addEventListener('animationend', dispatch, true);
+document.addEventListener('animationstart', dispatch, true);
+document.addEventListener('animationiteration', dispatch, true);
 
 // Listen for window resize
-window.addEventListener('resize', notify);
+window.addEventListener('resize', dispatch);
 
 // Listen for any other DOM changes which could affect sizes
 if ('MutationObserver' in window) {
   const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
-  new MutationObserver(notify).observe(document.body, observerConfig);
+  new MutationObserver(dispatch).observe(document.body, observerConfig);
 }
