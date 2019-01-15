@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test:
+  build:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: circleci/node:10
     steps:
