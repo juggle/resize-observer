@@ -3,8 +3,8 @@ import ResizeObserverEntry from './ResizeObserverEntry';
 export default class ResizeObservation {
 
   public target: Element;
-  public broadcastWidth: number = 0.0;
-  public broadcastHeight: number = 0.0;
+  public broadcastWidth: number | undefined;
+  public broadcastHeight: number | undefined;
 
   constructor (target: Element) {
     this.target = target;
