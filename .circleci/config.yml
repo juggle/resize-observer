@@ -4,6 +4,7 @@ jobs:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: circleci/node:10
     steps:
+      - checkout
       - run:
           name: Install Dev Dependencies
           command: npm install
