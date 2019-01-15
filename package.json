@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
-    "test": "jest --coverage",
+    "test": "jest --coverage && rm -rf coverage",
     "prepublishOnly": "npm run build"
   },
   "repository": {
