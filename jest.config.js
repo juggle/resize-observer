@@ -1,4 +1,8 @@
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'jsdom'
+  testEnvironment: 'jsdom',
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/DOMInteractions.ts'
+  ]
 };
