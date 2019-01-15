@@ -49,5 +49,7 @@ document.addEventListener('animationiteration', notify, true);
 window.addEventListener('resize', notify);
 
 // Listen for any other DOM changes which could affect sizes
-const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
-new MutationObserver(notify).observe(document.body, observerConfig);
+if ('MutationObserver' in window) {
+  const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
+  new MutationObserver(notify).observe(document.body, observerConfig);
+}
