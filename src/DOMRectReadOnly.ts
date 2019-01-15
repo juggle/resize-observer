@@ -21,8 +21,8 @@ export default class DOMRectReadOnly {
     this.height = height;
     this.top = this.y;
     this.left = this.x;
-    this.bottom = this.height - this.top;
-    this.right = this.width - this.left;
+    this.bottom = this.top + this.height;
+    this.right = this.left + this.width;
     return Object.freeze(this);
   }
   static fromRect (rectangle: Rectangle): Readonly<DOMRectReadOnly> {
