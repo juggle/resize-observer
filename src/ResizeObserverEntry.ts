@@ -4,7 +4,7 @@ const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null) => parseFloat(pixel || '0');
 
 const getRect = (target: Element) => {
-  if ('SVGGraphicsElement' in window && target instanceof SVGGraphicsElement) {
+  if ('SVGGraphicsElement' in window && target instanceof SVGGraphicsElement && 'getBBox' in target) {
     const box = target.getBBox();
     return new DOMRectReadOnly(0, 0, box.width, box.height);
   }
