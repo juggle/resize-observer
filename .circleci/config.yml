@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  test:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: circleci/node:10
     steps:
@@ -9,9 +9,15 @@ jobs:
           name: Install Dev Dependencies
           command: npm install
       - run:
-          name: Run tests with JUnit as reporter
+          name: Run Tests
           command: npm test -- --ci --runInBand
           environment:
             JEST_JUNIT_OUTPUT: test-results/results.xml
       - store_test_results:
             path: test-results
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - test
