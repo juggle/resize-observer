@@ -10,7 +10,7 @@ jobs:
           command: npm install
       - run:
           name: Run Tests
-          command: npm test -- --ci --runInBand
+          command: npm run ci-tests
           environment:
             JEST_JUNIT_OUTPUT: test-results/results.xml
       - store_test_results:

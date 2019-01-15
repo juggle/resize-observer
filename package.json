@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
     "test": "jest --coverage",
     "prepublishOnly": "npm run build"
   },
@@ -45,6 +46,7 @@
   "homepage": "https://github.com/juggle/resize-observer#readme",
   "devDependencies": {
     "@types/jest": "^23.3.12",
+    "coveralls": "^3.0.2",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "jest-junit": "^6.0.1",
