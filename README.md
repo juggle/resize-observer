@@ -1,14 +1,15 @@
 # ResizeObserver
 
-[![CircleCI](https://circleci.com/gh/juggle/resize-observer.svg?style=svg)](https://circleci.com/gh/juggle/resize-observer)
-[![Coverage Status](https://coveralls.io/repos/github/juggle/resize-observer/badge.svg?branch=master)](https://coveralls.io/github/juggle/resize-observer?branch=master)
+![](https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge)
+![](https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge)
+![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
+![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 
 A polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
 
-> This is currently a work in progress and should be used for **testing only** at this stage.
 
 ## Installation
-```shell
+``` shell
 npm i @juggle/resize-observer
 ```
 
@@ -37,16 +38,13 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 });
 ```
 
+## TypeScript Support
+
+This library is written in TypeScript, however, it's compiled into JavaScript during release. Definition files are included in the package and should be picked up automatically to re-enable support in TypeScript projects.
 
 
 ## Limitations
 
-- No support for IE 10 and below (sorry all). IE 11 is supported.
+- No support for **IE10** and below. **IE11** is supported.
 - Dynamic stylesheet changes may not be noticed and updates will occur on the next user interaction.
 - Currently no support for observations when `display:none` is toggled (coming soon).
-
-## Similar Libraries
-
-https://github.com/que-etc/resize-observer-polyfill
-
-https://github.com/pelotoncycle/resize-observer
