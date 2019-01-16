@@ -7,6 +7,7 @@
 
 A polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
 
+
 ## Installation
 ```shell
 npm i @juggle/resize-observer
@@ -37,16 +38,13 @@ const resizeObserver = new ResizeObserver((entries, observer) => {
 });
 ```
 
+## TypeScript Support
+
+This library is written in TypeScript, however, it's compiled into JavaScript during release. Definition files are included in the package and should be picked up automatically to re-enable support in TypeScript projects.
 
 
 ## Limitations
 
-- No support for IE 10 and below (sorry all). IE 11 is supported.
+- No support for **IE10** and below. **IE11** is supported.
 - Dynamic stylesheet changes may not be noticed and updates will occur on the next user interaction.
 - Currently no support for observations when `display:none` is toggled (coming soon).
-
-## Similar Libraries
-
-https://github.com/que-etc/resize-observer-polyfill
-
-https://github.com/pelotoncycle/resize-observer
