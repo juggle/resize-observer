@@ -9,7 +9,7 @@ A polyfill entirely based on the current **ResizeObserver** [Draft Specification
 
 
 ## Installation
-```shell
+``` shell
 npm i @juggle/resize-observer
 ```
 
