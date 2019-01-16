@@ -217,6 +217,26 @@ describe('ResizeObserver', () => {
     });
   });
 
+  describe('Multiple Observers', () => {
+    it('Should support mulitple observers.', (done) => {
+      const ro1 = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro1);
+        observer.disconnect();
+      });
+      ro1.observe(el1);
+      const ro2 = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el2);
+        expect(observer).toBe(ro2);
+        observer.disconnect();
+        done();
+      });
+      ro2.observe(el2);
+    });
+  });
+
   describe('SVGGraphicsElement', () => {
     it('Should fire observer when element is observed for the first time.', (done) => {
       ro = new ResizeObserver((entries, observer) => {
