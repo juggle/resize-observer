@@ -5,9 +5,9 @@
 ![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 ![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 
-A polyfill/ponyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
+A ponyfill/polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
 
-This library observes elements and dispatches notifications when dimensions change. No polling of the DOM is required, except for when animations or transitions are active, keeping CPU and power consumption minimal.
+This library observes elements and dispatches notifications when their dimensions change. Differences are only calculated during animation, or, after DOM mutation or user interaction has occurred, keeping CPU and power consumption minimal.
 
 
 ## Installation
