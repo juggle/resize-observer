@@ -5,7 +5,9 @@
 ![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 ![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 
-A polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
+A polyfill/ponyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
+
+This library observes elements and dispatches notifications when dimensions change. No polling of the DOM is required, except for when animations or transitions are active, keeping CPU and power consumption minimal.
 
 
 ## Installation
@@ -17,11 +19,14 @@ npm i @juggle/resize-observer
 ``` js
 import ResizeObserver from '@juggle/resize-observer';
 
-const resizeObserver = new ResizeObserver((entries, observer) => {
-  console.log('Something has resized!');
+const ro = new ResizeObserver((entries, observer) => {
+  console.log('Body has resized!');
+  observer.disconnect(); // Stop observing
 });
+
+ro.observe(document.body); // Watch dimension changes on body
 ```
-This will always use the polyfilled version of **ResizeObserver**, even if the browser supports **ResizeObserver** natively.
+This will use the ponyfilled version of **ResizeObserver**, even if the browser supports **ResizeObserver** natively.
 
 
 ## Switching between native and polyfilled versions
@@ -33,7 +38,8 @@ import ResizeObserverPolyfill from '@juggle/resize-observer';
 
 const ResizeObserver = window.ResizeObserver || ResizeObserverPolyfill;
 
-const resizeObserver = new ResizeObserver((entries, observer) => {
+// Uses native or polyfill, depending on browser support
+const ro = new ResizeObserver((entries, observer) => {
   console.log('Something has resized!');
 });
 ```
