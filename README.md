@@ -9,6 +9,8 @@ A ponyfill/polyfill entirely based on the current **ResizeObserver** [Draft Spec
 
 This library observes elements and dispatches notifications when their dimensions change. Differences are only calculated during animation, or, after DOM mutation or user interaction has occurred, keeping CPU and power consumption minimal.
 
+[Demo Playground](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
+
 
 ## Installation
 ``` shell
