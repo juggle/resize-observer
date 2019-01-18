@@ -8,10 +8,10 @@ const resizeObservers: ResizeObserverDetail[] = [];
 
 const calculateDepthForNode = (node: Element): number => {
   let depth = 0;
-  let parent = node.parentElement;
+  let parent = node.parentNode;
   while (parent) {
     depth += 1;
-    parent = parent.parentElement;
+    parent = parent.parentNode;
   }
   return depth;
 }
