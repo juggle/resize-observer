@@ -69,9 +69,20 @@ const broadcastActiveObservations = (): number => {
 }
 
 const deliverResizeLoopError = (): void => {
-  const error = new ErrorEvent('error', {
-    message: 'ResizeObserver loop completed with undelivered notifications.'
-  })
+  let error;
+  const errorMsg = 'ResizeObserver loop completed with undelivered notifications.';
+  if (typeof ErrorEvent === 'function') {
+    error = new ErrorEvent('error', {
+      message: errorMsg
+    })
+  }
+  else {
+    error = document.createEvent('Event');
+    Object.defineProperty(error, 'message', {
+      value: errorMsg
+    });
+    error.initEvent('error', false, false);
+  }
   window.dispatchEvent(error);
 }
 
