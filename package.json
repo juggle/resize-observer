@@ -8,7 +8,7 @@
     "src/**/*.ts"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && tsc",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
     "test": "jest --coverage",
     "prepublishOnly": "npm run build"
