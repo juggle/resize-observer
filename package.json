@@ -4,11 +4,11 @@
   "description": "ResizeObserver - Based on the official draft specification",
   "main": "./lib/ResizeObserver.js",
   "files": [
-    "lib/*",
-    "src/*"
+    "lib/**/*.{js,ts}",
+    "src/**/*.ts"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "rm -rf lib && tsc",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
     "test": "jest --coverage",
     "prepublishOnly": "npm run build"

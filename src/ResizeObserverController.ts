@@ -3,7 +3,107 @@ import ResizeObservation from './ResizeObservation';
 import ResizeObserverEntry from './ResizeObserverEntry';
 import ResizeObserverCallback from './ResizeObserverCallback';
 import DOMInteractions from './DOMInteractions';
+import ResizeError from './ResizeError';
 
+const resizeObservers: ResizeObserverDetail[] = [];
+
+const calculateDepthForNode = (node: Element): number => {
+  let depth = 0;
+  let parent = node.parentNode;
+  while (parent) {
+    depth += 1;
+    parent = parent.parentNode;
+  }
+  return depth;
+}
+
+const gatherActiveObservationsAtDepth = (depth: number): void => {
+  resizeObservers.forEach((ro: ResizeObserverDetail) => {
+    ro.activeTargets.splice(0, ro.activeTargets.length);
+    ro.skippedTargets.splice(0, ro.skippedTargets.length);
+    ro.observationTargets.forEach((ot: ResizeObservation) => {
+      if (ot.isActive()) {
+        if (calculateDepthForNode(ot.target) > depth) {
+          ro.activeTargets.push(ot);
+        }
+        else {
+          ro.skippedTargets.push(ot);
+        }
+      }
+    })
+  })
+}
+
+const hasActiveObservations = (): boolean => {
+  return resizeObservers.some((ro: ResizeObserverDetail) => ro.activeTargets.length > 0);
+}
+
+const hasSkippedObservations = (): boolean => {
+  return resizeObservers.some((ro: ResizeObserverDetail) => ro.skippedTargets.length > 0);
+}
+
+const broadcastActiveObservations = (): number => {
+  let shallowestDepth: number = Infinity;
+  const callbacks: (() => void)[] = [];
+  resizeObservers.forEach((ro: ResizeObserverDetail) => {
+    if (ro.activeTargets.length === 0) {
+      return;
+    }
+    const entries: ResizeObserverEntry[] = [];
+    ro.activeTargets.forEach((ot: ResizeObservation) => {
+      const entry = new ResizeObserverEntry(ot.target);
+      const targetDepth = calculateDepthForNode(ot.target);
+      entries.push(entry);
+      ot.broadcastWidth = entry.contentRect.width;
+      ot.broadcastHeight = entry.contentRect.height;
+      if (targetDepth < shallowestDepth) {
+        shallowestDepth = targetDepth;
+      }
+    })
+    // Gather all entries before firing callbacks
+    // otherwise entries may change in the same loop
+    callbacks.push(() => ro.callback(entries, ro.observer));
+    ro.activeTargets.splice(0, ro.activeTargets.length);
+  })
+  callbacks.forEach(callback => callback());
+  return shallowestDepth;
+}
+
+const deliverResizeLoopError = (): void => {
+  const msg = 'ResizeObserver loop completed with undelivered notifications.';
+  window.dispatchEvent(ResizeError.Event(msg));
+}
+
+const process = (): boolean => {
+  let depth = 0;
+  gatherActiveObservationsAtDepth(depth);
+  while (hasActiveObservations()) {
+    depth = broadcastActiveObservations();
+    gatherActiveObservationsAtDepth(depth);
+  }
+  if (hasSkippedObservations()) {
+    deliverResizeLoopError();
+  }
+  return depth > 0;
+}
+
+let frameId: number;
+let extraFrames: number = 0;
+const notify = () => {
+  cancelAnimationFrame(frameId);
+  frameId = requestAnimationFrame(() => {
+    if (process()) {
+      extraFrames = 0;
+      notify();
+    }
+    else if (extraFrames < 60) {
+      extraFrames += 1;
+      notify();
+    }
+  });
+}
+
+// Basic find function, to support IE
 const find = function (this: any[], checkFn: any) {
   for (let i = 0; i < this.length; i += 1) {
     if (checkFn(this[i], i)) {
@@ -12,6 +112,7 @@ const find = function (this: any[], checkFn: any) {
   }
 };
 
+// Basic findIndex function, to support IE
 const findIndex = function (this: any[], checkFn: any) {
   for (let i = 0; i < this.length; i += 1) {
     if (checkFn(this[i], i)) {
@@ -21,13 +122,11 @@ const findIndex = function (this: any[], checkFn: any) {
   return -1;
 };
 
-const resizeObservers: ResizeObserverDetail[] = [];
-
 class ResizeObserverDetail {
   public callback: ResizeObserverCallback;
   public observer: ResizeObserver;
-  public activeTargets: [] = [];
-  public skippedTargets: [] = [];
+  public activeTargets: ResizeObservation[] = [];
+  public skippedTargets: ResizeObservation[] = [];
   public observationTargets: ResizeObservation[] = [];
 
   constructor (resizeObserver: ResizeObserver, callback: ResizeObserverCallback) {
@@ -69,39 +168,6 @@ export default class ResizeObserverController {
       resizeObservers.splice(index, 1);
     }
   }
-}
-
-let frameId: number;
-let extraFrames = 0;
-const notify = () => {
-  cancelAnimationFrame(frameId);
-  frameId = requestAnimationFrame(() => {
-    if (dispatch()) {
-      extraFrames = 0;
-      notify();
-    }
-    else if (extraFrames < 60) {
-      extraFrames += 1;
-      notify();
-    }
-  });
-}
-
-const dispatch = () => {
-  let count = 0;
-  resizeObservers.forEach((ro: ResizeObserverDetail) => {
-    const observationTargets = ro.observationTargets.filter(ot => ot.isActive());
-    if (observationTargets.length) {
-      count += observationTargets.length;
-      ro.callback(observationTargets.map(ot => {
-        const entry = new ResizeObserverEntry(ot.target);
-        ot.broadcastWidth = entry.contentRect.width;
-        ot.broadcastHeight = entry.contentRect.height;
-        return entry;
-      }), ro.observer);
-    }
-  });
-  return count;
 }
 
 DOMInteractions.watch(notify);

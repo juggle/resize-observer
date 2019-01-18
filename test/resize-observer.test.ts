@@ -201,6 +201,20 @@ describe('ResizeObserver', () => {
       ro.unobserve(el1);
       setTimeout(done, 500);
     });
+    it('Should handle resize loop errors.', (done) => {
+      window.addEventListener('error', e => {
+        expect(e.type).toBe('error');
+        expect(e.message).toBe('ResizeObserver loop completed with undelivered notifications.');
+        done();
+      })
+      ro = new ResizeObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          const target = entry.target as HTMLElement;
+          target.style.width = `${entry.contentRect.width + 1000}px`;
+        });
+      });
+      ro.observe(el1);
+    });
   });
 
   describe('Multiple HTMLElement', () => {
@@ -231,6 +245,20 @@ describe('ResizeObserver', () => {
         expect(entries[0].target).toBe(el2);
         expect(observer).toBe(ro2);
         observer.disconnect();
+        done();
+      });
+      ro2.observe(el2);
+    });
+    it('Should handle observers observing nothing.', (done) => {
+      const ro1 = new ResizeObserver((entries, observer) => {
+        expect(false).toBe(true); // Should never be called
+      });
+      const ro2 = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el2);
+        expect(observer).toBe(ro2);
+        observer.disconnect();
+        ro1.disconnect();
         done();
       });
       ro2.observe(el2);
