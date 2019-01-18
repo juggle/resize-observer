@@ -3,6 +3,7 @@ import ResizeObservation from './ResizeObservation';
 import ResizeObserverEntry from './ResizeObserverEntry';
 import ResizeObserverCallback from './ResizeObserverCallback';
 import DOMInteractions from './DOMInteractions';
+import ResizeError from './ResizeError';
 
 const resizeObservers: ResizeObserverDetail[] = [];
 
@@ -69,21 +70,8 @@ const broadcastActiveObservations = (): number => {
 }
 
 const deliverResizeLoopError = (): void => {
-  let error;
-  const errorMsg = 'ResizeObserver loop completed with undelivered notifications.';
-  if (typeof ErrorEvent === 'function') {
-    error = new ErrorEvent('error', {
-      message: errorMsg
-    })
-  }
-  else {
-    error = document.createEvent('Event');
-    Object.defineProperty(error, 'message', {
-      value: errorMsg
-    });
-    error.initEvent('error', false, false);
-  }
-  window.dispatchEvent(error);
+  const msg = 'ResizeObserver loop completed with undelivered notifications.';
+  window.dispatchEvent(ResizeError.Event(msg));
 }
 
 const process = (): boolean => {
