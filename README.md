@@ -5,7 +5,7 @@
 ![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 ![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 
-A ponyfill/polyfill entirely based on the current **ResizeObserver** [Draft Specification](https://wicg.github.io/ResizeObserver).
+A minimal library which polyfills the **ResizeObserver** API and is entirely based on the current [Draft Specification](https://wicg.github.io/ResizeObserver).
 
 This library observes elements and dispatches notifications when their dimensions change. Differences are only calculated during animation, or, after DOM mutation or user interaction has occurred, keeping CPU and power consumption minimal.
 
@@ -17,7 +17,7 @@ This library observes elements and dispatches notifications when their dimension
 npm i @juggle/resize-observer
 ```
 
-## Usage
+## Basic Usage
 ``` js
 import ResizeObserver from '@juggle/resize-observer';
 
@@ -29,6 +29,22 @@ const ro = new ResizeObserver((entries, observer) => {
 ro.observe(document.body); // Watch dimension changes on body
 ```
 This will use the ponyfilled version of **ResizeObserver**, even if the browser supports **ResizeObserver** natively.
+
+## Watching Multiple Elements
+``` js
+import ResizeObserver from '@juggle/resize-observer';
+
+const ro = new ResizeObserver((entries, observer) => {
+  console.log('Elements resized:', entries.length);
+  entries.forEach((entry, index) => {
+    const { width, height } = entry.contentRect;
+    console.log(`Element ${index + 1}:` `${width}x${height}`);
+  });
+});
+
+const els = docuent.querySelectorAll('.resizes');
+[...els].forEach(el => ro.observe(el)); // Watch everything!
+```
 
 
 ## Switching between native and polyfilled versions
@@ -46,9 +62,11 @@ const ro = new ResizeObserver((entries, observer) => {
 });
 ```
 
-## TypeScript Support
-
-This library is written in TypeScript, however, it's compiled into JavaScript during release. Definition files are included in the package and should be picked up automatically to re-enable support in TypeScript projects.
+## What's it good for?
+- Building responsive websites.
+- Creating 'self-aware' Web Components.
+- Making 3rd party libraries more responsive. e.g. charts and grids.
+- Many other things!
 
 
 ## Limitations
@@ -56,3 +74,8 @@ This library is written in TypeScript, however, it's compiled into JavaScript du
 - No support for **IE10** and below. **IE11** is supported.
 - Dynamic stylesheet changes may not be noticed and updates will occur on the next user interaction.
 - Currently no support for observations when `display:none` is toggled (coming soon).
+
+
+## TypeScript Support
+
+This library is written in TypeScript, however, it's compiled into JavaScript during release. Definition files are included in the package and should be picked up automatically to re-enable support in TypeScript projects.
