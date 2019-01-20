@@ -43,7 +43,7 @@ const ro = new ResizeObserver((entries, observer) => {
 });
 
 const els = docuent.querySelectorAll('.resizes');
-[...els].forEach(el => ro.observe(el)); // Watch everything!
+[...els].forEach(el => ro.observe(el)); // Watch multiple!
 ```
 
 
