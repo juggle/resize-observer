@@ -5,7 +5,7 @@ interface Rectangle {
   readonly height: number;
 }
 
-export default class DOMRectReadOnly {
+class DOMRectReadOnly {
   readonly x: number;
   readonly y: number;
   readonly width: number;
@@ -29,3 +29,5 @@ export default class DOMRectReadOnly {
     return new DOMRectReadOnly(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
   }
 }
+
+export { DOMRectReadOnly };

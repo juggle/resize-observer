@@ -1,5 +1,6 @@
-import ResizeObserverController from './ResizeObserverController';
-import ResizeObserverCallback from './ResizeObserverCallback';
+import { ResizeObserverController } from './ResizeObserverController';
+import { ResizeObserverCallback } from './ResizeObserverCallback';
+import { ResizeObserverOptions } from './ResizeObserverOptions';
 
 export default class ResizeObserver {
 
@@ -7,8 +8,8 @@ export default class ResizeObserver {
     ResizeObserverController.connect(this, callback);
   }
 
-  public observe (target: Element) {
-    ResizeObserverController.observe(this, target);
+  public observe (target: Element, options?: ResizeObserverOptions) {
+    ResizeObserverController.observe(this, target, options);
   }
 
   public unobserve (target: Element) {
@@ -20,3 +21,5 @@ export default class ResizeObserver {
   }
 
 }
+
+export { ResizeObserver };

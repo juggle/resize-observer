@@ -1,4 +1,4 @@
-export default class ResizeError {
+class ResizeError {
   public static Event(message: string): ErrorEvent {
     /* istanbul ignore else  */
     if (typeof ErrorEvent === 'function') {
@@ -14,3 +14,5 @@ export default class ResizeError {
     }
   }
 }
+
+export { ResizeError };
