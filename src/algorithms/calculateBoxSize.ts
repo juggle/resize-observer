@@ -1,6 +1,7 @@
 import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
 import { ObservationLoop } from '../ResizeObserverController';
+import { DOMRectReadOnly } from '../DOMRectReadOnly';
 
 let lastObservation = 0;
 
