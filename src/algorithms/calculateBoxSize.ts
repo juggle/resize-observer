@@ -15,6 +15,15 @@ const isSVG = (target: Element): boolean => 'SVGGraphicsElement' in window
 
 const calculateBoxSizes = (target: Element) => {
 
+  if (ObservationLoop.loop !== lastObservation) {
+    cache.clear();
+    lastObservation = ObservationLoop.loop;
+  }
+
+  if (cache.has(target)) {
+    return cache.get(target);
+  }
+
   const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
 
   const cs = getComputedStyle(target);
@@ -74,11 +83,7 @@ const calculateBoxSizes = (target: Element) => {
 };
 
 const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize => {
-  if (ObservationLoop.loop !== lastObservation) {
-    cache.clear();
-    lastObservation = ObservationLoop.loop;
-  }
-  const boxes = cache.get(target) || calculateBoxSizes(target);
+  const boxes = calculateBoxSizes(target);
   switch (observedBox) {
     case ResizeObserverBoxOptions.BORDER_BOX:
       return boxes.borderBoxSize;
