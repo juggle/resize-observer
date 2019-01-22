@@ -1,4 +1,4 @@
-import DOMRectReadOnly from '../src/DOMRectReadOnly';
+import { DOMRectReadOnly } from '../src/DOMRectReadOnly';
 
   describe('DOMRectReadOnly', () => {
     it('Should return a DOMRect with the correct properties.', () => {

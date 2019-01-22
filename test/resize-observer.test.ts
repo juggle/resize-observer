@@ -1,5 +1,5 @@
-import ResizeObserver from '../src/ResizeObserver';
-import DOMRectReadOnly from '../src/DOMRectReadOnly';
+import { ResizeObserver } from '../src/ResizeObserver';
+import { DOMRectReadOnly } from '../src/DOMRectReadOnly';
 
 const setDimensions = (target: HTMLElement, w: number, h: number) => {
   target.style.width = `${w}px`;
