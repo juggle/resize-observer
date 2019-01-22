@@ -1,11 +1,6 @@
 import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
-import { ObservationLoop } from '../ResizeObserverController';
 import { DOMRectReadOnly } from '../DOMRectReadOnly';
-
-let lastObservation = 0;
-
-const cache = new Map();
 
 const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null) => parseFloat(pixel || '0');
@@ -14,15 +9,6 @@ const isSVG = (target: Element): boolean => 'SVGGraphicsElement' in window
 && target instanceof SVGGraphicsElement && 'getBBox' in target;
 
 const calculateBoxSizes = (target: Element) => {
-
-  if (ObservationLoop.loop !== lastObservation) {
-    cache.clear();
-    lastObservation = ObservationLoop.loop;
-  }
-
-  if (cache.has(target)) {
-    return cache.get(target);
-  }
 
   const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
 
@@ -76,8 +62,6 @@ const calculateBoxSizes = (target: Element) => {
     contentRect,
     hidden
   }
-
-  cache.set(target, boxes);
 
   return boxes;
 };
