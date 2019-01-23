@@ -404,7 +404,7 @@ describe('ResizeObserver', () => {
     it('Should fire initial resize', (done) => {
       ro = new ResizeObserver((entries, observer) => {
         expect(entries).toHaveLength(1);
-        expect(entries[0].target).toBe(el1);
+        expect(entries[0].target).toBe(canvas);
         expect(observer).toBe(ro);
         expect(entries[0].contentRect).toMatchObject({
           top: 0,
@@ -418,9 +418,19 @@ describe('ResizeObserver', () => {
         expect(entries[0].devicePixelBorderBoxSize).toMatchObject(initialBox);
         done();
       });
-      ro.observe(el1, {
+      const canvas = document.createElement('CANVAS');
+      document.body.appendChild(canvas);
+      ro.observe(canvas, {
         box: 'device-pixel-border-box' as ResizeObserverBoxOptions
       });
+    });
+    it('Should throw error when element is not of type canvas', () => {
+      expect(() => {
+        ro = new ResizeObserver(() => {});
+        ro.observe(el1, {
+          box: 'device-pixel-border-box' as ResizeObserverBoxOptions
+        })
+      }).toThrow('Can only watch device-pixel-border-box on canvas elements.');
     });
   });
 
