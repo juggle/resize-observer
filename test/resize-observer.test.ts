@@ -1,4 +1,5 @@
 import { ResizeObserver } from '../src/ResizeObserver';
+import { ResizeObserverBoxOptions } from '../src/ResizeObserverBoxOptions';
 import { DOMRectReadOnly } from '../src/DOMRectReadOnly';
 
 const setDimensions = (target: HTMLElement, w: number, h: number) => {
@@ -283,6 +284,143 @@ describe('ResizeObserver', () => {
         return new DOMRectReadOnly(0, 0, 0, 0);
       }
       ro.observe(svg1);
+    });
+  });
+
+  const initialBox = {
+    inlineSize: 0,
+    blockSize: 0
+  };
+
+  describe('Observed Box (content-box)', () => {
+    it('Should fire initial resize', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        expect(entries[0].contentRect).toMatchObject({
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0
+        });
+        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
+        expect(entries[0].contentSize).toMatchObject(initialBox);
+        expect(entries[0].scrollSize).toMatchObject(initialBox);
+        expect(entries[0].devicePixelBorderBoxSize).toMatchObject(initialBox);
+        done();
+      });
+      ro.observe(el1, {
+        box: 'content-box' as ResizeObserverBoxOptions
+      });
+    });
+  });
+
+  describe('Observed Box (border-box)', () => {
+    it('Should fire initial resize', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        expect(entries[0].contentRect).toMatchObject({
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0
+        });
+        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
+        expect(entries[0].contentSize).toMatchObject(initialBox);
+        expect(entries[0].scrollSize).toMatchObject(initialBox);
+        expect(entries[0].devicePixelBorderBoxSize).toMatchObject(initialBox);
+        done();
+      });
+      ro.observe(el1, {
+        box: 'border-box' as ResizeObserverBoxOptions
+      });
+    });
+    it('Should have correct box sizes', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        expect(entries[0].contentRect).toMatchObject({
+          top: 10,
+          left: 10,
+          width: 300,
+          height: 100
+        });
+        expect(entries[0].borderBoxSize).toMatchObject({
+          inlineSize: 330,
+          blockSize: 130
+        });
+        expect(entries[0].contentSize).toMatchObject({
+          inlineSize: 300,
+          blockSize: 100
+        });
+        expect(entries[0].scrollSize).toMatchObject({
+          inlineSize: 320,
+          blockSize: 120
+        });
+        expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
+          inlineSize: 330 * devicePixelRatio,
+          blockSize: 130 * devicePixelRatio
+        });
+        done();
+      });
+      setDimensions(el1, 300, 100);
+      el1.style.padding = '10px';
+      el1.style.border = 'solid 5px red';
+      ro.observe(el1, {
+        box: 'border-box' as ResizeObserverBoxOptions
+      });
+    });
+  });
+
+  describe('Observed Box (scroll-box)', () => {
+    it('Should fire initial resize', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        expect(entries[0].contentRect).toMatchObject({
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0
+        });
+        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
+        expect(entries[0].contentSize).toMatchObject(initialBox);
+        expect(entries[0].scrollSize).toMatchObject(initialBox);
+        expect(entries[0].devicePixelBorderBoxSize).toMatchObject(initialBox);
+        done();
+      });
+      ro.observe(el1, {
+        box: 'scroll-box' as ResizeObserverBoxOptions
+      });
+    });
+  });
+
+  describe('Observed Box (device-pixel-border-box)', () => {
+    it('Should fire initial resize', (done) => {
+      ro = new ResizeObserver((entries, observer) => {
+        expect(entries).toHaveLength(1);
+        expect(entries[0].target).toBe(el1);
+        expect(observer).toBe(ro);
+        expect(entries[0].contentRect).toMatchObject({
+          top: 0,
+          left: 0,
+          width: 0,
+          height: 0
+        });
+        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
+        expect(entries[0].contentSize).toMatchObject(initialBox);
+        expect(entries[0].scrollSize).toMatchObject(initialBox);
+        expect(entries[0].devicePixelBorderBoxSize).toMatchObject(initialBox);
+        done();
+      });
+      ro.observe(el1, {
+        box: 'device-pixel-border-box' as ResizeObserverBoxOptions
+      });
     });
   });
 
