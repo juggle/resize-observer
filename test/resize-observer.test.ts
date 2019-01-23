@@ -23,11 +23,14 @@ describe('ResizeObserver', () => {
     document.body.appendChild(svg1);
   });
 
-  beforeEach(() => {
+  afterEach(() => {
     if (ro instanceof ResizeObserver) {
       ro.disconnect();
       ro = null;
     }
+    document.body.removeChild(el1);
+    document.body.removeChild(el2);
+    document.body.removeChild(svg1);
   });
 
   describe('Single HTMLElement', () => {
