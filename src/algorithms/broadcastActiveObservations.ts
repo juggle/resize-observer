@@ -3,6 +3,7 @@ import { ResizeObserverDetail } from '../ResizeObserverDetail';
 import { ResizeObserverEntry } from '../ResizeObserverEntry';
 import { ResizeObservation } from '../ResizeObservation';
 import { calculateDepthForNode } from './calculateDepthForNode';
+import { calculateBoxSize } from './calculateBoxSize';
 
 const broadcastActiveObservations = (): number => {
   let shallowestDepth: number = Infinity;
@@ -16,10 +17,7 @@ const broadcastActiveObservations = (): number => {
       const entry = new ResizeObserverEntry(ot.target);
       const targetDepth = calculateDepthForNode(ot.target);
       entries.push(entry);
-      ot.lastReportedSize = {
-        inlineSize: entry.contentRect.width,
-        blockSize: entry.contentRect.height
-      };
+      ot.lastReportedSize = calculateBoxSize(ot.target, ot.observedBox);
       if (targetDepth < shallowestDepth) {
         shallowestDepth = targetDepth;
       }
