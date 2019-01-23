@@ -8,7 +8,13 @@ const parseDimension = (pixel: string | null) => parseFloat(pixel || '0');
 const isSVG = (target: Element): boolean => 'SVGGraphicsElement' in window
 && target instanceof SVGGraphicsElement && 'getBBox' in target;
 
+const cache = new Map();
+
 const calculateBoxSizes = (target: Element) => {
+
+  if (cache.has(target)) {
+    return cache.get(target);
+  }
 
   const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
 
@@ -61,7 +67,9 @@ const calculateBoxSizes = (target: Element) => {
     devicePixelBorderBoxSize,
     contentRect,
     hidden
-  }
+  };
+
+  cache.set(target, boxes);
 
   return boxes;
 };
@@ -81,4 +89,4 @@ const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions
   }
 };
 
-export { calculateBoxSize, calculateBoxSizes };
+export { calculateBoxSize, calculateBoxSizes, cache };

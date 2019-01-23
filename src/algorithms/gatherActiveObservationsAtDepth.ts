@@ -2,8 +2,10 @@ import { ResizeObservation } from '../ResizeObservation';
 import { ResizeObserverDetail } from '../ResizeObserverDetail';
 import { resizeObservers } from '../ResizeObserverController';
 import { calculateDepthForNode } from './calculateDepthForNode';
+import { cache as boxCache } from './calculateBoxSize';
 
 const gatherActiveObservationsAtDepth = (depth: number): void => {
+  boxCache.clear();
   resizeObservers.forEach((ro: ResizeObserverDetail) => {
     ro.activeTargets.splice(0, ro.activeTargets.length);
     ro.skippedTargets.splice(0, ro.skippedTargets.length);
