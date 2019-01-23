@@ -38,7 +38,7 @@ const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
     const { width, height } = entry.contentRect;
-    console.log(`Element ${index + 1}:` `${width}x${height}`);
+    console.log(`Element ${index + 1}:`, `${width}x${height}`);
   });
 });
 
