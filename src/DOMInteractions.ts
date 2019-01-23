@@ -33,8 +33,10 @@ if ('MutationObserver' in window) {
   new MutationObserver(dispatch).observe(document.body, observerConfig);
 }
 
-export default class DOMInteractions {
+class DOMInteractions {
   public static watch (callback: StandardCallback) {
     watchers.push(callback);
   }
 }
+
+export { DOMInteractions }
