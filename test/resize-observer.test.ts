@@ -13,6 +13,9 @@ describe('ResizeObserver', () => {
   let el1: HTMLElement;
   let el2: HTMLElement;
   let svg1: SVGGraphicsElement;
+  
+  // Set dpr to be high resolution
+  (window as any).devicePixelRatio = 5;
 
   beforeEach(() => {
     el1 = document.createElement('div');
@@ -365,8 +368,8 @@ describe('ResizeObserver', () => {
           blockSize: 120
         });
         expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
-          inlineSize: 330 * devicePixelRatio,
-          blockSize: 130 * devicePixelRatio
+          inlineSize: 330 * 5,
+          blockSize: 130 * 5
         });
         done();
       });
