@@ -28,7 +28,7 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test.skip('Observer should not fire initially when display:none', (done) => {
+  test('Observer should not fire initially when display:none', (done) => {
     ro = new ResizeObserver(() => {
       expect(false).toBe(true); // Should not fire
     })
