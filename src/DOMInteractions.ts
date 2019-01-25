@@ -27,11 +27,15 @@ const dispatch: StandardCallback = () => {
 // Listen to events
 events.forEach(name => window.addEventListener(name, dispatch, true));
 
+
 // Listen for any other DOM changes which could affect sizes
-if ('MutationObserver' in window) {
-  const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
-  new MutationObserver(dispatch).observe(document.body, observerConfig);
+const createObserver = () => {
+  if ('MutationObserver' in window) {
+    const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
+    new MutationObserver(dispatch).observe(document.body, observerConfig);
+  }
 }
+document.body ? createObserver() : document.addEventListener('DOMContentLoaded', createObserver);
 
 class DOMInteractions {
   public static watch (callback: StandardCallback) {
