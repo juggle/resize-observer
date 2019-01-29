@@ -1,15 +1,15 @@
-# ResizeObserver
+<h1>
+  Resize Observer Polyfill
+  <br/><br/>
+  <img src="https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge"/>
+  <img src="https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge"/>
+  <img src="https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge"/>
+  <img src="https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge"/>
+</h1>
 
-![](https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge)
-![](https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge)
-![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
-![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
+A minimal library which polyfills the **ResizeObserver** API and is entirely based on the latest [Draft Specification](https://drafts.csswg.org/resize-observer-1/). Essentially, it detects when an element's size changes, allowing you to deal with it!
 
-A minimal library which polyfills the **ResizeObserver** API and is entirely based on the latest [Draft Specification](https://drafts.csswg.org/resize-observer-1/).
-
-This library observes elements and dispatches notifications when their dimensions change. Differences are only calculated during animation, or, after DOM mutation or user interaction has occurred, keeping CPU and power consumption minimal.
-
-[Demo Playground](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
+Check out the [Demo Playground](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
 
 
 ## Installation
@@ -28,7 +28,7 @@ const ro = new ResizeObserver((entries, observer) => {
 
 ro.observe(document.body); // Watch dimension changes on body
 ```
-This will use the ponyfilled version of **ResizeObserver**, even if the browser supports **ResizeObserver** natively.
+This will use the [ponyfilled](https://github.com/sindresorhus/ponyfill) version of **ResizeObserver**, even if the browser supports **ResizeObserver** natively.
 
 ## Watching multiple elements
 ``` js
@@ -48,7 +48,9 @@ const els = docuent.querySelectorAll('.resizes');
 
 ## Watching different box sizes
 
-The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options inlcude `border-box` `content-box` `scroll-box` `device-pixel-border-box`. `device-pixel-border-box` can only be used on a `canvas` element.
+The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options inlcude `border-box`, `content-box`, `scroll-box`, `device-pixel-border-box`.
+
+`device-pixel-border-box` can only be used on `canvas` elements.
 ``` js
 import ResizeObserver from '@juggle/resize-observer';
 
@@ -84,18 +86,55 @@ const ro = new ResizeObserver((entries, observer) => {
 });
 ```
 
+> **Warning:** Browsers with native support may be behind on the latest specification.
+
+
+## Resize loop detection
+
+Resize Observers have inbuilt protection against infinite resize loops.
+
+If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window.
+
+```js
+import ResizeObserver from '@juggle/resize-observer';
+
+const ro = new ResizeObserver((entries, observer) => {
+  // Changing the body size inside of the observer
+  // will cause a resize loop and the next observation will be skipped
+  document.body.style.width = '50%';
+});
+
+// Listen for errors
+window.addEventListener('error', e => console.log(e.message));
+
+// Observe the body
+ro.observe(document.body);
+```
+
+
+## How are differences detected?
+
+To prevent constant polling, every frame. The DOM is queried whenever an event occurs which could cause an element to change its size. This could be when an element is clicked, a DOM Node is added, or, when an animation is running.
+
+To cover these scenarios, there are two types of observation. The first is to listen to specific DOM events, including `resize`, `mousedown` and `focus` to name a few. The second is to listen for any DOM mutations that occur. This detects when a DOM node is added or removed, an attribute is modified, or, even when some text has changed.
+
+This allows for greater idle time, when the application itself is idle.
+
+
 ## What's it good for?
-- Building responsive websites.
+
+- Building responsive applications.
 - Creating 'self-aware' Web Components.
 - Making 3rd party libraries more responsive. e.g. charts and grids.
+- Locking scroll position to the bottom of elements - useful for chat windows and logs.
+- Canvas rendering (including HDPI).
 - Many other things!
 
 
 ## Limitations
 
 - No support for **IE10** and below. **IE11** is supported.
-- Dynamic stylesheet changes may not be noticed and updates will occur on the next user interaction.
-- Currently no support for observations when `display:none` is toggled (coming soon).
+- Dynamic stylesheet changes may not be noticed and updates will occur on the next interaction.
 
 
 ## TypeScript support
