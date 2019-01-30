@@ -2,6 +2,9 @@ import { ResizeObserverSize } from './ResizeObserverSize';
 import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 import { calculateBoxSize } from './algorithms/calculateBoxSize';
 
+/**
+ * https://drafts.csswg.org/resize-observer-1/#resize-observation-interface
+ */
 class ResizeObservation {
 
   public target: Element;

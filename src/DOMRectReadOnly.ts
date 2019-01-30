@@ -5,6 +5,10 @@ interface Rectangle {
   readonly height: number;
 }
 
+/**
+ * Implementation of DOMRectReadOnly.
+ * Native DOMRectReadOnly cannot be used.
+ */
 class DOMRectReadOnly {
   public readonly x: number;
   public readonly y: number;
