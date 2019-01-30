@@ -54,7 +54,7 @@ describe('Multiple Observers', () => {
   })
 
   test('Observers observing nothing should not be fired when others are.', (done) => {
-    const ro1 = new ResizeObserver((entries, observer) => {
+    const ro1 = new ResizeObserver(() => {
       expect(false).toBe(true); // Should never be called
     });
     const ro2 = new ResizeObserver((entries, observer) => {
