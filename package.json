@@ -10,7 +10,8 @@
   "scripts": {
     "build": "rm -rf lib && tsc",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
-    "test": "jest --coverage",
+    "test": "npm run lint && jest --coverage",
+    "lint": "eslint '{src,test}/**/*.ts'",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -44,7 +45,10 @@
   "homepage": "https://github.com/juggle/resize-observer#readme",
   "devDependencies": {
     "@types/jest": "^23.3.12",
+    "@typescript-eslint/eslint-plugin": "^1.1.1",
+    "@typescript-eslint/parser": "^1.1.1",
     "coveralls": "^3.0.2",
+    "eslint": "^5.12.1",
     "jest": "^23.6.0",
     "jest-cli": "^23.6.0",
     "jest-junit": "^6.0.1",

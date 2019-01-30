@@ -1,5 +1,9 @@
 const msg = 'ResizeObserver loop completed with undelivered notifications.';
 
+interface LegacyEvent extends Event {
+  message: string;
+}
+
 const deliverResizeLoopError = (): void => {
   let event;
   /* istanbul ignore else  */
@@ -9,7 +13,7 @@ const deliverResizeLoopError = (): void => {
     });
   }
   else { // Fallback to old style of event creation
-    event = document.createEvent('Event') as any;
+    event = document.createEvent('Event') as LegacyEvent;
     event.initEvent('error', false, false);
     event.message = msg;
   }

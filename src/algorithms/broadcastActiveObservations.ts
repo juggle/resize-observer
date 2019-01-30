@@ -6,7 +6,7 @@ import { calculateDepthForNode } from './calculateDepthForNode';
 import { calculateBoxSize } from './calculateBoxSize';
 
 const broadcastActiveObservations = (): number => {
-  let shallowestDepth: number = Infinity;
+  let shallowestDepth = Infinity;
   const callbacks: (() => void)[] = [];
   resizeObservers.forEach((ro: ResizeObserverDetail) => {
     if (ro.activeTargets.length === 0) {

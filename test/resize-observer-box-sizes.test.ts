@@ -3,7 +3,7 @@ import { ResizeObserverBoxOptions } from '../src/ResizeObserverBoxOptions';
 
 describe('Box Options', () => {
 
-  (window.devicePixelRatio as any) = 5;
+  (window.devicePixelRatio as number) = 5;
 
   const DEFAULT_WIDTH = 100;
   const DEFAULT_HEIGHT = 200;
@@ -152,6 +152,7 @@ describe('Box Options', () => {
 
   describe('device-pixel-border-box', () => {
     test('Should fire initial resize', (done) => {
+      const canvas = document.createElement('CANVAS');
       ro = new ResizeObserver((entries, observer) => {
         expect(entries).toHaveLength(1);
         expect(entries[0].target).toBe(canvas);
@@ -171,7 +172,6 @@ describe('Box Options', () => {
         })
         done();
       })
-      const canvas = document.createElement('CANVAS');
       canvas.style.width = DEFAULT_WIDTH + 'px';
       canvas.style.height = DEFAULT_HEIGHT + 'px';
       document.body.appendChild(canvas);

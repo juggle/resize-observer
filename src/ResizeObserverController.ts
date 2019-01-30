@@ -11,14 +11,20 @@ import { deliverResizeLoopError } from './algorithms/deliverResizeLoopError';
 import { broadcastActiveObservations } from './algorithms/broadcastActiveObservations';
 import { gatherActiveObservationsAtDepth } from './algorithms/gatherActiveObservationsAtDepth';
 
-import { find, findIndex } from './utils/array';
-
-const ObservationLoop: { loop: number } = { loop: 0 };
 const resizeObservers: ResizeObserverDetail[] = [];
+const observerMap = new Map();
+
+const getObservationIndex = (observationTargets: ResizeObservation[], target: Element): number => {
+  for (let i = 0; i < observationTargets.length; i+= 1) {
+    if (observationTargets[i].target === target) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 const process = (): boolean => {
   let depth = 0;
-  ObservationLoop.loop += 1;
   gatherActiveObservationsAtDepth(depth);
   while (hasActiveObservations()) {
     depth = broadcastActiveObservations();
@@ -31,8 +37,8 @@ const process = (): boolean => {
 }
 
 let frameId: number;
-let extraFrames: number = 0;
-const notify = () => {
+let extraFrames = 0;
+const notify = (): void => {
   cancelAnimationFrame(frameId);
   frameId = requestAnimationFrame(() => {
     if (process()) {
@@ -47,40 +53,38 @@ const notify = () => {
 }
 
 export default class ResizeObserverController {
-  static connect (resizeObserver: ResizeObserver, callback: ResizeObserverCallback) {
+  public static connect (resizeObserver: ResizeObserver, callback: ResizeObserverCallback): void {
     const detail = new ResizeObserverDetail(resizeObserver, callback);
     resizeObservers.push(detail);
+    observerMap.set(resizeObserver, detail);
   }
-  static observe (resizeObserver: ResizeObserver, target: Element, options?: ResizeObserverOptions) {
-    const detail = find.call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
-    if (detail) {
-      const index = findIndex
-      .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
-      if (index === -1) {
+  public static observe (resizeObserver: ResizeObserver, target: Element, options?: ResizeObserverOptions): void {
+    if (observerMap.has(resizeObserver)) {
+      const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
+      if (getObservationIndex(detail.observationTargets, target) < 0) {
         detail.observationTargets.push(new ResizeObservation(target, options && options.box));
         notify(); // Notify new observation
       }
     }
   }
-  static unobserve (resizeObserver: ResizeObserver, target: Element) {
-    const detail = find.call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
-    if (detail) {
-      const index = findIndex
-      .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
-      if (index > -1) {
+  public static unobserve (resizeObserver: ResizeObserver, target: Element): void {
+    if (observerMap.has(resizeObserver)) {
+      const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
+      const index = getObservationIndex(detail.observationTargets, target);
+      if (index >= 0) {
         detail.observationTargets.splice(index, 1);
       }
     }
   }
-  static disconnect (resizeObserver: ResizeObserver) {
-    const index = findIndex
-    .call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
-    if (index > -1) {
-      resizeObservers.splice(index, 1);
+  public static disconnect (resizeObserver: ResizeObserver): void {
+    if (observerMap.has(resizeObserver)) {
+      const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
+      resizeObservers.splice(resizeObservers.indexOf(detail), 1);
+      observerMap.delete(resizeObserver);
     }
   }
 }
 
 DOMInteractions.watch(notify);
 
-export { ResizeObserverController, ObservationLoop, resizeObservers };
+export { ResizeObserverController, resizeObservers };

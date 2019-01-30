@@ -251,7 +251,7 @@ describe('Basics', () => {
       expect(e.message).toBe('ResizeObserver loop completed with undelivered notifications.');
       done();
     })
-    ro = new ResizeObserver((entries, observer) => {
+    ro = new ResizeObserver((entries) => {
       entries.forEach((entry) => {
         const target = entry.target as HTMLElement;
         target.style.width = `${entry.contentRect.width + 1000}px`;

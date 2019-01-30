@@ -1,4 +1,4 @@
-const delay = ((callback: () => any) => {
+const delay = ((callback: () => void): void => {
   setTimeout(callback, 100);
 })
 

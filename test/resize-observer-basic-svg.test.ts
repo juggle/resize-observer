@@ -32,8 +32,8 @@ describe('SVGGraphicsElement', () => {
       });
       done();
     });
-    el.getBBox = function (): any {
-      return new DOMRectReadOnly(0, 0, 100, 100);
+    el.getBBox = function (): DOMRect {
+      return new DOMRectReadOnly(0, 0, 100, 100) as DOMRect;
     }
     ro.observe(el);
   })
