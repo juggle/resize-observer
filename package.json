@@ -4,8 +4,7 @@
   "description": "ResizeObserver - Based on the official draft specification",
   "main": "./lib/ResizeObserver.js",
   "files": [
-    "lib/**/*.{js,ts}",
-    "src/**/*.ts"
+    "lib/**/*.{js,ts}"
   ],
   "scripts": {
     "build": "rm -rf lib && tsc",
