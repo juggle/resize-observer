@@ -4,6 +4,11 @@ interface LegacyEvent extends Event {
   message: string;
 }
 
+/**
+ * Delivers a resize loop error event.
+ * 
+ * https://drafts.csswg.org/resize-observer-1/#deliver-resize-error
+ */
 const deliverResizeLoopError = (): void => {
   let event;
   /* istanbul ignore else  */

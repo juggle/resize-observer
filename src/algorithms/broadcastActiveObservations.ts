@@ -5,6 +5,11 @@ import { ResizeObservation } from '../ResizeObservation';
 import { calculateDepthForNode } from './calculateDepthForNode';
 import { calculateBoxSize } from './calculateBoxSize';
 
+/**
+ * Broadcasts all active observations.
+ * 
+ * https://drafts.csswg.org/resize-observer-1/#broadcast-resize-notifications-h
+ */
 const broadcastActiveObservations = (): number => {
   let shallowestDepth = Infinity;
   const callbacks: (() => void)[] = [];

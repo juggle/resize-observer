@@ -2,6 +2,9 @@ import { DOMRectReadOnly } from './DOMRectReadOnly';
 import { ResizeObserverSize } from './ResizeObserverSize';
 import { calculateBoxSizes } from './algorithms/calculateBoxSize';
 
+/**
+ * https://drafts.csswg.org/resize-observer-1/#resize-observer-entry-interface
+ */
 class ResizeObserverEntry {
   public target: Element;
   public contentRect: DOMRectReadOnly;

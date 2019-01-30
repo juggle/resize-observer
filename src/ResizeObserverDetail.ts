@@ -2,6 +2,10 @@ import { ResizeObserver } from './ResizeObserver';
 import { ResizeObservation } from './ResizeObservation';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
 
+/**
+ * Holds additional information about a resize observer,
+ * to be used internally.
+ */
 class ResizeObserverDetail {
   public callback: ResizeObserverCallback;
   public observer: ResizeObserver;

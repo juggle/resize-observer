@@ -4,6 +4,11 @@ import { resizeObservers } from '../ResizeObserverController';
 import { calculateDepthForNode } from './calculateDepthForNode';
 import { cache as boxCache } from './calculateBoxSize';
 
+/**
+ * Finds all active observations at a give depth
+ * 
+ * https://drafts.csswg.org/resize-observer-1/#gather-active-observations-h
+ */
 const gatherActiveObservationsAtDepth = (depth: number): void => {
   boxCache.clear();
   resizeObservers.forEach((ro: ResizeObserverDetail) => {
