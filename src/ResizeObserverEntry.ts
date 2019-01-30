@@ -9,7 +9,7 @@ class ResizeObserverEntry {
   public contentSize: ResizeObserverSize;
   public scrollSize: ResizeObserverSize;
   public devicePixelBorderBoxSize: ResizeObserverSize;
-  constructor (target: Element) {
+  public constructor (target: Element) {
     const boxes = calculateBoxSizes(target);
     this.target = target;
     this.contentRect = boxes.contentRect;

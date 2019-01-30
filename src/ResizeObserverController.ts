@@ -31,8 +31,8 @@ const process = (): boolean => {
 }
 
 let frameId: number;
-let extraFrames: number = 0;
-const notify = () => {
+let extraFrames = 0;
+const notify = (): void => {
   cancelAnimationFrame(frameId);
   frameId = requestAnimationFrame(() => {
     if (process()) {
@@ -47,34 +47,34 @@ const notify = () => {
 }
 
 export default class ResizeObserverController {
-  static connect (resizeObserver: ResizeObserver, callback: ResizeObserverCallback) {
+  public static connect (resizeObserver: ResizeObserver, callback: ResizeObserverCallback): void {
     const detail = new ResizeObserverDetail(resizeObserver, callback);
     resizeObservers.push(detail);
   }
-  static observe (resizeObserver: ResizeObserver, target: Element, options?: ResizeObserverOptions) {
+  public static observe (resizeObserver: ResizeObserver, target: Element, options?: ResizeObserverOptions): void {
     const detail = find.call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
     if (detail) {
       const index = findIndex
-      .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
+        .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
       if (index === -1) {
         detail.observationTargets.push(new ResizeObservation(target, options && options.box));
         notify(); // Notify new observation
       }
     }
   }
-  static unobserve (resizeObserver: ResizeObserver, target: Element) {
+  public static unobserve (resizeObserver: ResizeObserver, target: Element): void {
     const detail = find.call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
     if (detail) {
       const index = findIndex
-      .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
+        .call(detail.observationTargets, (item: ResizeObservation) => item.target === target);
       if (index > -1) {
         detail.observationTargets.splice(index, 1);
       }
     }
   }
-  static disconnect (resizeObserver: ResizeObserver) {
+  public static disconnect (resizeObserver: ResizeObserver): void {
     const index = findIndex
-    .call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
+      .call(resizeObservers, (detail: ResizeObserverDetail) => detail.observer === resizeObserver);
     if (index > -1) {
       resizeObservers.splice(index, 1);
     }

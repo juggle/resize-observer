@@ -8,7 +8,7 @@ class ResizeObservation {
   public observedBox: ResizeObserverBoxOptions;
   public lastReportedSize: ResizeObserverSize;
 
-  constructor (target: Element, observedBox?: ResizeObserverBoxOptions) {
+  public constructor (target: Element, observedBox?: ResizeObserverBoxOptions) {
     this.target = target;
     this.observedBox = observedBox || ResizeObserverBoxOptions.CONTENT_BOX;
     this.lastReportedSize = {
@@ -17,7 +17,7 @@ class ResizeObservation {
     }
   }
 
-  isActive() {
+  public isActive (): boolean {
     const size = calculateBoxSize(this.target, this.observedBox);
     return this.lastReportedSize.inlineSize !== size.inlineSize
       || this.lastReportedSize.blockSize !== size.blockSize;

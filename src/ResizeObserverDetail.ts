@@ -9,7 +9,7 @@ class ResizeObserverDetail {
   public skippedTargets: ResizeObservation[] = [];
   public observationTargets: ResizeObservation[] = [];
 
-  constructor (resizeObserver: ResizeObserver, callback: ResizeObserverCallback) {
+  public constructor (resizeObserver: ResizeObserver, callback: ResizeObserverCallback) {
     this.observer = resizeObserver;
     this.callback = callback;
   }

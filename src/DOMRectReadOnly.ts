@@ -6,15 +6,15 @@ interface Rectangle {
 }
 
 class DOMRectReadOnly {
-  readonly x: number;
-  readonly y: number;
-  readonly width: number;
-  readonly height: number;
-  readonly top: number;
-  readonly left: number;
-  readonly bottom: number;
-  readonly right: number;
-  constructor (x: number, y: number, width: number, height: number) {
+  public readonly x: number;
+  public readonly y: number;
+  public readonly width: number;
+  public readonly height: number;
+  public readonly top: number;
+  public readonly left: number;
+  public readonly bottom: number;
+  public readonly right: number;
+  public constructor (x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -25,7 +25,7 @@ class DOMRectReadOnly {
     this.right = this.left + this.width;
     return Object.freeze(this);
   }
-  static fromRect (rectangle: Rectangle): Readonly<DOMRectReadOnly> {
+  public static fromRect (rectangle: Rectangle): Readonly<DOMRectReadOnly> {
     return new DOMRectReadOnly(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
   }
 }

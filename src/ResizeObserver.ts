@@ -11,18 +11,18 @@ export default class ResizeObserver {
     ResizeObserverController.connect(this, callback);
   }
 
-  public observe (target: Element, options?: ResizeObserverOptions) {
+  public observe (target: Element, options?: ResizeObserverOptions): void {
     if (options && options.box === DPPB && target.tagName !== 'CANVAS') {
       throw new Error(`Can only watch ${options.box} on canvas elements.`);
     }
     ResizeObserverController.observe(this, target, options);
   }
 
-  public unobserve (target: Element) {
+  public unobserve (target: Element): void {
     ResizeObserverController.unobserve(this, target);
   }
 
-  public disconnect () {
+  public disconnect (): void {
     ResizeObserverController.disconnect(this);
   }
 

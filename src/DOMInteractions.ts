@@ -1,4 +1,4 @@
-type StandardCallback = () => any;
+type StandardCallback = () => void;
 const watchers: StandardCallback[] = [];
 
 const events = [
@@ -20,7 +20,7 @@ const events = [
 ];
 
 // Dispatcher for interactions
-const dispatch: StandardCallback = () => {
+const dispatch: StandardCallback = (): void => {
   watchers.forEach((watcher: StandardCallback) => watcher());
 }
 
@@ -29,7 +29,7 @@ events.forEach(name => window.addEventListener(name, dispatch, true));
 
 
 // Listen for any other DOM changes which could affect sizes
-const createObserver = () => {
+const createObserver = (): void => {
   if ('MutationObserver' in window) {
     const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
     new MutationObserver(dispatch).observe(document.body, observerConfig);
@@ -38,7 +38,7 @@ const createObserver = () => {
 document.body ? createObserver() : document.addEventListener('DOMContentLoaded', createObserver);
 
 class DOMInteractions {
-  public static watch (callback: StandardCallback) {
+  public static watch (callback: StandardCallback): void {
     watchers.push(callback);
   }
 }
