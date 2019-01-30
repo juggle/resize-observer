@@ -2,6 +2,14 @@ import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
 import { DOMRectReadOnly } from '../DOMRectReadOnly';
 
+interface ResizeObserverSizeCollection {
+  borderBoxSize: ResizeObserverSize;
+  contentBoxSize: ResizeObserverSize;
+  scrollBoxSize: ResizeObserverSize;
+  devicePixelBorderBoxSize: ResizeObserverSize;
+  contentRect: DOMRectReadOnly;
+}
+
 const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
@@ -10,7 +18,7 @@ const isSVG = (target: Element): boolean => 'SVGGraphicsElement' in window
 
 const cache = new Map();
 
-const calculateBoxSizes = (target: Element): any => {
+const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
 
   if (cache.has(target)) {
     return cache.get(target);
@@ -65,8 +73,7 @@ const calculateBoxSizes = (target: Element): any => {
     contentBoxSize,
     scrollBoxSize,
     devicePixelBorderBoxSize,
-    contentRect,
-    hidden
+    contentRect
   };
 
   cache.set(target, boxes);
