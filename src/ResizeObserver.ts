@@ -29,6 +29,10 @@ export default class ResizeObserver {
     ResizeObserverController.disconnect(this);
   }
 
+  public static toString (): string {
+    return 'function ResizeObserver () { [polyfill code] }';
+  }
+
 }
 
 export { ResizeObserver };

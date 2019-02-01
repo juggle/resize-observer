@@ -122,7 +122,7 @@ This allows for greater idle time, when the application itself is idle.
 ## What's it good for?
 
 - Building responsive applications.
-- Creating 'self-aware' Web Components.
+- Creating self-aware, responsive Web Components.
 - Making 3rd party libraries more responsive. e.g. charts and grids.
 - Locking scroll position to the bottom of elements - useful for chat windows and logs.
 - Canvas rendering (including HDPI).
