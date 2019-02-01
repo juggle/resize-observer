@@ -1,9 +1,10 @@
+import { schedule } from './utils/scheduler';
+
 import { ResizeObserver } from './ResizeObserver';
 import { ResizeObservation } from './ResizeObservation';
 import { ResizeObserverDetail } from './ResizeObserverDetail';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
-import { DOMInteractions } from './DOMInteractions';
 
 import { hasActiveObservations } from './algorithms/hasActiveObservations';
 import { hasSkippedObservations } from './algorithms/hasSkippedObservations';
@@ -42,26 +43,6 @@ const process = (): boolean => {
 }
 
 /**
- * Debounces events and processes
- * on the next animation frame.
- */
-let frameId: number;
-let extraFrames = 0;
-const notify = (): void => {
-  cancelAnimationFrame(frameId);
-  frameId = requestAnimationFrame(() => {
-    if (process()) {
-      extraFrames = 0;
-      notify();
-    }
-    else if (extraFrames < 60) {
-      extraFrames += 1;
-      notify();
-    }
-  });
-}
-
-/**
  * Used as an interface for connecting resize observers.
  */
 export default class ResizeObserverController {
@@ -77,7 +58,7 @@ export default class ResizeObserverController {
       const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
       if (getObservationIndex(detail.observationTargets, target) < 0) {
         detail.observationTargets.push(new ResizeObservation(target, options && options.box));
-        notify(); // Notify new observation
+        schedule(); // Schedule next observation
       }
     }
   }
@@ -101,6 +82,4 @@ export default class ResizeObserverController {
   }
 }
 
-DOMInteractions.watch(notify);
-
-export { ResizeObserverController, resizeObservers };
+export { ResizeObserverController, resizeObservers, process };
