@@ -18,6 +18,10 @@ describe('Basics', () => {
     }
   })
 
+  test('console.log(ResizeObserver) should be prettified', () => {
+    expect(ResizeObserver.toString()).toBe('function ResizeObserver () { [polyfill code] }');
+  })
+
   test('Observer should not fire initially when size is 0,0', (done) => {
     ro = new ResizeObserver(() => {
       expect(false).toBe(true); // Should not fire
