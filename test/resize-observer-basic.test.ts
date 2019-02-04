@@ -272,4 +272,15 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
+  test('Calculations should be run after all other raf callbacks have been fired.', (done) => {
+    ro = new ResizeObserver((entries) => {
+      expect(entries[0].contentRect.width).toBe(2000);
+      done();
+    });
+    ro.observe(el);
+    requestAnimationFrame(() => {
+      el.style.width = '2000px';
+    });
+  })
+
 })

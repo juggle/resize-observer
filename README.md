@@ -128,11 +128,24 @@ This allows for greater idle time, when the application itself is idle.
 - Canvas rendering (including HDPI).
 - Many other things!
 
+## Features
+
+- Inbuilt resize loop protection.
+- Supports pseudo classes `:hover`, `:active` and `:focus`.
+- Supports transitions and animations, including infinite and long-running.
+- Detects changes which occur during animation frame.
+- Includes support for latest draft spec - observing different box sizes.
+- Polls only when required, then shuts down automatically, reducing CPU usage.
+- No notification delay - Notifications are batched and delivered immediately, before the next paint.
 
 ## Limitations
 
 - No support for **IE10** and below. **IE11** is supported.
-- Dynamic stylesheet changes may not be noticed and updates will occur on the next interaction.
+- Dynamic stylesheet changes may not be noticed.*
+- Transitions with initial delays cannot be detected.*
+- Animations and transitions with long periods of no change, will not be detected.*
+
+\* If other interaction occurs, changes will be detected.
 
 
 ## TypeScript support
