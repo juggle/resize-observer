@@ -1,10 +1,11 @@
 import { ResizeObserver } from '../src/ResizeObserver';
+import { scheduler } from '../src/utils/scheduler';
 import { delay } from './helpers/delay';
 
 describe('Basics', () => {
 
   let el: HTMLElement;
-  let ro: ResizeObserver;
+  let ro: ResizeObserver | null;
 
   beforeEach(() => {
     el = document.createElement('div');
@@ -15,6 +16,10 @@ describe('Basics', () => {
   afterEach(() => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
+    }
+    if (ro) {
+      ro.disconnect();
+      ro = null;
     }
   })
 
@@ -281,6 +286,59 @@ describe('Basics', () => {
     requestAnimationFrame(() => {
       el.style.width = '2000px';
     });
+  })
+
+  test('Scheduler should start and stop itself correctly.', () => {
+    expect(scheduler.stopped).toBe(true);
+    ro = new ResizeObserver(() => {});
+    expect(scheduler.stopped).toBe(true);
+    ro.observe(el);
+    expect(scheduler.stopped).toBe(false);
+    ro.unobserve(el);
+    expect(scheduler.stopped).toBe(true);
+    ro.observe(el);
+    ro.observe(el.cloneNode() as HTMLElement);
+    ro.unobserve(el);
+    expect(scheduler.stopped).toBe(false);
+    ro.observe(el);
+    ro.disconnect();
+    expect(scheduler.stopped).toBe(true);
+  })
+
+  test('Scheduler should handle multiple starts and stops.', () => {
+    expect(scheduler.stopped).toBe(true);
+    scheduler.start();
+    expect(scheduler.stopped).toBe(false);
+    scheduler.start();
+    expect(scheduler.stopped).toBe(false);
+    scheduler.stop();
+    expect(scheduler.stopped).toBe(true);
+    scheduler.stop();
+    expect(scheduler.stopped).toBe(true);
+  })
+
+  test('Fake MutationObserver class to make sure it\'s called and used', (done) => {
+    let callback: () => void;
+    class MutationObserver {
+      public constructor (cb: () => void) {
+        callback = () => {
+          cb();
+        };
+      }
+      public observe (): void {
+        callback();
+      }
+      public disconnect (): void {
+        done();
+      }
+    }
+    Object.defineProperty(window, 'MutationObserver', {
+      value: MutationObserver
+    });
+    ro = new ResizeObserver((entries, observer) => {
+      observer.disconnect();
+    });
+    ro.observe(el);
   })
 
 })
