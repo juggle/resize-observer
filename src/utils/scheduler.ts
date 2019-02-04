@@ -19,6 +19,9 @@ const events = [
   'focus'
 ];
 
+// Keep original reference of raf to use later
+const raf = window.requestAnimationFrame;
+
 /**
  * Debounces events and processes
  * on the next animation frame.
@@ -26,7 +29,7 @@ const events = [
 let frameId: number;
 const run = (frames: number): void => {
   cancelAnimationFrame(frameId);
-  frameId = requestAnimationFrame(() => {
+  frameId = raf(() => {
     // Have any changes happened?
     if (process()) {
       run(60);
@@ -41,6 +44,13 @@ const run = (frames: number): void => {
 // Default sheduler
 // Runs checks on current and next frame
 const schedule = (): void => run(1);
+
+// Override raf to make sure calculations are performed after any changes may occur.
+window.requestAnimationFrame = function (callback) {
+  const id = raf(callback); // Callback should run first
+  schedule(); // Reschedule observation checks to run afterwards
+  return id;
+}
 
 // Listen to events
 events.forEach(name => window.addEventListener(name, schedule, true));
