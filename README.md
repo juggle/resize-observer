@@ -133,6 +133,7 @@ This allows for greater idle time, when the application itself is idle.
 - Inbuilt resize loop protection.
 - Supports pseudo classes `:hover`, `:active` and `:focus`.
 - Supports transitions and animations, including infinite and long-running.
+- Detects changes which occur during animation frame.
 - Includes support for latest draft spec - observing different box sizes.
 - Polls only when required, then shuts down automatically, reducing CPU usage.
 - No notification delay - Notifications are batched and delivered immediately, before the next paint.
