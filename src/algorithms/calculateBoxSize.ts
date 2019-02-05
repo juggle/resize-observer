@@ -30,12 +30,14 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
 
   const cs = getComputedStyle(target);
-  const hidden = cs.display === 'none';
 
   // IE does not remove padding from width/height, when box-sizing is border-box.
   const removePadding = !IE && cs.boxSizing === 'border-box';
 
   // Calculate properties for creating boxes.
+  const width = parseDimension(cs.width);
+  const height = parseDimension(cs.height);
+  const hidden = isNaN(width) || isNaN(height) || cs.display === 'none';
   const paddingTop = svg || hidden ? 0 : parseDimension(cs.paddingTop);
   const paddingRight = svg || hidden ? 0 : parseDimension(cs.paddingRight);
   const paddingBottom = svg || hidden ? 0 : parseDimension(cs.paddingBottom);
@@ -50,25 +52,25 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const verticalBorderArea = borderTop + borderBottom;
   const widthReduction = removePadding ? horizontalPadding + horizontalBorderArea : 0;
   const heightReduction = removePadding ? verticalPadding + verticalBorderArea : 0;
-  const width = hidden ? 0 : svg ? svg.width : parseDimension(cs.width) - widthReduction;
-  const height = hidden ? 0 : svg ? svg.height : parseDimension(cs.height) - heightReduction;
+  const contentWidth = hidden ? 0 : svg ? svg.width : parseDimension(cs.width) - widthReduction;
+  const contentHeight = hidden ? 0 : svg ? svg.height : parseDimension(cs.height) - heightReduction;
 
   // Create borderBoxSize
   const borderBoxSize: ResizeObserverSize = {
-    inlineSize: width + horizontalPadding + horizontalBorderArea,
-    blockSize: height + verticalPadding + verticalBorderArea
+    inlineSize: contentWidth + horizontalPadding + horizontalBorderArea,
+    blockSize: contentHeight + verticalPadding + verticalBorderArea
   }
 
   // Create contentSize
   const contentBoxSize: ResizeObserverSize = {
-    inlineSize: width,
-    blockSize: height
+    inlineSize: contentWidth,
+    blockSize: contentHeight
   }
 
   // Create scrollSize
   const scrollBoxSize: ResizeObserverSize = {
-    inlineSize: width + horizontalPadding,
-    blockSize: height + verticalPadding
+    inlineSize: contentWidth + horizontalPadding,
+    blockSize: contentHeight + verticalPadding
   }
 
   // Create devicePixelBorderBoxSize
@@ -78,7 +80,7 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   }
 
   // Create legacy contentRect
-  const contentRect = new DOMRectReadOnly(paddingLeft, paddingTop, width, height);
+  const contentRect = new DOMRectReadOnly(paddingLeft, paddingTop, contentWidth, contentHeight);
 
   const boxes = {
     borderBoxSize,
