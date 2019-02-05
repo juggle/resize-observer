@@ -41,6 +41,20 @@ describe('Basics', () => {
     delay(done);
   })
 
+  test('Observer should not fire initially when parent element is display:none', (done) => {
+    ro = new ResizeObserver(() => {
+      expect(false).toBe(true); // Should not fire
+    })
+    const child = document.createElement('div');
+    el.style.display = 'none';
+    child.style.display = 'block';
+    el.append(child);
+    expect(el.style.display).toBe('none');
+    expect(child.style.display).toBe('block');
+    ro.observe(child);
+    delay(done);
+  })
+
   test('Observer should not fire when an element has no document', (done) => {
     el = el.cloneNode() as HTMLElement;
     ro = new ResizeObserver(() => {
