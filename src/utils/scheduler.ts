@@ -8,6 +8,7 @@ const observerConfig = { attributes: true, characterData: true, childList: true,
 const events = [
   // Global Resize
   'resize',
+  'load',
   // Transitions & Animations
   'transitionend',
   'animationend',
@@ -24,6 +25,29 @@ const events = [
   'focus'
 ];
 
+const rafSlots = new Map();
+const resizeObserverSlots = new Map();
+
+let handle: number | undefined;
+const dispatchCallbacksOnNextFrame = (): void => {
+  if (typeof handle === 'number') {
+    return;
+  }
+  function dispatchFrameEvents(t: number): void {
+    handle = undefined;
+    const callbacks: FrameRequestCallback[] = [];
+    rafSlots.forEach(callback => callbacks.push(callback));
+    resizeObserverSlots.forEach(callback => callbacks.push(callback));
+    rafSlots.clear(); resizeObserverSlots.clear();
+    for (let callback of callbacks) {
+      callback(t);
+    }
+  };
+  handle = requestAnimationFrame(dispatchFrameEvents)
+}
+
+
+
 class Scheduler {
 
   private id: number | undefined;
@@ -35,24 +59,21 @@ class Scheduler {
     this.listener = (): void => this.schedule();
   }
 
-  public schedule (): void {
-    this.run(1);
-  }
-
-  private run (frames: number): void {
-    if (this.id) {
-      cancelAnimationFrame(this.id);
-    }
-    this.id = requestAnimationFrame(() => {
+  public run (frames: number): void {
+    resizeObserverSlots.set(this, () => {
       // Have any changes happened?
       if (process()) {
         this.run(60);
       }
-      // Continue checking any additional frames
       else if (frames) {
         this.run(frames - 1);
       }
     });
+    dispatchCallbacksOnNextFrame();
+  }
+
+  public schedule (): void {
+    this.run(1);
   }
 
   private observe (): void {
@@ -84,10 +105,21 @@ class Scheduler {
 const scheduler = new Scheduler();
 
 // Override raf to make sure calculations are performed after any changes may occur.
+let rafIdBase = 0;
 window.requestAnimationFrame = function (callback) {
-  const id = requestAnimationFrame(callback); // Callback should run first
-  scheduler.schedule(); // Reschedule observation checks to run afterwards
-  return id;
+  const handle = rafIdBase += 1;
+  rafSlots.set(handle, callback);
+  dispatchCallbacksOnNextFrame();
+  return handle;
+}
+
+Object.defineProperty(window.requestAnimationFrame, 'toString', {
+  value: function () { return 'function () { [polyfill code] }' }
+})
+
+// Override caf
+window.cancelAnimationFrame = function (handle) {
+  rafSlots.delete(handle);
 }
 
 export { scheduler };
