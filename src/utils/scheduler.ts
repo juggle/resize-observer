@@ -50,7 +50,6 @@ const dispatchCallbacksOnNextFrame = (): void => {
 
 class Scheduler {
 
-  private id: number | undefined;
   private observer: MutationObserver | undefined;
   private listener: () => void;
   public stopped: boolean = true
@@ -65,6 +64,7 @@ class Scheduler {
       if (process()) {
         this.run(60);
       }
+      // Should we continue to check?
       else if (frames) {
         this.run(frames - 1);
       }
@@ -103,23 +103,27 @@ class Scheduler {
 }
 
 const scheduler = new Scheduler();
-
-// Override raf to make sure calculations are performed after any changes may occur.
 let rafIdBase = 0;
+
+// Override requestAnimationFrame to make sure
+// calculations are performed after any changes may occur.
 window.requestAnimationFrame = function (callback) {
   const handle = rafIdBase += 1;
   rafSlots.set(handle, callback);
   dispatchCallbacksOnNextFrame();
   return handle;
 }
-
 Object.defineProperty(window.requestAnimationFrame, 'toString', {
   value: function () { return 'function () { [polyfill code] }' }
 })
 
-// Override caf
+// Override cancelAnimationFrame
+// as we need to handle custom removal
 window.cancelAnimationFrame = function (handle) {
   rafSlots.delete(handle);
 }
+Object.defineProperty(window.cancelAnimationFrame, 'toString', {
+  value: function () { return 'function () { [polyfill code] }' }
+})
 
 export { scheduler };
