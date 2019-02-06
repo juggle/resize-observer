@@ -9,7 +9,7 @@ const DPPB = ResizeObserverBoxOptions.DEVICE_PIXEL_BORDER_BOX;
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-interface
  */
-export default class ResizeObserver {
+class ResizeObserver {
 
   public constructor (callback: ResizeObserverCallback) {
     if (arguments.length === 0) {
@@ -53,5 +53,5 @@ export default class ResizeObserver {
   }
 
 }
-
+export default ResizeObserver;
 export { ResizeObserver };
