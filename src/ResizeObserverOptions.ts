@@ -10,5 +10,4 @@ interface ResizeObserverOptions {
   box: ResizeObserverBoxOptions | undefined;
 }
 
-export default ResizeObserverOptions;
 export { ResizeObserverOptions };

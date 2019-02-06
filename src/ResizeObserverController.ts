@@ -91,5 +91,5 @@ class ResizeObserverController {
     }
   }
 }
-export default ResizeObserverController;
+
 export { ResizeObserverController, resizeObservers, process };
