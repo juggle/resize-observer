@@ -52,7 +52,7 @@ const process = (): boolean => {
 /**
  * Used as an interface for connecting resize observers.
  */
-export default class ResizeObserverController {
+class ResizeObserverController {
   // Connects an observer to the controller.
   public static connect (resizeObserver: ResizeObserver, callback: ResizeObserverCallback): void {
     const detail = new ResizeObserverDetail(resizeObserver, callback);

@@ -3,10 +3,10 @@ import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 /**
  * Options to be given to the resize observer,
  * when oberving a new element.
- * 
+ *
  * https://drafts.csswg.org/resize-observer-1/#dictdef-resizeobserveroptions
  */
-export default interface ResizeObserverOptions {
+interface ResizeObserverOptions {
   box: ResizeObserverBoxOptions | undefined;
 }
 
