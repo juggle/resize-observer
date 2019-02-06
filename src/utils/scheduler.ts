@@ -1,4 +1,5 @@
 import { process } from '../ResizeObserverController';
+import { prettifyConsoleOutput } from './prettify';
 
 // Keep original reference of raf to use later
 const requestAnimationFrame = window.requestAnimationFrame;
@@ -8,6 +9,7 @@ const observerConfig = { attributes: true, characterData: true, childList: true,
 const events = [
   // Global Resize
   'resize',
+  // Global Load
   'load',
   // Transitions & Animations
   'transitionend',
@@ -45,8 +47,6 @@ const dispatchCallbacksOnNextFrame = (): void => {
   };
   handle = requestAnimationFrame(dispatchFrameEvents)
 }
-
-
 
 class Scheduler {
 
@@ -107,23 +107,22 @@ let rafIdBase = 0;
 
 // Override requestAnimationFrame to make sure
 // calculations are performed after any changes may occur.
+// * Is there another way to schedule without modifying the whole function?
 window.requestAnimationFrame = function (callback) {
+  if (typeof callback !== 'function') {
+    throw new Error('requestAnimationFrame expects 1 callback argument of type function.');
+  }
   const handle = rafIdBase += 1;
   rafSlots.set(handle, callback);
   dispatchCallbacksOnNextFrame();
   return handle;
 }
-Object.defineProperty(window.requestAnimationFrame, 'toString', {
-  value: function () { return 'function () { [polyfill code] }' }
-})
-
 // Override cancelAnimationFrame
 // as we need to handle custom removal
 window.cancelAnimationFrame = function (handle) {
   rafSlots.delete(handle);
 }
-Object.defineProperty(window.cancelAnimationFrame, 'toString', {
-  value: function () { return 'function () { [polyfill code] }' }
-})
+prettifyConsoleOutput(window.requestAnimationFrame);
+prettifyConsoleOutput(window.cancelAnimationFrame);
 
 export { scheduler };
