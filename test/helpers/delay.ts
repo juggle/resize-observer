@@ -1,8 +1,8 @@
-import { schedule } from '../../src/utils/scheduler';
+import { scheduler } from '../../src/utils/scheduler';
 
 const delay = ((callback: () => void): void => {
   setTimeout(() => {
-    schedule();
+    scheduler.schedule();
     callback();
   }, 100);
 })

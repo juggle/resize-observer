@@ -1,4 +1,4 @@
-import { schedule } from './utils/scheduler';
+import { scheduler } from './utils/scheduler';
 
 import { ResizeObserver } from './ResizeObserver';
 import { ResizeObservation } from './ResizeObservation';
@@ -14,6 +14,13 @@ import { gatherActiveObservationsAtDepth } from './algorithms/gatherActiveObserv
 
 const resizeObservers: ResizeObserverDetail[] = [];
 const observerMap = new Map();
+let watching = 0;
+
+const updateCount = (n: number): void => {
+  !watching && n > 0 && scheduler.start();
+  watching += n;
+  !watching && scheduler.stop();
+}
 
 // Helper to find the correct ResizeObservation, based on a target.
 const getObservationIndex = (observationTargets: ResizeObservation[], target: Element): number => {
@@ -58,7 +65,8 @@ export default class ResizeObserverController {
       const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
       if (getObservationIndex(detail.observationTargets, target) < 0) {
         detail.observationTargets.push(new ResizeObservation(target, options && options.box));
-        schedule(); // Schedule next observation
+        updateCount(1);
+        scheduler.schedule(); // Schedule next observation
       }
     }
   }
@@ -69,6 +77,7 @@ export default class ResizeObserverController {
       const index = getObservationIndex(detail.observationTargets, target);
       if (index >= 0) {
         detail.observationTargets.splice(index, 1);
+        updateCount(-1);
       }
     }
   }
@@ -78,6 +87,7 @@ export default class ResizeObserverController {
       const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
       resizeObservers.splice(resizeObservers.indexOf(detail), 1);
       observerMap.delete(resizeObserver);
+      updateCount(-detail.observationTargets.length);
     }
   }
 }

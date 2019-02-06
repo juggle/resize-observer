@@ -1,10 +1,11 @@
 import { ResizeObserver } from '../src/ResizeObserver';
+import { scheduler } from '../src/utils/scheduler';
 import { delay } from './helpers/delay';
 
 describe('Basics', () => {
 
   let el: HTMLElement;
-  let ro: ResizeObserver;
+  let ro: ResizeObserver | null;
 
   beforeEach(() => {
     el = document.createElement('div');
@@ -16,10 +17,66 @@ describe('Basics', () => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
     }
+    if (ro) {
+      ro.disconnect();
+      ro = null;
+    }
   })
 
   test('console.log(ResizeObserver) should be prettified', () => {
     expect(ResizeObserver.toString()).toBe('function ResizeObserver () { [polyfill code] }');
+  })
+
+  test('Throw error when no callback is passed to constructor', () => {
+    const fn = (): void => {
+      // @ts-ignore
+      new ResizeObserver();
+    };
+    expect(fn).toThrowError(`Failed to construct 'ResizeObserver': 1 argument required, but only 0 present.`);
+  })
+
+  test('Throw error when an invalid callback is passed to constructor', () => {
+    const fn = (): void => {
+      // @ts-ignore
+      new ResizeObserver(1);
+    };
+    expect(fn).toThrowError(`Failed to construct 'ResizeObserver': The callback provided as parameter 1 is not a function.`);
+  })
+
+  test('Throw error when no target is passed to observe()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.observe();
+    };
+    expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': 1 argument required, but only 0 present.`);
+  })
+
+  test('Throw error when an invalid target is passed to observe()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.observe(1);
+    };
+    expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
+  })
+
+  test('Throw error when no target is passed to unobserve()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.unobserve();
+    };
+    expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': 1 argument required, but only 0 present.`);
+  })
+
+  test('Throw error when an invalid target is passed to unobserve()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.unobserve(1);
+    };
+    expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': parameter 1 is not of type 'Element`);
   })
 
   test('Observer should not fire initially when size is 0,0', (done) => {
@@ -282,6 +339,84 @@ describe('Basics', () => {
     ro = new ResizeObserver((entries, observer) => {
       expect(observer).toBe(observer);
       done();
+    });
+    ro.observe(el);
+  })
+
+  test('Calculations should be run after all other raf callbacks have been fired.', (done) => {
+    ro = new ResizeObserver((entries) => {
+      expect(entries[0].contentRect.width).toBe(2000);
+      done();
+    });
+    ro.observe(el);
+    requestAnimationFrame(() => {
+      el.style.width = '2000px';
+    });
+  })
+
+  test('RAF loops should not interrupt scheduler', (done) => {
+    let frame = 0;
+    const loop = (): number => requestAnimationFrame(() => {
+      frame += 1;
+      frame < 10 && loop();
+    })
+    loop();
+    ro = new ResizeObserver(() => {
+      expect(frame).toBe(1);
+      done();
+    });
+    ro.observe(el);
+  })
+
+  test('Scheduler should start and stop itself correctly.', () => {
+    expect(scheduler.stopped).toBe(true);
+    ro = new ResizeObserver(() => {});
+    expect(scheduler.stopped).toBe(true);
+    ro.observe(el);
+    expect(scheduler.stopped).toBe(false);
+    ro.unobserve(el);
+    expect(scheduler.stopped).toBe(true);
+    ro.observe(el);
+    ro.observe(el.cloneNode() as HTMLElement);
+    ro.unobserve(el);
+    expect(scheduler.stopped).toBe(false);
+    ro.observe(el);
+    ro.disconnect();
+    expect(scheduler.stopped).toBe(true);
+  })
+
+  test('Scheduler should handle multiple starts and stops.', () => {
+    expect(scheduler.stopped).toBe(true);
+    scheduler.start();
+    expect(scheduler.stopped).toBe(false);
+    scheduler.start();
+    expect(scheduler.stopped).toBe(false);
+    scheduler.stop();
+    expect(scheduler.stopped).toBe(true);
+    scheduler.stop();
+    expect(scheduler.stopped).toBe(true);
+  })
+
+  test('Fake MutationObserver class to make sure it\'s called and used', (done) => {
+    let callback: () => void;
+    class MutationObserver {
+      public constructor (cb: () => void) {
+        callback = () => {
+          cb();
+        };
+      }
+      public observe (): void {
+        callback();
+      }
+      public disconnect (): void {
+        done();
+      }
+    }
+    Object.defineProperty(window, 'MutationObserver', {
+      value: MutationObserver
+    });
+    ro = new ResizeObserver((entries, observer) => {
+      observer.disconnect();
     });
     ro.observe(el);
   })
