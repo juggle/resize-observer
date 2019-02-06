@@ -27,6 +27,58 @@ describe('Basics', () => {
     expect(ResizeObserver.toString()).toBe('function ResizeObserver () { [polyfill code] }');
   })
 
+  test('Throw error when no callback is passed to constructor', () => {
+    const fn = (): void => {
+      // @ts-ignore
+      new ResizeObserver();
+    };
+    expect(fn).toThrowError(`Failed to construct 'ResizeObserver': 1 argument required, but only 0 present.`);
+  })
+
+  test('Throw error when an invalid callback is passed to constructor', () => {
+    const fn = (): void => {
+      // @ts-ignore
+      new ResizeObserver(1);
+    };
+    expect(fn).toThrowError(`Failed to construct 'ResizeObserver': The callback provided as parameter 1 is not a function.`);
+  })
+
+  test('Throw error when no target is passed to observe()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.observe();
+    };
+    expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': 1 argument required, but only 0 present.`);
+  })
+
+  test('Throw error when an invalid target is passed to observe()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.observe(1);
+    };
+    expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
+  })
+
+  test('Throw error when no target is passed to unobserve()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.unobserve();
+    };
+    expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': 1 argument required, but only 0 present.`);
+  })
+
+  test('Throw error when an invalid target is passed to unobserve()', () => {
+    const fn = (): void => {
+      ro = new ResizeObserver(() => {});
+      // @ts-ignore
+      ro.unobserve(1);
+    };
+    expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': parameter 1 is not of type 'Element`);
+  })
+
   test('Observer should not fire initially when size is 0,0', (done) => {
     ro = new ResizeObserver(() => {
       expect(false).toBe(true); // Should not fire
