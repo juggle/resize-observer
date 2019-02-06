@@ -2,6 +2,7 @@ import { ResizeObserverController } from './ResizeObserverController';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
 import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
+import { POLYFILL_CONSOLE_OUTPUT } from './utils/prettify';
 
 const DPPB = ResizeObserverBoxOptions.DEVICE_PIXEL_BORDER_BOX;
 
@@ -30,7 +31,7 @@ export default class ResizeObserver {
   }
 
   public static toString (): string {
-    return 'function ResizeObserver () { [polyfill code] }';
+    return POLYFILL_CONSOLE_OUTPUT;
   }
 
 }
