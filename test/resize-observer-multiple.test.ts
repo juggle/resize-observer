@@ -1,4 +1,5 @@
 import { ResizeObserver } from '../src/ResizeObserver';
+import './helpers/offset';
 
 let el: HTMLElement;
 let ro: ResizeObserver;

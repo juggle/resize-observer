@@ -1,6 +1,7 @@
 import { ResizeObserver } from '../src/ResizeObserver';
 import { scheduler } from '../src/utils/scheduler';
 import { delay } from './helpers/delay';
+import './helpers/offset';
 
 describe('Basics', () => {
 

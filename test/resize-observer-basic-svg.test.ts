@@ -1,5 +1,7 @@
 import { ResizeObserver } from '../src/ResizeObserver';
 import { DOMRectReadOnly } from '../src/DOMRectReadOnly';
+import { delay } from './helpers/delay';
+import './helpers/offset';
 
 describe('SVGGraphicsElement', () => {
 
@@ -17,6 +19,17 @@ describe('SVGGraphicsElement', () => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
     }
+  })
+
+  test('Observer should not fire initially when size is 0,0', (done) => {
+    ro = new ResizeObserver(() => {
+      expect(false).toBe(true); // Should not fire
+    })
+    el.getBBox = function (): DOMRect {
+      return new DOMRectReadOnly(0, 0, 0, 0) as DOMRect;
+    }
+    ro.observe(el);
+    delay(done);
   })
 
   test('Should fire observer when element is observed for the first time.', (done) => {
