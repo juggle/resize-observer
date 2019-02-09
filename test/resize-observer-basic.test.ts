@@ -234,6 +234,115 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
+  test('Observer should handle vertical scrollbars on an element.', (done) => {
+    ro = new ResizeObserver(entries => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        width: 85,
+        height: 200
+      });
+      done();
+    });
+    Object.defineProperty(el, 'offsetWidth', {
+      get: function () {
+        return 100
+      }
+    })
+    Object.defineProperty(el, 'offsetHeight', {
+      get: function () {
+        return 200
+      }
+    })
+    Object.defineProperty(el, 'clientWidth', {
+      get: function () {
+        return 85
+      }
+    })
+    Object.defineProperty(el, 'clientHeight', {
+      get: function () {
+        return 200
+      }
+    })
+    el.style.overflowY = 'scroll';
+    el.style.width = '100px';
+    el.style.height = '200px';
+    ro.observe(el);
+  })
+
+  test('Observer should handle horizontal scrollbars on an element.', (done) => {
+    ro = new ResizeObserver(entries => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        width: 100,
+        height: 185
+      });
+      done();
+    });
+    Object.defineProperty(el, 'offsetWidth', {
+      get: function () {
+        return 100
+      }
+    })
+    Object.defineProperty(el, 'offsetHeight', {
+      get: function () {
+        return 200
+      }
+    })
+    Object.defineProperty(el, 'clientWidth', {
+      get: function () {
+        return 100
+      }
+    })
+    Object.defineProperty(el, 'clientHeight', {
+      get: function () {
+        return 185
+      }
+    })
+    el.style.overflowX = 'scroll';
+    el.style.width = '100px';
+    el.style.height = '200px';
+    ro.observe(el);
+  })
+
+  test('Observer should handle horizontal and vertical scrollbars on an element.', (done) => {
+    ro = new ResizeObserver(entries => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        width: 85,
+        height: 185
+      });
+      done();
+    });
+    Object.defineProperty(el, 'offsetWidth', {
+      get: function () {
+        return 100
+      }
+    })
+    Object.defineProperty(el, 'offsetHeight', {
+      get: function () {
+        return 200
+      }
+    })
+    Object.defineProperty(el, 'clientWidth', {
+      get: function () {
+        return 85
+      }
+    })
+    Object.defineProperty(el, 'clientHeight', {
+      get: function () {
+        return 185
+      }
+    })
+    el.style.overflowX = 'scroll';
+    el.style.overflowY = 'scroll';
+    el.style.width = '100px';
+    el.style.height = '200px';
+    ro.observe(el);
+  })
+
   test('Observer should handle box-sizing and padding correctly.', (done) => {
     ro = new ResizeObserver(entries => {
       expect(entries).toHaveLength(1);

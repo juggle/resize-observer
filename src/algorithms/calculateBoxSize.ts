@@ -12,6 +12,7 @@ interface ResizeObserverSizeCollection {
 }
 
 const cache = new Map();
+const scrollRegexp = /auto|scroll/;
 const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
@@ -54,6 +55,10 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   // IE does not remove padding from width/height, when box-sizing is border-box.
   const removePadding = !IE && cs.boxSizing === 'border-box';
 
+  // Could the element have any scrollbars?
+  const canScrollVertically = !svg && scrollRegexp.test(cs.overflowY || '');
+  const canScrollHorizontally = !svg && scrollRegexp.test(cs.overflowX || '');
+
   // Calculate properties for creating boxes.
   const paddingTop = svg ? 0 : parseDimension(cs.paddingTop);
   const paddingRight = svg ? 0 : parseDimension(cs.paddingRight);
@@ -67,12 +72,14 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const verticalPadding = paddingTop + paddingBottom;
   const horizontalBorderArea = borderLeft + borderRight;
   const verticalBorderArea = borderTop + borderBottom;
+  const horizontalScrollbarThickness = !canScrollHorizontally ? 0 : (target as HTMLElement).offsetHeight - verticalBorderArea - target.clientHeight;
+  const verticalScrollbarThickness = !canScrollVertically ? 0 : (target as HTMLElement).offsetWidth - horizontalBorderArea - target.clientWidth;
   const widthReduction = removePadding ? horizontalPadding + horizontalBorderArea : 0;
   const heightReduction = removePadding ? verticalPadding + verticalBorderArea : 0;
-  const contentWidth = svg ? svg.width : parseDimension(cs.width) - widthReduction;
-  const contentHeight = svg ? svg.height : parseDimension(cs.height) - heightReduction;
-  const borderBoxWidth = contentWidth + horizontalPadding + horizontalBorderArea;
-  const borderBoxHeight = contentHeight + verticalPadding + verticalBorderArea;
+  const contentWidth = svg ? svg.width : parseDimension(cs.width) - widthReduction - verticalScrollbarThickness;
+  const contentHeight = svg ? svg.height : parseDimension(cs.height) - heightReduction - horizontalScrollbarThickness;
+  const borderBoxWidth = contentWidth + horizontalPadding + verticalScrollbarThickness + horizontalBorderArea;
+  const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
   const boxes = Object.freeze({
     borderBoxSize: size(borderBoxWidth, borderBoxHeight),
