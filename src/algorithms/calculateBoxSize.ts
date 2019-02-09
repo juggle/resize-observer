@@ -1,6 +1,7 @@
 import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
 import { DOMRectReadOnly } from '../DOMRectReadOnly';
+import { isSVG, isHidden } from '../utils/element';
 
 interface ResizeObserverSizeCollection {
   borderBoxSize: ResizeObserverSize;
@@ -13,8 +14,6 @@ interface ResizeObserverSizeCollection {
 const cache = new Map();
 const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
-const isSVG = (target: Element): boolean => 'SVGGraphicsElement' in window
-&& target instanceof SVGGraphicsElement && 'getBBox' in target;
 
 /**
  * Gets all box sizes of an element.
@@ -35,9 +34,7 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const removePadding = !IE && cs.boxSizing === 'border-box';
 
   // Calculate properties for creating boxes.
-  const width = parseDimension(cs.width);
-  const height = parseDimension(cs.height);
-  const hidden = isNaN(width) || isNaN(height) || cs.display === 'none';
+  const hidden = isHidden(target);
   const paddingTop = svg || hidden ? 0 : parseDimension(cs.paddingTop);
   const paddingRight = svg || hidden ? 0 : parseDimension(cs.paddingRight);
   const paddingBottom = svg || hidden ? 0 : parseDimension(cs.paddingBottom);
