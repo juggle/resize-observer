@@ -176,6 +176,31 @@ describe('Basics', () => {
     })
   })
 
+  test('Observer should fire when the element\'s hidden state is toggled', (done) => {
+    let count = 0;
+    ro = new ResizeObserver(entries => {
+      count += 1;
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        top: 0,
+        left: 0,
+        width: count !== 2 ? 100 : 0,
+        height: 0
+      });
+      if (count === 3) {
+        done();
+      }
+    })
+    ro.observe(el);
+    delay(() => {
+      el.style.display = 'none';
+      delay(() => {
+        el.style.removeProperty('display');
+      })
+    })
+  })
+
   test('Observer should fire when only the width changes', (done) => {
     ro = new ResizeObserver(entries => {
       expect(entries).toHaveLength(1);
