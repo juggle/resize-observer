@@ -1,5 +1,6 @@
 import { ResizeObserver } from '../src/ResizeObserver';
 import { ResizeObserverBoxOptions } from '../src/ResizeObserverBoxOptions';
+import './helpers/offset';
 
 describe('Box Options', () => {
 
