@@ -27,25 +27,26 @@ const events = [
   'focus'
 ];
 
-const rafSlots = new Map();
-const resizeObserverSlots = new Map();
+const rafSlot = new Map();
+const resizeObserverSlot = new Map();
 
-let handle: number | undefined;
+let scheduled: boolean;
 const dispatchCallbacksOnNextFrame = (): void => {
-  if (typeof handle === 'number') {
+  if (scheduled) {
     return;
   }
-  function dispatchFrameEvents(t: number): void {
-    handle = undefined;
+  scheduled = true;
+  function runSchedule(t: number): void {
+    scheduled = false;
     const callbacks: FrameRequestCallback[] = [];
-    rafSlots.forEach(callback => callbacks.push(callback));
-    resizeObserverSlots.forEach(callback => callbacks.push(callback));
-    rafSlots.clear(); resizeObserverSlots.clear();
+    rafSlot.forEach(callback => callbacks.push(callback));
+    resizeObserverSlot.forEach(callback => callbacks.push(callback));
+    rafSlot.clear(); resizeObserverSlot.clear();
     for (let callback of callbacks) {
       callback(t);
     }
   };
-  handle = requestAnimationFrame(dispatchFrameEvents)
+  requestAnimationFrame(runSchedule)
 }
 
 class Scheduler {
@@ -59,14 +60,15 @@ class Scheduler {
   }
 
   public run (frames: number): void {
-    resizeObserverSlots.set(this, () => {
+    const scheduler = this;
+    resizeObserverSlot.set(this, function ResizeObserver () {
       // Have any changes happened?
       if (process()) {
-        this.run(60);
+        scheduler.run(60);
       }
       // Should we continue to check?
       else if (frames) {
-        this.run(frames - 1);
+        scheduler.run(frames - 1);
       }
     });
     dispatchCallbacksOnNextFrame();
@@ -113,14 +115,14 @@ window.requestAnimationFrame = function (callback) {
     throw new Error('requestAnimationFrame expects 1 callback argument of type function.');
   }
   const handle = rafIdBase += 1;
-  rafSlots.set(handle, callback);
+  rafSlot.set(handle, function AnimationFrame (t: number) { return callback(t) });
   dispatchCallbacksOnNextFrame();
   return handle;
 }
 // Override cancelAnimationFrame
 // as we need to handle custom removal
 window.cancelAnimationFrame = function (handle) {
-  rafSlots.delete(handle);
+  rafSlot.delete(handle);
 }
 prettifyConsoleOutput(window.requestAnimationFrame);
 prettifyConsoleOutput(window.cancelAnimationFrame);
