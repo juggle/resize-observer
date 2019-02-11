@@ -128,6 +128,7 @@ This allows for greater idle time, when the application itself is idle.
 - Canvas rendering (including HDPI).
 - Many other things!
 
+
 ## Features
 
 - Inbuilt resize loop protection.
@@ -138,6 +139,7 @@ This allows for greater idle time, when the application itself is idle.
 - Polls only when required, then shuts down automatically, reducing CPU usage.
 - No notification delay - Notifications are batched and delivered immediately, before the next paint.
 
+
 ## Limitations
 
 - No support for **IE10** and below. **IE11** is supported.
@@ -146,6 +148,19 @@ This allows for greater idle time, when the application itself is idle.
 - Animations and transitions with long periods of no change, will not be detected.*
 
 \* If other interaction occurs, changes will be detected.
+
+
+## Tested Browsers
+| Browser Name     | Desktop | Mobile |
+| ---------------- | ------- | ------ |
+| Chrome           | ✓       | ✓      |
+| Safari           | ✓       | ✓      |
+| Firefox          | ✓       | ✓      |
+| Opera            | ✓       | ✓      |
+| Opera Mini       | N/A     | ✓      |
+| Samsung Internet | N/A     | ✓      |
+| IE11             | ✓       | N/A    |
+| Edge             | ✓       | ✓      |
 
 
 ## TypeScript support
