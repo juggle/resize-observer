@@ -20,8 +20,8 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Sample Code**
+Please fork this [Debug Template](https://codesandbox.io/s/qv5jpo0xlj) and help identify the issue.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
