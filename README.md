@@ -68,6 +68,9 @@ const els = docuent.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el, observerOptions)); // Watch multiple!
 ```
 
+> **Warning:** The latest Resize Observer specification is not yet finalised and is subject to change.
+> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
+
 
 ## Switching between native and polyfilled versions
 
