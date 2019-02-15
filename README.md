@@ -7,7 +7,7 @@
 
 A minimal library which polyfills the **ResizeObserver** API and is entirely based on the latest [Draft Specification](https://drafts.csswg.org/resize-observer-1/). Essentially, it detects when an element's size changes, allowing you to deal with it!
 
-Check out the [Demo Playground](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
+Check out the [Box Demo](https://codepen.io/trem/full/VgEXgP) and [Animation Demo](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
 
 
 ## Installation
