@@ -1,6 +1,6 @@
 {
   "name": "@juggle/resize-observer",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0",
   "description": "ResizeObserver - Based on the official draft specification",
   "main": "./lib/ResizeObserver.js",
   "files": [
