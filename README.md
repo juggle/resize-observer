@@ -115,7 +115,7 @@ ro.observe(document.body);
 ## Notification Schedule
 Notifications are scheduled after all other changes have occured and all other animation callbacks have been called. This allows the observer callback to get the most accurate size of an element, as no other changes should occur in the same frame.
 
-![resize observer notification schedule](https://user-images.githubusercontent.com/1519516/52825409-87acb500-30b4-11e9-892c-482cc2a20d1e.jpg)
+![resize observer notification schedule](https://user-images.githubusercontent.com/1519516/52825568-20433500-30b5-11e9-9854-4cee13a09a7d.jpg)
 
 
 
