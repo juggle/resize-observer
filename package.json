@@ -1,7 +1,7 @@
 {
   "name": "@juggle/resize-observer",
   "version": "1.0.0",
-  "description": "ResizeObserver - Based on the official draft specification",
+  "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
   "main": "./lib/ResizeObserver.js",
   "files": [
     "lib/**/*.{js,ts}"
@@ -26,15 +26,16 @@
     "observer",
     "typescript",
     "javascript",
-    "window",
-    "document",
-    "onresize",
     "element",
     "component",
+    "container",
+    "queries",
     "web components",
-    "webcomponents",
     "front-end",
-    "html"
+    "html",
+    "Angular",
+    "React",
+    "Vue"
   ],
   "author": "Juggle",
   "license": "Apache-2.0",
