@@ -38,12 +38,20 @@ const dispatchCallbacksOnNextFrame = (): void => {
   scheduled = true;
   function runSchedule(t: number): void {
     scheduled = false;
-    const callbacks: FrameRequestCallback[] = [];
-    rafSlot.forEach(callback => callbacks.push(callback));
-    resizeObserverSlot.forEach(callback => callbacks.push(callback));
+    const frameCallbacks: FrameRequestCallback[] = [];
+    const resizeObserverCallbacks: FrameRequestCallback[] = [];
+    rafSlot.forEach(callback => frameCallbacks.push(callback));
+    resizeObserverSlot.forEach(callback => resizeObserverCallbacks.push(callback));
     rafSlot.clear(); resizeObserverSlot.clear();
-    for (let callback of callbacks) {
-      callback(t);
+    try { // Try to run animation frame callbacks
+      for (let callback of frameCallbacks) {
+        callback(t);
+      }
+    }
+    finally { // Finally, run schedule
+      for (let callback of resizeObserverCallbacks) {
+        callback(t);
+      }
     }
   };
   requestAnimationFrame(runSchedule)
@@ -53,7 +61,7 @@ class Scheduler {
 
   private observer: MutationObserver | undefined;
   private listener: () => void;
-  public stopped: boolean = true
+  public stopped: boolean = true;
 
   public constructor () {
     this.listener = (): void => this.schedule();
@@ -62,20 +70,35 @@ class Scheduler {
   public run (frames: number): void {
     const scheduler = this;
     resizeObserverSlot.set(this, function ResizeObserver () {
-      // Have any changes happened?
-      if (process()) {
-        scheduler.run(60);
+      let elementsHaveResized = false;
+      try {
+        // Process Calculations
+        elementsHaveResized = process();
       }
-      // Should we continue to check?
-      else if (frames) {
-        scheduler.run(frames - 1);
+      finally {
+        // Have any changes happened?
+        if (elementsHaveResized) {
+          scheduler.run(60);
+        }
+        // Should we continue to check?
+        else if (frames) {
+          scheduler.run(frames - 1);
+        }
+        // Start listening again
+        else {
+          scheduler.start();
+        }
       }
     });
     dispatchCallbacksOnNextFrame();
   }
 
   public schedule (): void {
-    this.run(1);
+    if (scheduled) {
+      return;
+    }
+    this.stop(); // Stop listeneing
+    this.run(1); // Run schedule
   }
 
   private observe (): void {
