@@ -32,7 +32,9 @@ const broadcastActiveObservations = (): number => {
     callbacks.push(function resizeObserverCallback() { ro.callback(entries, ro.observer) });
     ro.activeTargets.splice(0, ro.activeTargets.length);
   })
-  callbacks.forEach(function fireCallback(callback) { return callback(); });
+  for (let callback of callbacks) {
+    callback();
+  }
   return shallowestDepth;
 }
 
