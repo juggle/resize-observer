@@ -9,6 +9,10 @@ A minimal library which polyfills the **ResizeObserver** API and is entirely bas
 
 Check out the [Box Demo](https://codepen.io/trem/full/VgEXgP) and [Animation Demo](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
 
+> **Warning:**<br/>
+> The latest Resize Observer specification is not yet finalised and is subject to change.
+> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
+
 
 ## Installation
 ``` shell
@@ -35,8 +39,8 @@ import ResizeObserver from '@juggle/resize-observer';
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { width, height } = entry.contentRect;
-    console.log(`Element ${index + 1}:`, `${width}x${height}`);
+    const { inline, block } = entry.contentBox;
+    console.log(`Element ${index + 1}:`, `${inline}x${block}`);
   });
 });
 
@@ -46,17 +50,15 @@ const els = docuent.querySelectorAll('.resizes');
 
 ## Watching different box sizes
 
-The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options inlcude `border-box`, `content-box`, `scroll-box`, `device-pixel-border-box`.
-
-`device-pixel-border-box` can only be used on `canvas` elements.
+The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options inlcude `border-box` and `content-box` (default).
 ``` js
 import ResizeObserver from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.borderBoxSize;
-    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
+    const { inline, block } = entry.borderBox;
+    console.log(`Element ${index + 1}:`, `${inline}x${block}`);
   });
 });
 
@@ -68,8 +70,27 @@ const els = docuent.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el, observerOptions)); // Watch multiple!
 ```
 
-> **Warning:** The latest Resize Observer specification is not yet finalised and is subject to change.
-> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
+## Using the legacy version (`contentRect`)
+
+Early versions of the API return a `contentRect`. This is still made available for backwards compatibility.
+
+``` js
+import ResizeObserver from '@juggle/resize-observer';
+
+const ro = new ResizeObserver((entries, observer) => {
+  console.log('Elements resized:', entries.length);
+  entries.forEach((entry, index) => {
+    const { width, height } = entry.contentRect;
+    console.log(`Element ${index + 1}:`, `${width}x${height}`);
+  });
+});
+
+const els = docuent.querySelectorAll('.resizes');
+[...els].forEach(el => ro.observe(el)); // Watch multiple!
+```
+
+> **Warning:**<br/>
+> This is a **deprecated** feature and will possibly be removed in later versions.
 
 
 ## Switching between native and polyfilled versions
@@ -77,9 +98,9 @@ const els = docuent.querySelectorAll('.resizes');
 You can check to see if the native version is available and switch between this and the polyfill to improve porformance on browsers with native support.
 
 ``` js
-import ResizeObserverPolyfill from '@juggle/resize-observer';
+import { ResizeObserver as Polyfill } from '@juggle/resize-observer';
 
-const ResizeObserver = window.ResizeObserver || ResizeObserverPolyfill;
+const ResizeObserver = window.ResizeObserver || Polyfill;
 
 // Uses native or polyfill, depending on browser support
 const ro = new ResizeObserver((entries, observer) => {
@@ -87,7 +108,8 @@ const ro = new ResizeObserver((entries, observer) => {
 });
 ```
 
-> **Warning:** Browsers with native support may be behind on the latest specification.
+> **Warning:**<br/>
+> Browsers with native support may be behind on the latest specification.
 
 
 ## Resize loop detection
@@ -134,6 +156,7 @@ This allows for greater idle time, when the application itself is idle.
 - Creating self-aware, responsive Web Components.
 - Making 3rd party libraries more responsive. e.g. charts and grids.
 - Locking scroll position to the bottom of elements - useful for chat windows and logs.
+- Resizing iframes to match their content.
 - Canvas rendering (including HDPI).
 - Many other things!
 
