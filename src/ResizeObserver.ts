@@ -1,10 +1,7 @@
 import { ResizeObserverController } from './ResizeObserverController';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
-import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
 import { POLYFILL_CONSOLE_OUTPUT } from './utils/prettify';
-
-const DPPB = ResizeObserverBoxOptions.DEVICE_PIXEL_BORDER_BOX;
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-interface
@@ -27,9 +24,6 @@ class ResizeObserver {
     }
     if (target instanceof Element === false) {
       throw new TypeError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
-    }
-    if (options && options.box === DPPB && target.tagName !== 'CANVAS') {
-      throw new Error(`Can only watch ${options.box} on canvas elements.`);
     }
     ResizeObserverController.observe(this, target, options);
   }

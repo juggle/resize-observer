@@ -4,10 +4,8 @@ import { DOMRectReadOnly } from '../DOMRectReadOnly';
 import { isSVG, isHidden } from '../utils/element';
 
 interface ResizeObserverSizeCollection {
-  borderBoxSize: ResizeObserverSize;
-  contentBoxSize: ResizeObserverSize;
-  scrollBoxSize: ResizeObserverSize;
-  devicePixelBorderBoxSize: ResizeObserverSize;
+  borderBox: ResizeObserverSize[];
+  contentBox: ResizeObserverSize[];
   contentRect: DOMRectReadOnly;
 }
 
@@ -17,16 +15,14 @@ const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
 // Helper to generate and freeze a ResizeObserverSize
-const size = (inlineSize: number = 0, blockSize: number = 0): ResizeObserverSize => {
-  return Object.freeze({ inlineSize, blockSize });
+const size = (inline: number = 0, block: number = 0): ResizeObserverSize => {
+  return Object.freeze({ inline, block });
 }
 
 // Return this when targets are hidden
 const zeroBoxes = Object.freeze({
-  borderBoxSize: size(),
-  contentBoxSize: size(),
-  scrollBoxSize: size(),
-  devicePixelBorderBoxSize: size(),
+  borderBox: [size()],
+  contentBox: [size()],
   contentRect: new DOMRectReadOnly(0, 0, 0, 0)
 })
 
@@ -47,7 +43,6 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   }
 
   const cs = getComputedStyle(target);
-  const dpr = window.devicePixelRatio;
 
   // If element is an SVG, handle things differently, using its bounding box.
   const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
@@ -82,12 +77,10 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
   const boxes = Object.freeze({
-    borderBoxSize: size(borderBoxWidth, borderBoxHeight),
-    contentBoxSize: size(contentWidth, contentHeight),
-    scrollBoxSize: size(contentWidth + horizontalPadding, contentHeight + verticalPadding),
-    devicePixelBorderBoxSize: size(borderBoxWidth * dpr, borderBoxHeight * dpr),
+    borderBox: [size(borderBoxWidth, borderBoxHeight)],
+    contentBox: [size(contentWidth, contentHeight)],
     contentRect: new DOMRectReadOnly(paddingLeft, paddingTop, contentWidth, contentHeight)
-  })
+  });
 
   cache.set(target, boxes);
 
@@ -99,19 +92,9 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
  * 
  * https://drafts.csswg.org/resize-observer-1/#calculate-box-size
  */
-const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize => {
-  const boxes = calculateBoxSizes(target);
-  switch (observedBox) {
-    case ResizeObserverBoxOptions.BORDER_BOX:
-      return boxes.borderBoxSize;
-    case ResizeObserverBoxOptions.SCROLL_BOX:
-      return boxes.scrollBoxSize;
-    case ResizeObserverBoxOptions.DEVICE_PIXEL_BORDER_BOX:
-      return boxes.devicePixelBorderBoxSize;
-    case ResizeObserverBoxOptions.CONTENT_BOX:
-    default:
-      return boxes.contentBoxSize;
-  }
+const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize[] => {
+  const { borderBox, contentBox } = calculateBoxSizes(target);
+  return observedBox === ResizeObserverBoxOptions.BORDER_BOX ? borderBox : contentBox;
 };
 
 export { calculateBoxSize, calculateBoxSizes, cache };
