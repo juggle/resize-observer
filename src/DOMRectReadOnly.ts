@@ -7,7 +7,7 @@ interface Rectangle {
 
 /**
  * Implementation of DOMRectReadOnly.
- * Native DOMRectReadOnly cannot be used.
+ * Native DOMRectReadOnly is not available in all browsers.
  */
 class DOMRectReadOnly {
   public readonly x: number;
@@ -28,6 +28,10 @@ class DOMRectReadOnly {
     this.bottom = this.top + this.height;
     this.right = this.left + this.width;
     return Object.freeze(this);
+  }
+  public toJSON (): object {
+    const { x, y, top, right, bottom, left, width, height } = this;
+    return { x, y, top, right, bottom, left, width, height };
   }
   public static fromRect (rectangle: Rectangle): Readonly<DOMRectReadOnly> {
     return new DOMRectReadOnly(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
