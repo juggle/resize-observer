@@ -1,7 +1,7 @@
 import { process } from '../ResizeObserverController';
 import { prettifyConsoleOutput } from './prettify';
 
-const CATCH_FRAMES = 5;
+const CATCH_FRAMES = 60 / 5; // Fifth of a second
 
 // Keep original reference of raf to use later
 const requestAnimationFrame = window.requestAnimationFrame;
