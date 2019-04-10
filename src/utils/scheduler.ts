@@ -70,9 +70,6 @@ class Scheduler {
   }
 
   public run (frames: number): void {
-    if (resizeObserverSlot.has(this)) {
-      return;
-    }
     const scheduler = this;
     resizeObserverSlot.set(this, function ResizeObserver () {
       let elementsHaveResized = false;
