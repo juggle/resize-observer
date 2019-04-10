@@ -503,9 +503,22 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test.skip('Scheduler should start and stop itself correctly.', () => {
-    // Skip this for now as it's very hard to test.
-    // Keep this here as a reminder.
+  test('Scheduler should start and stop itself correctly.', (done) => {
+    // Stopped at start
+    expect(scheduler.stopped).toBe(true);
+    ro = new ResizeObserver(() => {});
+    // Creating an observer should not start the scheduler
+    expect(scheduler.stopped).toBe(true);
+    ro.observe(el);
+    // Observering will trigger a schedule, however,
+    // it will not start listening for other changes untill
+    // the processing is complete
+    expect(scheduler.stopped).toBe(true);
+    // After ~1s the observer should stop polling and move back to events
+    setTimeout(() => {
+      expect(scheduler.stopped).toBe(false);
+      done();
+    }, 1500);
   })
 
   test('Scheduler should handle multiple starts and stops.', () => {
