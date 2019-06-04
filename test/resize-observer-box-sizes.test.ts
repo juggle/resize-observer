@@ -9,10 +9,10 @@ describe('Box Options', () => {
   const DEFAULT_WIDTH = 100;
   const DEFAULT_HEIGHT = 200;
 
-  const initialBox = [{
-    inline: DEFAULT_WIDTH,
-    block: DEFAULT_HEIGHT
-  }];
+  const initialBox = {
+    inlineSize: DEFAULT_WIDTH,
+    blockSize: DEFAULT_HEIGHT
+  };
 
   let el: HTMLElement;
   let ro: ResizeObserver;
@@ -43,8 +43,8 @@ describe('Box Options', () => {
           width: DEFAULT_WIDTH,
           height: DEFAULT_HEIGHT
         })
-        expect(entries[0].borderBox).toMatchObject(initialBox);
-        expect(entries[0].contentBox).toMatchObject(initialBox);
+        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
+        expect(entries[0].contentBoxSize).toMatchObject(initialBox);
         done();
       })
       ro.observe(el, {
@@ -66,8 +66,8 @@ describe('Box Options', () => {
           width: DEFAULT_WIDTH,
           height: DEFAULT_HEIGHT
         })
-        expect(entries[0].borderBox).toMatchObject(initialBox);
-        expect(entries[0].contentBox).toMatchObject(initialBox);
+        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
+        expect(entries[0].contentBoxSize).toMatchObject(initialBox);
         done();
       })
       ro.observe(el, {
@@ -86,14 +86,14 @@ describe('Box Options', () => {
           width: 300,
           height: 100
         })
-        expect(entries[0].borderBox).toMatchObject([{
-          inline: 330,
-          block: 130
-        }])
-        expect(entries[0].contentBox).toMatchObject([{
-          inline: 300,
-          block: 100
-        }])
+        expect(entries[0].borderBoxSize).toMatchObject({
+          inlineSize: 330,
+          blockSize: 130
+        })
+        expect(entries[0].contentBoxSize).toMatchObject({
+          inlineSize: 300,
+          blockSize: 100
+        })
         done();
       })
       el.style.width = '300px';

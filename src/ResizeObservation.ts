@@ -9,25 +9,22 @@ class ResizeObservation {
 
   public target: Element;
   public observedBox: ResizeObserverBoxOptions;
-  public lastReportedSize: ResizeObserverSize[];
+  public lastReportedSize: ResizeObserverSize;
 
   public constructor (target: Element, observedBox?: ResizeObserverBoxOptions) {
     this.target = target;
     this.observedBox = observedBox || ResizeObserverBoxOptions.CONTENT_BOX;
-    this.lastReportedSize = [{
-      inline: 0,
-      block: 0
-    }]
+    this.lastReportedSize = {
+      inlineSize: 0,
+      blockSize: 0
+    }
   }
 
   public isActive (): boolean {
+    const last = this.lastReportedSize;
     const size = calculateBoxSize(this.target, this.observedBox);
-    for (let i = 0; i < size.length; i += 1) {
-      const a = size[i];
-      const b = this.lastReportedSize[i];
-      if (!(a && b && a.inline === b.inline && a.block === b.block)) {
-        return true;
-      }
+    if (last.inlineSize !== size.inlineSize || last.blockSize !== size.blockSize) {
+      return true;
     }
     return false;
   }

@@ -8,14 +8,14 @@ import { calculateBoxSizes } from './algorithms/calculateBoxSize';
 class ResizeObserverEntry {
   public target: Element;
   public contentRect: DOMRectReadOnly;
-  public borderBox: ResizeObserverSize[];
-  public contentBox: ResizeObserverSize[];
+  public borderBoxSize: ResizeObserverSize;
+  public contentBoxSize: ResizeObserverSize;
   public constructor (target: Element) {
     const boxes = calculateBoxSizes(target);
     this.target = target;
     this.contentRect = boxes.contentRect;
-    this.borderBox = boxes.borderBox;
-    this.contentBox = boxes.contentBox;
+    this.borderBoxSize = boxes.borderBoxSize;
+    this.contentBoxSize = boxes.contentBoxSize;
   }
 }
 

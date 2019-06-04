@@ -4,8 +4,8 @@ import { DOMRectReadOnly } from '../DOMRectReadOnly';
 import { isSVG, isHidden } from '../utils/element';
 
 interface ResizeObserverSizeCollection {
-  borderBox: ResizeObserverSize[];
-  contentBox: ResizeObserverSize[];
+  borderBoxSize: ResizeObserverSize;
+  contentBoxSize: ResizeObserverSize;
   contentRect: DOMRectReadOnly;
 }
 
@@ -15,14 +15,14 @@ const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
 // Helper to generate and freeze a ResizeObserverSize
-const size = (inline: number = 0, block: number = 0): ResizeObserverSize => {
-  return Object.freeze({ inline, block });
+const size = (inlineSize: number = 0, blockSize: number = 0): ResizeObserverSize => {
+  return Object.freeze({ inlineSize, blockSize });
 }
 
 // Return this when targets are hidden
 const zeroBoxes = Object.freeze({
-  borderBox: [size()],
-  contentBox: [size()],
+  borderBoxSize: size(),
+  contentBoxSize: size(),
   contentRect: new DOMRectReadOnly(0, 0, 0, 0)
 })
 
@@ -77,8 +77,8 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
   const boxes = Object.freeze({
-    borderBox: [size(borderBoxWidth, borderBoxHeight)],
-    contentBox: [size(contentWidth, contentHeight)],
+    borderBoxSize: size(borderBoxWidth, borderBoxHeight),
+    contentBoxSize: size(contentWidth, contentHeight),
     contentRect: new DOMRectReadOnly(paddingLeft, paddingTop, contentWidth, contentHeight)
   });
 
@@ -92,9 +92,9 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
  * 
  * https://drafts.csswg.org/resize-observer-1/#calculate-box-size
  */
-const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize[] => {
-  const { borderBox, contentBox } = calculateBoxSizes(target);
-  return observedBox === ResizeObserverBoxOptions.BORDER_BOX ? borderBox : contentBox;
+const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize => {
+  const { borderBoxSize, contentBoxSize } = calculateBoxSizes(target);
+  return observedBox === ResizeObserverBoxOptions.BORDER_BOX ? borderBoxSize : contentBoxSize;
 };
 
 export { calculateBoxSize, calculateBoxSizes, cache };
