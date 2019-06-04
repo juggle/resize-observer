@@ -46,6 +46,7 @@
   },
   "homepage": "https://juggle.studio/resize-observer/",
   "devDependencies": {
+    "@babel/polyfill": "^7.4.4",
     "@types/jest": "^23.3.12",
     "@typescript-eslint/eslint-plugin": "^1.1.1",
     "@typescript-eslint/parser": "^1.1.1",

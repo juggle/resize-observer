@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import ResizeObserver from '../../src/ResizeObserver.ts';
 
 const perfArea = document.getElementById('performance-example');
@@ -28,6 +29,17 @@ for (let i = 0; i < 200; i += 1) {
 }
 
 perfArea.appendChild(perfFragment);
+
+if (!('toggleAttribute' in HTMLElement.prototype)) {
+  HTMLElement.prototype.toggleAttribute = function (attr) {
+    if (this.hasAttribute(attr)) {
+      this.removeAttribute(attr);
+    }
+    else {
+      this.setAttribute(attr, '');
+    }
+  }
+}
 
 perfArea.addEventListener('click', function () {
   this.toggleAttribute('animate');
