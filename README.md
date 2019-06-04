@@ -5,9 +5,9 @@
 ![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 ![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
 
-A minimal library which polyfills the **ResizeObserver** API and is entirely based on the latest [Draft Specification](https://drafts.csswg.org/resize-observer-1/). Essentially, it detects when an element's size changes, allowing you to deal with it!
+A minimal library which polyfills the **ResizeObserver** API and is entirely based on the latest [Draft Specification](https://drafts.csswg.org/resize-observer-1/).
 
-Check out the [Box Demo](https://codepen.io/trem/full/VgEXgP) and [Animation Demo](https://codesandbox.io/embed/myqzvpmmy9?hidenavigation=1&module=%2Fsrc%2Findex.js&view=preview)
+It immediately detects when an element resizes and provides accurate sizing information back to the handler. Check out the [Example Playground](juggle.studio/resize-observer) for more information on usage and performance.
 
 > **Warning:**<br/>
 > The latest Resize Observer specification is not yet finalised and is subject to change.
@@ -39,35 +39,36 @@ import ResizeObserver from '@juggle/resize-observer';
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inline, block } = entry.contentBox;
-    console.log(`Element ${index + 1}:`, `${inline}x${block}`);
+    const { inlineSize, blockSize } = entry.contentBoxSize;
+    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
   });
 });
 
-const els = docuent.querySelectorAll('.resizes');
+const els = document.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el)); // Watch multiple!
 ```
 
 ## Watching different box sizes
 
-The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options inlcude `border-box` and `content-box` (default).
+The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options include `border-box` and `content-box` (default).
 ``` js
 import ResizeObserver from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inline, block } = entry.borderBox;
-    console.log(`Element ${index + 1}:`, `${inline}x${block}`);
+    const { inlineSize, blockSize } = entry.borderBoxSize;
+    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
   });
 });
 
+// Watch border-box
 const observerOptions = {
   box: 'border-box'
 };
 
-const els = docuent.querySelectorAll('.resizes');
-[...els].forEach(el => ro.observe(el, observerOptions)); // Watch multiple!
+const els = document.querySelectorAll('.resizes');
+[...els].forEach(el => ro.observe(el, observerOptions));
 ```
 
 ## Using the legacy version (`contentRect`)
@@ -85,8 +86,8 @@ const ro = new ResizeObserver((entries, observer) => {
   });
 });
 
-const els = docuent.querySelectorAll('.resizes');
-[...els].forEach(el => ro.observe(el)); // Watch multiple!
+const els = document.querySelectorAll('.resizes');
+[...els].forEach(el => ro.observe(el));
 ```
 
 > **Warning:**<br/>
@@ -95,7 +96,7 @@ const els = docuent.querySelectorAll('.resizes');
 
 ## Switching between native and polyfilled versions
 
-You can check to see if the native version is available and switch between this and the polyfill to improve porformance on browsers with native support.
+You can check to see if the native version is available and switch between this and the polyfill to improve performance on browsers with native support.
 
 ``` js
 import { ResizeObserver as Polyfill } from '@juggle/resize-observer';
@@ -110,6 +111,7 @@ const ro = new ResizeObserver((entries, observer) => {
 
 > **Warning:**<br/>
 > Browsers with native support may be behind on the latest specification.
+> Use `entry.contentRect` when switching between native and polyfilled versions.
 
 
 ## Resize loop detection
@@ -135,7 +137,7 @@ ro.observe(document.body);
 ```
 
 ## Notification Schedule
-Notifications are scheduled after all other changes have occured and all other animation callbacks have been called. This allows the observer callback to get the most accurate size of an element, as no other changes should occur in the same frame.
+Notifications are scheduled after all other changes have occurred and all other animation callbacks have been called. This allows the observer callback to get the most accurate size of an element, as no other changes should occur in the same frame.
 
 ![resize observer notification schedule](https://user-images.githubusercontent.com/1519516/52825568-20433500-30b5-11e9-9854-4cee13a09a7d.jpg)
 
@@ -157,7 +159,7 @@ This allows for greater idle time, when the application itself is idle.
 - Making 3rd party libraries more responsive. e.g. charts and grids.
 - Locking scroll position to the bottom of elements - useful for chat windows and logs.
 - Resizing iframes to match their content.
-- Canvas rendering (including HDPI).
+- Canvas rendering.
 - Many other things!
 
 
@@ -174,7 +176,7 @@ This allows for greater idle time, when the application itself is idle.
 
 ## Limitations
 
-- No support for **IE10** and below. **IE11** is supported.
+- No support for **IE10** and below. **IE11** is supported, when bundled and transpiled into ES5.
 - Dynamic stylesheet changes may not be noticed.*
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change, will not be detected.*
@@ -197,4 +199,4 @@ This allows for greater idle time, when the application itself is idle.
 
 ## TypeScript support
 
-This library is written in TypeScript, however, it's compiled into JavaScript during release. Definition files are included in the package and should be picked up automatically to re-enable support in TypeScript projects.
+This library is written in TypeScript and contains all definition files for support in TypeScript applications.
