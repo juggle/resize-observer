@@ -1,5 +1,5 @@
 // This file patches offsetWidth and offsetHeight
-// as it's not suppported in jsdom.
+// as it's not supported in jsdom.
 
 const getOffsetValue = function (el: Element): number {
   const style = getComputedStyle(el);
