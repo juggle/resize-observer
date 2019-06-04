@@ -12,13 +12,13 @@ const getOffsetValue = function (el: Element): number {
 }
 
 Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-  get: function () {
+  get: function (): number {
     return getOffsetValue(this);
   }
 })
 
 Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
-  get: function () {
+  get: function (): number {
     return getOffsetValue(this);
   }
 })

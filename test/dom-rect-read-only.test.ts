@@ -1,7 +1,7 @@
 import { DOMRectReadOnly } from '../src/DOMRectReadOnly';
 
-describe('DOMRectReadOnly', () => {
-  it('Should return a DOMRect with the correct properties.', () => {
+describe('DOMRectReadOnly', (): void => {
+  it('Should return a DOMRect with the correct properties.', (): void => {
     let rect;
     rect = new DOMRectReadOnly(0, 0, 0, 0);
     expect(rect).toMatchObject({
@@ -48,7 +48,7 @@ describe('DOMRectReadOnly', () => {
       height: 20
     });
   });
-  it('Should support DOMRectReadOnly.fromRect()', () => {
+  it('Should support DOMRectReadOnly.fromRect()', (): void => {
     let rect = DOMRectReadOnly.fromRect({
       x: 1,
       y: 2,

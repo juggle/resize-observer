@@ -3,26 +3,26 @@ import { DOMRectReadOnly } from '../src/DOMRectReadOnly';
 import { delay } from './helpers/delay';
 import './helpers/offset';
 
-describe('SVGGraphicsElement', () => {
+describe('SVGGraphicsElement', (): void => {
 
   let el: SVGGraphicsElement;
   let ro: ResizeObserver;
 
-  beforeEach(() => {
+  beforeEach((): void => {
     el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     document.body.appendChild(el);
     el.style.width = '100px';
     el.style.height = '100px';
   })
 
-  afterEach(() => {
+  afterEach((): void => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
     }
   })
 
-  test('Observer should not fire initially when size is 0,0', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should not fire initially when size is 0,0', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     })
     el.getBBox = function (): DOMRect {
@@ -32,8 +32,8 @@ describe('SVGGraphicsElement', () => {
     delay(done);
   })
 
-  test('Should fire observer when element is observed for the first time.', (done) => {
-    ro = new ResizeObserver((entries, observer) => {
+  test('Should fire observer when element is observed for the first time.', (done): void => {
+    ro = new ResizeObserver((entries, observer): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(observer).toBe(ro);

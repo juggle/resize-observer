@@ -2,7 +2,7 @@ import { ResizeObserver } from '../src/ResizeObserver';
 import { ResizeObserverBoxOptions } from '../src/ResizeObserverBoxOptions';
 import './helpers/offset';
 
-describe('Box Options', () => {
+describe('Box Options', (): void => {
 
   (window.devicePixelRatio as number) = 5;
 
@@ -17,23 +17,23 @@ describe('Box Options', () => {
   let el: HTMLElement;
   let ro: ResizeObserver;
 
-  beforeEach(() => {
+  beforeEach((): void => {
     el = document.createElement('div');
     el.style.width = DEFAULT_WIDTH + 'px';
     el.style.height = DEFAULT_HEIGHT + 'px';
     document.body.appendChild(el);
   })
 
-  afterEach(() => {
+  afterEach((): void => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
     }
   })
 
-  describe('content-box', () => {
+  describe('content-box', (): void => {
 
-    test('Should fire initial resize', (done) => {
-      ro = new ResizeObserver((entries, observer) => {
+    test('Should fire initial resize', (done): void => {
+      ro = new ResizeObserver((entries, observer): void => {
         expect(entries).toHaveLength(1);
         expect(entries[0].target).toBe(el);
         expect(observer).toBe(ro);
@@ -53,10 +53,10 @@ describe('Box Options', () => {
     })
   })
 
-  describe('border-box', () => {
+  describe('border-box', (): void => {
 
-    test('Should fire initial resize', (done) => {
-      ro = new ResizeObserver((entries, observer) => {
+    test('Should fire initial resize', (done): void => {
+      ro = new ResizeObserver((entries, observer): void => {
         expect(entries).toHaveLength(1);
         expect(entries[0].target).toBe(el);
         expect(observer).toBe(ro);
@@ -75,8 +75,8 @@ describe('Box Options', () => {
       })
     })
 
-    test('Should have correct box sizes', (done) => {
-      ro = new ResizeObserver((entries, observer) => {
+    test('Should have correct box sizes', (done): void => {
+      ro = new ResizeObserver((entries, observer): void => {
         expect(entries).toHaveLength(1);
         expect(entries[0].target).toBe(el);
         expect(observer).toBe(ro);

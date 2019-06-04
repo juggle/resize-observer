@@ -8,7 +8,7 @@ import { ResizeObserverDetail } from '../ResizeObserverDetail';
  * https://drafts.csswg.org/resize-observer-1/#has-skipped-observations-h
  */
 const hasSkippedObservations = (): boolean => {
-  return resizeObservers.some((ro: ResizeObserverDetail) => ro.skippedTargets.length > 0);
+  return resizeObservers.some((ro: ResizeObserverDetail): boolean => ro.skippedTargets.length > 0);
 }
 
 export { hasSkippedObservations }
