@@ -42,7 +42,7 @@
   "bugs": {
     "url": "https://github.com/juggle/resize-observer/issues"
   },
-  "homepage": "https://github.com/juggle/resize-observer#readme",
+  "homepage": "https://juggle.studio/resize-observer/",
   "devDependencies": {
     "@types/jest": "^23.3.12",
     "@typescript-eslint/eslint-plugin": "^1.1.1",
