@@ -44,12 +44,7 @@ describe('Box Options', () => {
           height: DEFAULT_HEIGHT
         })
         expect(entries[0].borderBoxSize).toMatchObject(initialBox);
-        expect(entries[0].contentSize).toMatchObject(initialBox);
-        expect(entries[0].scrollSize).toMatchObject(initialBox);
-        expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
-          inlineSize: initialBox.inlineSize * 5,
-          blockSize: initialBox.blockSize * 5
-        })
+        expect(entries[0].contentBoxSize).toMatchObject(initialBox);
         done();
       })
       ro.observe(el, {
@@ -72,12 +67,7 @@ describe('Box Options', () => {
           height: DEFAULT_HEIGHT
         })
         expect(entries[0].borderBoxSize).toMatchObject(initialBox);
-        expect(entries[0].contentSize).toMatchObject(initialBox);
-        expect(entries[0].scrollSize).toMatchObject(initialBox);
-        expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
-          inlineSize: initialBox.inlineSize * 5,
-          blockSize: initialBox.blockSize * 5
-        })
+        expect(entries[0].contentBoxSize).toMatchObject(initialBox);
         done();
       })
       ro.observe(el, {
@@ -100,17 +90,9 @@ describe('Box Options', () => {
           inlineSize: 330,
           blockSize: 130
         })
-        expect(entries[0].contentSize).toMatchObject({
+        expect(entries[0].contentBoxSize).toMatchObject({
           inlineSize: 300,
           blockSize: 100
-        })
-        expect(entries[0].scrollSize).toMatchObject({
-          inlineSize: 320,
-          blockSize: 120
-        })
-        expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
-          inlineSize: 330 * 5,
-          blockSize: 130 * 5
         })
         done();
       })
@@ -121,72 +103,6 @@ describe('Box Options', () => {
       ro.observe(el, {
         box: 'border-box' as ResizeObserverBoxOptions
       })
-    })
-  })
-
-  describe('scroll-box', () => {
-    test('Should fire initial resize', (done) => {
-      ro = new ResizeObserver((entries, observer) => {
-        expect(entries).toHaveLength(1);
-        expect(entries[0].target).toBe(el);
-        expect(observer).toBe(ro);
-        expect(entries[0].contentRect).toMatchObject({
-          top: 0,
-          left: 0,
-          width: DEFAULT_WIDTH,
-          height: DEFAULT_HEIGHT
-        })
-        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
-        expect(entries[0].contentSize).toMatchObject(initialBox);
-        expect(entries[0].scrollSize).toMatchObject(initialBox);
-        expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
-          inlineSize: initialBox.inlineSize * 5,
-          blockSize: initialBox.blockSize * 5
-        })
-        done();
-      })
-      ro.observe(el, {
-        box: 'scroll-box' as ResizeObserverBoxOptions
-      })
-    })
-  })
-
-  describe('device-pixel-border-box', () => {
-    test('Should fire initial resize', (done) => {
-      const canvas = document.createElement('CANVAS');
-      ro = new ResizeObserver((entries, observer) => {
-        expect(entries).toHaveLength(1);
-        expect(entries[0].target).toBe(canvas);
-        expect(observer).toBe(ro);
-        expect(entries[0].contentRect).toMatchObject({
-          top: 0,
-          left: 0,
-          width: DEFAULT_WIDTH,
-          height: DEFAULT_HEIGHT
-        })
-        expect(entries[0].borderBoxSize).toMatchObject(initialBox);
-        expect(entries[0].contentSize).toMatchObject(initialBox);
-        expect(entries[0].scrollSize).toMatchObject(initialBox);
-        expect(entries[0].devicePixelBorderBoxSize).toMatchObject({
-          inlineSize: initialBox.inlineSize * 5,
-          blockSize: initialBox.blockSize * 5
-        })
-        done();
-      })
-      canvas.style.width = DEFAULT_WIDTH + 'px';
-      canvas.style.height = DEFAULT_HEIGHT + 'px';
-      document.body.appendChild(canvas);
-      ro.observe(canvas, {
-        box: 'device-pixel-border-box' as ResizeObserverBoxOptions
-      })
-    })
-    it('Should throw error when element is not of type canvas', () => {
-      expect(() => {
-        ro = new ResizeObserver(() => {})
-        ro.observe(el, {
-          box: 'device-pixel-border-box' as ResizeObserverBoxOptions
-        })
-      }).toThrow('Can only watch device-pixel-border-box on canvas elements.');
     })
   })
 
