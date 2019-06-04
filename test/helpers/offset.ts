@@ -1,5 +1,5 @@
 // This file patches offsetWidth and offsetHeight
-// as it's not suppported in jsdom.
+// as it's not supported in jsdom.
 
 const getOffsetValue = function (el: Element): number {
   const style = getComputedStyle(el);
@@ -12,13 +12,13 @@ const getOffsetValue = function (el: Element): number {
 }
 
 Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
-  get: function () {
+  get: function (): number {
     return getOffsetValue(this);
   }
 })
 
 Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
-  get: function () {
+  get: function (): number {
     return getOffsetValue(this);
   }
 })
