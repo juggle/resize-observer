@@ -1,6 +1,8 @@
 import { process } from '../ResizeObserverController';
 import { prettifyConsoleOutput } from './prettify';
 
+const CATCH_FRAMES = 60 / 5; // Fifth of a second
+
 // Keep original reference of raf to use later
 const requestAnimationFrame = window.requestAnimationFrame;
 
@@ -68,9 +70,6 @@ class Scheduler {
   }
 
   public run (frames: number): void {
-    if (resizeObserverSlot.has(this)) {
-      return;
-    }
     const scheduler = this;
     resizeObserverSlot.set(this, function ResizeObserver () {
       let elementsHaveResized = false;
@@ -98,7 +97,7 @@ class Scheduler {
 
   public schedule (): void {
     this.stop(); // Stop listeneing
-    this.run(1); // Run schedule
+    this.run(CATCH_FRAMES); // Run schedule
   }
 
   private observe (): void {
