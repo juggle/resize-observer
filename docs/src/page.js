@@ -1,5 +1,7 @@
-import '@babel/polyfill';
-import ResizeObserver from '../../src/ResizeObserver.ts';
+import 'core-js/features/symbol';
+import 'core-js/features/array/from';
+import 'core-js/features/dom-collections/iterator';
+import ResizeObserver from '../../lib/ResizeObserver';
 
 const perfArea = document.getElementById('performance-example');
 const perfFragment = document.createDocumentFragment();
