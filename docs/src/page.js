@@ -3,6 +3,8 @@ import 'core-js/features/array/from';
 import 'core-js/features/dom-collections/iterator';
 import ResizeObserver from '../../lib/ResizeObserver';
 
+window.ResizeObserver = ResizeObserver; // Override global so that people can play :)
+
 const perfArea = document.getElementById('performance-example');
 const perfFragment = document.createDocumentFragment();
 const perfCount = document.getElementById('performance-count');
