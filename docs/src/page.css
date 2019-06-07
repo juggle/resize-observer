@@ -63,7 +63,8 @@ pre code.hljs {
   background: #fff
 }
 
-[resize] {
+[resize],
+#performance-example div {
   min-width: 100px;
   min-height: 100px;
   height: 100px;
@@ -133,7 +134,7 @@ pre code.hljs {
   animation-play-state: running
 }
 
-#performance-example [resize] {
+#performance-example div {
   margin: 2px;
   flex: 1 1 auto;
   min-width: 0;

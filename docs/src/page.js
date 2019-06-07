@@ -26,9 +26,11 @@ const ro = new ResizeObserver(entries => {
   el.innerHTML = el.innerHTML.trim();
 });
 
+const perfEls = [];
+
 for (let i = 0; i < 200; i += 1) {
   const el = document.createElement('div');
-  el.setAttribute('resize', '');
+  perfEls.push(el);
   perfFragment.appendChild(el);
 }
 
@@ -46,7 +48,8 @@ if (!('toggleAttribute' in HTMLElement.prototype)) {
 }
 
 perfArea.addEventListener('click', function () {
-  this.toggleAttribute('animate');
+  const animating = this.toggleAttribute('animate');
+  perfEls.forEach(el => animating ? ro.observe(el) : ro.unobserve(el));
 });
 
 document.getElementById('transition-example').addEventListener('click', function () {
