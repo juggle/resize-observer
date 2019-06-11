@@ -9,8 +9,7 @@ A minimal library which polyfills the **ResizeObserver** API and is entirely bas
 
 It immediately detects when an element resizes and provides accurate sizing information back to the handler. Check out the [Example Playground](//juggle.studio/resize-observer) for more information on usage and performance.
 
-> **Warning:**<br/>
-> The latest Resize Observer specification is not yet finalised and is subject to change.
+> The latest [Resize Observer specification](https://drafts.csswg.org/resize-observer-1/) is not yet finalised and is subject to change.
 > Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
 
 
@@ -90,7 +89,6 @@ const els = document.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el));
 ```
 
-> **Warning:**<br/>
 > This is a **deprecated** feature and will possibly be removed in later versions.
 
 
@@ -103,13 +101,28 @@ import { ResizeObserver as Polyfill } from '@juggle/resize-observer';
 
 const ResizeObserver = window.ResizeObserver || Polyfill;
 
-// Uses native or polyfill, depending on browser support
+// Uses native or polyfill, depending on browser support.
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Something has resized!');
 });
 ```
 
-> **Warning:**<br/>
+To improve this even more, you could use dynamic imports to only load the file when the polyfill is required.
+
+``` js
+(async () => {
+  if ('ResizeObserver' in window === false) {
+    // Loads polyfill asynchronously, only if required.
+    const module = await import('@juggle/resize-observer');
+    window.ResizeObserver = module.ResizeObserver;
+  }
+  // Uses native or polyfill, depending on browser support.
+  const ro = new ResizeObserver((entries, observer) => {
+    console.log('Something has resized!');
+  });
+})();
+```
+
 > Browsers with native support may be behind on the latest specification.
 > Use `entry.contentRect` when switching between native and polyfilled versions.
 
@@ -118,7 +131,7 @@ const ro = new ResizeObserver((entries, observer) => {
 
 Resize Observers have inbuilt protection against infinite resize loops.
 
-If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window.
+If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window. Elements with undelivered notifications will be considered for delivery in the next loop.
 
 ```js
 import ResizeObserver from '@juggle/resize-observer';
@@ -176,10 +189,10 @@ This allows for greater idle time, when the application itself is idle.
 
 ## Limitations
 
-- No support for **IE10** and below. **IE11** is supported, when bundled and transpiled into ES5.
 - Dynamic stylesheet changes may not be noticed.*
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change, will not be detected.*
+- No support for **IE10** and below. **IE11** is supported, when bundled and transpiled into ES5. Additional polyfills may also be required, depending on tooling used.
 
 \* If other interaction occurs, changes will be detected.
 
