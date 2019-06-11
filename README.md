@@ -101,10 +101,26 @@ import { ResizeObserver as Polyfill } from '@juggle/resize-observer';
 
 const ResizeObserver = window.ResizeObserver || Polyfill;
 
-// Uses native or polyfill, depending on browser support
+// Uses native or polyfill, depending on browser support.
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Something has resized!');
 });
+```
+
+To improve this even more, you could use dynamic imports to only load the file when the polyfill is required.
+
+``` js
+(async () => {
+  if ('ResizeObserver' in window === false) {
+    // Loads polyfill asynchronously, only if required.
+    const module = await import('@juggle/resize-observer');
+    window.ResizeObserver = module.ResizeObserver;
+  }
+  // Uses native or polyfill, depending on browser support.
+  const ro = new ResizeObserver((entries, observer) => {
+    console.log('Something has resized!');
+  });
+})();
 ```
 
 > Browsers with native support may be behind on the latest specification.
@@ -115,7 +131,7 @@ const ro = new ResizeObserver((entries, observer) => {
 
 Resize Observers have inbuilt protection against infinite resize loops.
 
-If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window.
+If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window. Elements with undelivered notifications will be considered for delivery in the next loop.
 
 ```js
 import ResizeObserver from '@juggle/resize-observer';
