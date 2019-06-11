@@ -9,7 +9,6 @@ A minimal library which polyfills the **ResizeObserver** API and is entirely bas
 
 It immediately detects when an element resizes and provides accurate sizing information back to the handler. Check out the [Example Playground](//juggle.studio/resize-observer) for more information on usage and performance.
 
-> **Warning:**<br/>
 > The latest Resize Observer specification is not yet finalised and is subject to change.
 > Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
 
@@ -90,7 +89,6 @@ const els = document.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el));
 ```
 
-> **Warning:**<br/>
 > This is a **deprecated** feature and will possibly be removed in later versions.
 
 
@@ -109,7 +107,6 @@ const ro = new ResizeObserver((entries, observer) => {
 });
 ```
 
-> **Warning:**<br/>
 > Browsers with native support may be behind on the latest specification.
 > Use `entry.contentRect` when switching between native and polyfilled versions.
 
