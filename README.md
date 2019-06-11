@@ -9,7 +9,7 @@ A minimal library which polyfills the **ResizeObserver** API and is entirely bas
 
 It immediately detects when an element resizes and provides accurate sizing information back to the handler. Check out the [Example Playground](//juggle.studio/resize-observer) for more information on usage and performance.
 
-> The latest Resize Observer specification is not yet finalised and is subject to change.
+> The latest [Resize Observer specification](https://drafts.csswg.org/resize-observer-1/) is not yet finalised and is subject to change.
 > Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
 
 
