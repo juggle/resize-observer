@@ -21,9 +21,12 @@ class ResizeObservation {
   }
 
   public isActive (): boolean {
+    const last = this.lastReportedSize;
     const size = calculateBoxSize(this.target, this.observedBox);
-    return this.lastReportedSize.inlineSize !== size.inlineSize
-      || this.lastReportedSize.blockSize !== size.blockSize;
+    if (last.inlineSize !== size.inlineSize || last.blockSize !== size.blockSize) {
+      return true;
+    }
+    return false;
   }
 
 }

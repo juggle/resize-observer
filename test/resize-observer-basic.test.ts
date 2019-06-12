@@ -3,18 +3,18 @@ import { scheduler } from '../src/utils/scheduler';
 import { delay } from './helpers/delay';
 import './helpers/offset';
 
-describe('Basics', () => {
+describe('Basics', (): void => {
 
   let el: HTMLElement;
   let ro: ResizeObserver | null;
 
-  beforeEach(() => {
+  beforeEach((): void => {
     el = document.createElement('div');
     el.style.width = '100px';
     document.body.appendChild(el);
   })
 
-  afterEach(() => {
+  afterEach((): void => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
     }
@@ -24,11 +24,11 @@ describe('Basics', () => {
     }
   })
 
-  test('console.log(ResizeObserver) should be prettified', () => {
+  test('console.log(ResizeObserver) should be prettified', (): void => {
     expect(ResizeObserver.toString()).toBe('function ResizeObserver () { [polyfill code] }');
   })
 
-  test('Throw error when no callback is passed to constructor', () => {
+  test('Throw error when no callback is passed to constructor', (): void => {
     const fn = (): void => {
       // @ts-ignore
       new ResizeObserver();
@@ -36,7 +36,7 @@ describe('Basics', () => {
     expect(fn).toThrowError(`Failed to construct 'ResizeObserver': 1 argument required, but only 0 present.`);
   })
 
-  test('Throw error when an invalid callback is passed to constructor', () => {
+  test('Throw error when an invalid callback is passed to constructor', (): void => {
     const fn = (): void => {
       // @ts-ignore
       new ResizeObserver(1);
@@ -44,44 +44,44 @@ describe('Basics', () => {
     expect(fn).toThrowError(`Failed to construct 'ResizeObserver': The callback provided as parameter 1 is not a function.`);
   })
 
-  test('Throw error when no target is passed to observe()', () => {
+  test('Throw error when no target is passed to observe()', (): void => {
     const fn = (): void => {
-      ro = new ResizeObserver(() => {});
+      ro = new ResizeObserver((): void => {});
       // @ts-ignore
       ro.observe();
     };
     expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': 1 argument required, but only 0 present.`);
   })
 
-  test('Throw error when an invalid target is passed to observe()', () => {
+  test('Throw error when an invalid target is passed to observe()', (): void => {
     const fn = (): void => {
-      ro = new ResizeObserver(() => {});
+      ro = new ResizeObserver((): void => {});
       // @ts-ignore
       ro.observe(1);
     };
     expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
   })
 
-  test('Throw error when no target is passed to unobserve()', () => {
+  test('Throw error when no target is passed to unobserve()', (): void => {
     const fn = (): void => {
-      ro = new ResizeObserver(() => {});
+      ro = new ResizeObserver((): void => {});
       // @ts-ignore
       ro.unobserve();
     };
     expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': 1 argument required, but only 0 present.`);
   })
 
-  test('Throw error when an invalid target is passed to unobserve()', () => {
+  test('Throw error when an invalid target is passed to unobserve()', (): void => {
     const fn = (): void => {
-      ro = new ResizeObserver(() => {});
+      ro = new ResizeObserver((): void => {});
       // @ts-ignore
       ro.unobserve(1);
     };
     expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': parameter 1 is not of type 'Element`);
   })
 
-  test('Observer should not fire initially when size is 0,0', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should not fire initially when size is 0,0', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     })
     el.style.width = '0';
@@ -90,8 +90,8 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should not fire initially when display:none', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should not fire initially when display:none', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     })
     el.style.display = 'none';
@@ -99,8 +99,8 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should not fire initially when parent element is display:none', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should not fire initially when parent element is display:none', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     })
     const child = document.createElement('div');
@@ -113,9 +113,9 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should not fire when an element has no document', (done) => {
+  test('Observer should not fire when an element has no document', (done): void => {
     el = el.cloneNode() as HTMLElement;
-    ro = new ResizeObserver(() => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     })
     el.style.width = '0';
@@ -124,8 +124,8 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should fire initially when element has size and display', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should fire initially when element has size and display', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -139,8 +139,8 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should only allow watching the same element once', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should only allow watching the same element once', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -155,8 +155,8 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should fire when element size changes', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should fire when element size changes', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -170,15 +170,15 @@ describe('Basics', () => {
     el.style.width = '0';
     el.style.height = '0';
     ro.observe(el);
-    delay(() => {
+    delay((): void => {
       el.style.width = '100px';
       el.style.height = '200px';
     })
   })
 
-  test('Observer should fire when the element\'s hidden state is toggled', (done) => {
+  test('Observer should fire when the element\'s hidden state is toggled', (done): void => {
     let count = 0;
-    ro = new ResizeObserver(entries => {
+    ro = new ResizeObserver((entries): void => {
       count += 1;
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
@@ -193,16 +193,16 @@ describe('Basics', () => {
       }
     })
     ro.observe(el);
-    delay(() => {
+    delay((): void => {
       el.style.display = 'none';
-      delay(() => {
+      delay((): void => {
         el.style.removeProperty('display');
       })
     })
   })
 
-  test('Observer should fire when only the width changes', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should fire when only the width changes', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -216,13 +216,13 @@ describe('Basics', () => {
     el.style.width = '0';
     el.style.height = '0';
     ro.observe(el);
-    delay(() => {
+    delay((): void => {
       el.style.width = '100px';
     })
   })
 
-  test('Observer should fire when only the height changes', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should fire when only the height changes', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -236,13 +236,13 @@ describe('Basics', () => {
     el.style.width = '0';
     el.style.height = '0';
     ro.observe(el);
-    delay(() => {
+    delay((): void => {
       el.style.height = '100px';
     })
   })
 
-  test('Observer should handle padding on an element.', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should handle padding on an element.', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -259,8 +259,8 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should handle vertical scrollbars on an element.', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should handle vertical scrollbars on an element.', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -270,22 +270,22 @@ describe('Basics', () => {
       done();
     });
     Object.defineProperty(el, 'offsetWidth', {
-      get: function () {
+      get: function (): number {
         return 100
       }
     })
     Object.defineProperty(el, 'offsetHeight', {
-      get: function () {
+      get: function (): number {
         return 200
       }
     })
     Object.defineProperty(el, 'clientWidth', {
-      get: function () {
+      get: function (): number {
         return 85
       }
     })
     Object.defineProperty(el, 'clientHeight', {
-      get: function () {
+      get: function (): number {
         return 200
       }
     })
@@ -295,8 +295,8 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should handle horizontal scrollbars on an element.', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should handle horizontal scrollbars on an element.', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -306,22 +306,22 @@ describe('Basics', () => {
       done();
     });
     Object.defineProperty(el, 'offsetWidth', {
-      get: function () {
+      get: function (): number {
         return 100
       }
     })
     Object.defineProperty(el, 'offsetHeight', {
-      get: function () {
+      get: function (): number {
         return 200
       }
     })
     Object.defineProperty(el, 'clientWidth', {
-      get: function () {
+      get: function (): number {
         return 100
       }
     })
     Object.defineProperty(el, 'clientHeight', {
-      get: function () {
+      get: function (): number {
         return 185
       }
     })
@@ -331,8 +331,8 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should handle horizontal and vertical scrollbars on an element.', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should handle horizontal and vertical scrollbars on an element.', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -342,22 +342,22 @@ describe('Basics', () => {
       done();
     });
     Object.defineProperty(el, 'offsetWidth', {
-      get: function () {
+      get: function (): number {
         return 100
       }
     })
     Object.defineProperty(el, 'offsetHeight', {
-      get: function () {
+      get: function (): number {
         return 200
       }
     })
     Object.defineProperty(el, 'clientWidth', {
-      get: function () {
+      get: function (): number {
         return 85
       }
     })
     Object.defineProperty(el, 'clientHeight', {
-      get: function () {
+      get: function (): number {
         return 185
       }
     })
@@ -368,8 +368,8 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should handle box-sizing and padding correctly.', (done) => {
-    ro = new ResizeObserver(entries => {
+  test('Observer should handle box-sizing and padding correctly.', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -387,10 +387,10 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should unobserve elements correctly.', (done) => {
+  test('Observer should unobserve elements correctly.', (done): void => {
     const el2 = el.cloneNode() as HTMLElement;
     document.body.appendChild(el2);
-    ro = new ResizeObserver((entries, observer) => {
+    ro = new ResizeObserver((entries, observer): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(observer).toBe(ro);
@@ -401,10 +401,10 @@ describe('Basics', () => {
     ro.unobserve(el2);
   })
 
-  test('Observer should allow trying to unobserve multiple times.', (done) => {
+  test('Observer should allow trying to unobserve multiple times.', (done): void => {
     const el2 = el.cloneNode() as HTMLElement;
     document.body.appendChild(el2);
-    ro = new ResizeObserver((entries, observer) => {
+    ro = new ResizeObserver((entries, observer): void => {
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(observer).toBe(ro);
@@ -416,8 +416,8 @@ describe('Basics', () => {
     ro.unobserve(el2);
   })
 
-  test('Observer should disconnect correctly.', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should disconnect correctly.', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     });
     ro.observe(el);
@@ -425,8 +425,8 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should allow trying to disconnect multiple times.', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should allow trying to disconnect multiple times.', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     });
     ro.observe(el);
@@ -435,8 +435,8 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should not observe after a disconnect.', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should not observe after a disconnect.', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     });
     ro.observe(el);
@@ -445,8 +445,8 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should allow disconnect and unobserve to be called.', (done) => {
-    ro = new ResizeObserver(() => {
+  test('Observer should allow disconnect and unobserve to be called.', (done): void => {
+    ro = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should not fire
     });
     ro.observe(el);
@@ -455,14 +455,14 @@ describe('Basics', () => {
     delay(done);
   })
 
-  test('Observer should fire resize loop errors.', (done) => {
-    window.addEventListener('error', e => {
+  test('Observer should fire resize loop errors.', (done): void => {
+    window.addEventListener('error', (e): void => {
       expect(e.type).toBe('error');
       expect(e.message).toBe('ResizeObserver loop completed with undelivered notifications.');
       done();
     })
-    ro = new ResizeObserver((entries) => {
-      entries.forEach((entry) => {
+    ro = new ResizeObserver((entries): void => {
+      entries.forEach((entry): void => {
         const target = entry.target as HTMLElement;
         target.style.width = `${entry.contentRect.width + 1000}px`;
       });
@@ -470,45 +470,58 @@ describe('Basics', () => {
     ro.observe(el);
   })
 
-  test('Observer should return itself in the callback.', (done) => {
-    ro = new ResizeObserver((entries, observer) => {
+  test('Observer should return itself in the callback.', (done): void => {
+    ro = new ResizeObserver((entries, observer): void => {
       expect(observer).toBe(observer);
       done();
     });
     ro.observe(el);
   })
 
-  test('Calculations should be run after all other raf callbacks have been fired.', (done) => {
-    ro = new ResizeObserver((entries) => {
+  test('Calculations should be run after all other raf callbacks have been fired.', (done): void => {
+    ro = new ResizeObserver((entries): void => {
       expect(entries[0].contentRect.width).toBe(2000);
       done();
     });
     ro.observe(el);
-    requestAnimationFrame(() => {
+    requestAnimationFrame((): void => {
       el.style.width = '2000px';
     });
   })
 
-  test('RAF loops should not interrupt scheduler', (done) => {
+  test('RAF loops should not interrupt scheduler', (done): void => {
     let frame = 0;
-    const loop = (): number => requestAnimationFrame(() => {
+    const loop = (): number => requestAnimationFrame((): void => {
       frame += 1;
       frame < 10 && loop();
     })
     loop();
-    ro = new ResizeObserver(() => {
+    ro = new ResizeObserver((): void => {
       expect(frame).toBe(1);
       done();
     });
     ro.observe(el);
   })
 
-  test.skip('Scheduler should start and stop itself correctly.', () => {
-    // Skip this for now as it's very hard to test.
-    // Keep this here as a reminder.
+  test('Scheduler should start and stop itself correctly.', (done): void => {
+    // Stopped at start
+    expect(scheduler.stopped).toBe(true);
+    ro = new ResizeObserver((): void => {});
+    // Creating an observer should not start the scheduler
+    expect(scheduler.stopped).toBe(true);
+    ro.observe(el);
+    // Observering will trigger a schedule, however,
+    // it will not start listening for other changes untill
+    // the processing is complete
+    expect(scheduler.stopped).toBe(true);
+    // After ~1s the observer should stop polling and move back to events
+    setTimeout((): void => {
+      expect(scheduler.stopped).toBe(false);
+      done();
+    }, 1500);
   })
 
-  test('Scheduler should handle multiple starts and stops.', () => {
+  test('Scheduler should handle multiple starts and stops.', (): void => {
     expect(scheduler.stopped).toBe(true);
     scheduler.start();
     expect(scheduler.stopped).toBe(false);
@@ -520,11 +533,11 @@ describe('Basics', () => {
     expect(scheduler.stopped).toBe(true);
   })
 
-  test('Fake MutationObserver class to make sure it\'s called and used', (done) => {
+  test('Fake MutationObserver class to make sure it\'s called and used', (done): void => {
     let callback: () => void;
     class MutationObserver {
       public constructor (cb: () => void) {
-        callback = () => {
+        callback = (): void => {
           cb();
         };
       }
@@ -538,7 +551,7 @@ describe('Basics', () => {
     Object.defineProperty(window, 'MutationObserver', {
       value: MutationObserver
     });
-    ro = new ResizeObserver((entries, observer) => {
+    ro = new ResizeObserver((entries, observer): void => {
       observer.disconnect();
     });
     ro.observe(el);

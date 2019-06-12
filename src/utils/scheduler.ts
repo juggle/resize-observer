@@ -1,6 +1,8 @@
 import { process } from '../ResizeObserverController';
 import { prettifyConsoleOutput } from './prettify';
 
+const CATCH_FRAMES = 60 / 5; // Fifth of a second
+
 // Keep original reference of raf to use later
 const requestAnimationFrame = window.requestAnimationFrame;
 
@@ -40,8 +42,8 @@ const dispatchCallbacksOnNextFrame = (): void => {
     scheduled = false;
     const frameCallbacks: FrameRequestCallback[] = [];
     const resizeObserverCallbacks: FrameRequestCallback[] = [];
-    rafSlot.forEach(callback => frameCallbacks.push(callback));
-    resizeObserverSlot.forEach(callback => resizeObserverCallbacks.push(callback));
+    rafSlot.forEach((callback): number => frameCallbacks.push(callback));
+    resizeObserverSlot.forEach((callback): number => resizeObserverCallbacks.push(callback));
     rafSlot.clear(); resizeObserverSlot.clear();
     try { // Try to run animation frame callbacks
       for (let callback of frameCallbacks) {
@@ -68,11 +70,8 @@ class Scheduler {
   }
 
   public run (frames: number): void {
-    if (resizeObserverSlot.has(this)) {
-      return;
-    }
     const scheduler = this;
-    resizeObserverSlot.set(this, function ResizeObserver () {
+    resizeObserverSlot.set(this, function ResizeObserver (): void {
       let elementsHaveResized = false;
       try {
         // Process Calculations
@@ -98,7 +97,7 @@ class Scheduler {
 
   public schedule (): void {
     this.stop(); // Stop listeneing
-    this.run(1); // Run schedule
+    this.run(CATCH_FRAMES); // Run schedule
   }
 
   private observe (): void {
@@ -114,14 +113,14 @@ class Scheduler {
         this.observer = new MutationObserver(this.listener);
         this.observe();
       }
-      events.forEach(name => window.addEventListener(name, this.listener, true));
+      events.forEach((name): void => window.addEventListener(name, this.listener, true));
     }
   }
 
   public stop (): void {
     if (!this.stopped) {
       this.observer && this.observer.disconnect();
-      events.forEach(name => window.removeEventListener(name, this.listener, true));
+      events.forEach((name): void => window.removeEventListener(name, this.listener, true));
       this.stopped = true;
     }
   }
@@ -133,18 +132,18 @@ let rafIdBase = 0;
 // Override requestAnimationFrame to make sure
 // calculations are performed after any changes may occur.
 // * Is there another way to schedule without modifying the whole function?
-window.requestAnimationFrame = function (callback) {
+window.requestAnimationFrame = function (callback): number {
   if (typeof callback !== 'function') {
     throw new Error('requestAnimationFrame expects 1 callback argument of type function.');
   }
   const handle = rafIdBase += 1;
-  rafSlot.set(handle, function AnimationFrame (t: number) { return callback(t) });
+  rafSlot.set(handle, function AnimationFrame (t: number): void { return callback(t) });
   dispatchCallbacksOnNextFrame();
   return handle;
 }
 // Override cancelAnimationFrame
 // as we need to handle custom removal
-window.cancelAnimationFrame = function (handle) {
+window.cancelAnimationFrame = function (handle): void {
   rafSlot.delete(handle);
 }
 prettifyConsoleOutput(window.requestAnimationFrame);
