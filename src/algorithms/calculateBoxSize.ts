@@ -1,7 +1,7 @@
-import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
-import { ResizeObserverSize } from '../ResizeObserverSize';
-import { DOMRectReadOnly } from '../DOMRectReadOnly';
-import { isSVG, isHidden } from '../utils/element';
+import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions.js';
+import { ResizeObserverSize } from '../ResizeObserverSize.js';
+import { DOMRectReadOnly } from '../DOMRectReadOnly.js';
+import { isSVG, isHidden } from '../utils/element.js';
 
 interface ResizeObserverSizeCollection {
   borderBoxSize: ResizeObserverSize;

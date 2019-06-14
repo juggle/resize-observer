@@ -1,16 +1,16 @@
-import { scheduler } from './utils/scheduler';
+import { scheduler } from './utils/scheduler.js';
 
-import { ResizeObserver } from './ResizeObserver';
-import { ResizeObservation } from './ResizeObservation';
-import { ResizeObserverDetail } from './ResizeObserverDetail';
-import { ResizeObserverCallback } from './ResizeObserverCallback';
-import { ResizeObserverOptions } from './ResizeObserverOptions';
+import { ResizeObserver } from './ResizeObserver.js';
+import { ResizeObservation } from './ResizeObservation.js';
+import { ResizeObserverDetail } from './ResizeObserverDetail.js';
+import { ResizeObserverCallback } from './ResizeObserverCallback.js';
+import { ResizeObserverOptions } from './ResizeObserverOptions.js';
 
-import { hasActiveObservations } from './algorithms/hasActiveObservations';
-import { hasSkippedObservations } from './algorithms/hasSkippedObservations';
-import { deliverResizeLoopError } from './algorithms/deliverResizeLoopError';
-import { broadcastActiveObservations } from './algorithms/broadcastActiveObservations';
-import { gatherActiveObservationsAtDepth } from './algorithms/gatherActiveObservationsAtDepth';
+import { hasActiveObservations } from './algorithms/hasActiveObservations.js';
+import { hasSkippedObservations } from './algorithms/hasSkippedObservations.js';
+import { deliverResizeLoopError } from './algorithms/deliverResizeLoopError.js';
+import { broadcastActiveObservations } from './algorithms/broadcastActiveObservations.js';
+import { gatherActiveObservationsAtDepth } from './algorithms/gatherActiveObservationsAtDepth.js';
 
 const resizeObservers: ResizeObserverDetail[] = [];
 const observerMap = new Map();

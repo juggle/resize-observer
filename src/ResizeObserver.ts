@@ -1,7 +1,7 @@
-import { ResizeObserverController } from './ResizeObserverController';
-import { ResizeObserverCallback } from './ResizeObserverCallback';
-import { ResizeObserverOptions } from './ResizeObserverOptions';
-import { POLYFILL_CONSOLE_OUTPUT } from './utils/prettify';
+import { ResizeObserverController } from './ResizeObserverController.js';
+import { ResizeObserverCallback } from './ResizeObserverCallback.js';
+import { ResizeObserverOptions } from './ResizeObserverOptions.js';
+import { POLYFILL_CONSOLE_OUTPUT } from './utils/prettify.js';
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-interface

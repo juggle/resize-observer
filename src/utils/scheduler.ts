@@ -1,5 +1,5 @@
-import { process } from '../ResizeObserverController';
-import { prettifyConsoleOutput } from './prettify';
+import { process } from '../ResizeObserverController.js';
+import { prettifyConsoleOutput } from './prettify.js';
 
 const CATCH_FRAMES = 60 / 5; // Fifth of a second
 

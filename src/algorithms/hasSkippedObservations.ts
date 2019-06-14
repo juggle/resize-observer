@@ -1,5 +1,5 @@
-import { resizeObservers } from '../ResizeObserverController';
-import { ResizeObserverDetail } from '../ResizeObserverDetail';
+import { resizeObservers } from '../ResizeObserverController.js';
+import { ResizeObserverDetail } from '../ResizeObserverDetail.js';
 
 /**
  * Checks to see if there are any skipped observations.

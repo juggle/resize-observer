@@ -1,4 +1,4 @@
-import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
+import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions.js';
 
 /**
  * Options to be given to the resize observer,

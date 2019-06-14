@@ -1,6 +1,6 @@
-import { ResizeObserver } from './ResizeObserver';
-import { ResizeObservation } from './ResizeObservation';
-import { ResizeObserverCallback } from './ResizeObserverCallback';
+import { ResizeObserver } from './ResizeObserver.js';
+import { ResizeObservation } from './ResizeObservation.js';
+import { ResizeObserverCallback } from './ResizeObserverCallback.js';
 
 /**
  * Holds additional information about a resize observer,

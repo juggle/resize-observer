@@ -1,6 +1,6 @@
-import { ResizeObserverSize } from './ResizeObserverSize';
-import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
-import { calculateBoxSize } from './algorithms/calculateBoxSize';
+import { ResizeObserverSize } from './ResizeObserverSize.js';
+import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions.js';
+import { calculateBoxSize } from './algorithms/calculateBoxSize.js';
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observation-interface

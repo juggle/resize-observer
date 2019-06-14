@@ -1,9 +1,9 @@
-import { resizeObservers } from '../ResizeObserverController';
-import { ResizeObserverDetail } from '../ResizeObserverDetail';
-import { ResizeObserverEntry } from '../ResizeObserverEntry';
-import { ResizeObservation } from '../ResizeObservation';
-import { calculateDepthForNode } from './calculateDepthForNode';
-import { calculateBoxSize } from './calculateBoxSize';
+import { resizeObservers } from '../ResizeObserverController.js';
+import { ResizeObserverDetail } from '../ResizeObserverDetail.js';
+import { ResizeObserverEntry } from '../ResizeObserverEntry.js';
+import { ResizeObservation } from '../ResizeObservation.js';
+import { calculateDepthForNode } from './calculateDepthForNode.js';
+import { calculateBoxSize } from './calculateBoxSize.js';
 
 /**
  * Broadcasts all active observations.

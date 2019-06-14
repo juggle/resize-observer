@@ -1,5 +1,5 @@
-import { ResizeObserver } from './ResizeObserver';
-import { ResizeObserverEntry } from './ResizeObserverEntry';
+import { ResizeObserver } from './ResizeObserver.js';
+import { ResizeObserverEntry } from './ResizeObserverEntry.js';
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-callback

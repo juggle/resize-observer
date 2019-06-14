@@ -1,8 +1,8 @@
-import { ResizeObservation } from '../ResizeObservation';
-import { ResizeObserverDetail } from '../ResizeObserverDetail';
-import { resizeObservers } from '../ResizeObserverController';
-import { calculateDepthForNode } from './calculateDepthForNode';
-import { cache as sizeCache } from './calculateBoxSize';
+import { ResizeObservation } from '../ResizeObservation.js';
+import { ResizeObserverDetail } from '../ResizeObserverDetail.js';
+import { resizeObservers } from '../ResizeObserverController.js';
+import { calculateDepthForNode } from './calculateDepthForNode.js';
+import { cache as sizeCache } from './calculateBoxSize.js';
 
 /**
  * Finds all active observations at a give depth

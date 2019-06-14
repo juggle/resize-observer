@@ -1,6 +1,6 @@
-import { DOMRectReadOnly } from './DOMRectReadOnly';
-import { ResizeObserverSize } from './ResizeObserverSize';
-import { calculateBoxSizes } from './algorithms/calculateBoxSize';
+import { DOMRectReadOnly } from './DOMRectReadOnly.js';
+import { ResizeObserverSize } from './ResizeObserverSize.js';
+import { calculateBoxSizes } from './algorithms/calculateBoxSize.js';
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-entry-interface

@@ -1,4 +1,4 @@
-import { isHidden } from '../utils/element';
+import { isHidden } from '../utils/element.js';
 /**
  * Calculates the depth of a node.
  * 
