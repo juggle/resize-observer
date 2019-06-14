@@ -3,6 +3,7 @@
   "version": "2.0.2",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
   "main": "./lib/ResizeObserver.js",
+  "module": "./lib/ResizeObserver.js",
   "files": [
     "lib/**/*.{js,ts}"
   ],
