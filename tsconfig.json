@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "es2015",
-    "outDir": "./lib",
+    "target": "esNext",
+    "module": "esNext",
+    "outDir": "./umd",
     "rootDir": "./src",
+    "declaration": true,
     "removeComments": true,
     "strict": true,
     "alwaysStrict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": [
     "./src/**/*.ts"
