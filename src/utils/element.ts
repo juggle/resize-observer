@@ -11,7 +11,26 @@ const isHidden = (target: Element): boolean => {
   return !(offsetWidth || offsetHeight || target.getClientRects().length);
 }
 
+const isReplacedElement = (target: Element): boolean => {
+  switch (target.tagName) {
+    case 'INPUT':
+      if ((target as HTMLInputElement).type !== 'image') {
+        break;
+      }
+    case 'VIDEO':
+    case 'AUDIO':
+    case 'EMBED':
+    case 'OBJECT':
+    case 'CANVAS':
+    case 'IFRAME':
+    case 'IMG':
+      return true;
+  }
+  return false;
+}
+
 export {
   isSVG,
-  isHidden
+  isHidden,
+  isReplacedElement
 };
