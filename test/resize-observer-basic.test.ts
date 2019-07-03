@@ -124,6 +124,14 @@ describe('Basics', (): void => {
     delay(done);
   })
 
+  test('Observer callback.this should be observer', (done): void => {
+    ro = new ResizeObserver(function (this: ResizeObserver): void {
+      expect(this).toBe(ro);
+      done();
+    })
+    ro.observe(el);
+  })
+
   test('Observer should fire initially when element has size and display', (done): void => {
     ro = new ResizeObserver((entries): void => {
       expect(entries).toHaveLength(1);

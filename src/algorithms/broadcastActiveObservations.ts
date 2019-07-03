@@ -29,7 +29,10 @@ const broadcastActiveObservations = (): number => {
     })
     // Gather all entries before firing callbacks
     // otherwise entries may change in the same loop
-    callbacks.push(function resizeObserverCallback(): void { ro.callback(entries, ro.observer) });
+    callbacks.push(function resizeObserverCallback(): void {
+      // callback.this should be resize observer
+      ro.callback.call(ro.observer, entries, ro.observer)
+    });
     ro.activeTargets.splice(0, ro.activeTargets.length);
   })
   for (let callback of callbacks) {
