@@ -16,7 +16,10 @@ const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0'
 
 // Helper to generate and freeze a ResizeObserverSize
 const size = (inlineSize: number = 0, blockSize: number = 0): ResizeObserverSize => {
-  return Object.freeze({ inlineSize, blockSize });
+  return Object.freeze({
+    inlineSize: inlineSize || 0, // never return NaN
+    blockSize: blockSize || 0    // never return NaN
+  });
 }
 
 // Return this when targets are hidden
