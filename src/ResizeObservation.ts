@@ -1,6 +1,13 @@
 import { ResizeObserverSize } from './ResizeObserverSize';
 import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 import { calculateBoxSize } from './algorithms/calculateBoxSize';
+import { isSVG, isReplacedElement } from './utils/element';
+
+const skipNotifyOnElement = (target: Element): boolean => {
+  return !isSVG(target)
+  && !isReplacedElement(target)
+  && getComputedStyle(target).display === 'inline';
+}
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observation-interface
@@ -21,9 +28,12 @@ class ResizeObservation {
   }
 
   public isActive (): boolean {
-    const last = this.lastReportedSize;
     const size = calculateBoxSize(this.target, this.observedBox);
-    if (last.inlineSize !== size.inlineSize || last.blockSize !== size.blockSize) {
+    if (skipNotifyOnElement(this.target)) {
+      this.lastReportedSize = size;
+    }
+    if (this.lastReportedSize.inlineSize !== size.inlineSize
+      || this.lastReportedSize.blockSize !== size.blockSize) {
       return true;
     }
     return false;
