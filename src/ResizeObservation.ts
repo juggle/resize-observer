@@ -1,10 +1,12 @@
 import { ResizeObserverSize } from './ResizeObserverSize';
 import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 import { calculateBoxSize } from './algorithms/calculateBoxSize';
-import { isReplacedElement } from './utils/element';
+import { isSVG, isReplacedElement } from './utils/element';
 
 const skipNotifyOnElement = (target: Element): boolean => {
-  return !isReplacedElement(target) && getComputedStyle(target).display === 'inline';
+  return !isSVG(target)
+  && !isReplacedElement(target)
+  && getComputedStyle(target).display === 'inline';
 }
 
 /**
