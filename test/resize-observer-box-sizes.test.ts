@@ -104,6 +104,110 @@ describe('Box Options', (): void => {
         box: 'border-box' as ResizeObserverBoxOptions
       })
     })
+
+    test('Should switch sizes based on writing-mode:vertical', (done): void => {
+      ro = new ResizeObserver((entries): void => {
+        expect(entries[0].contentRect).toMatchObject({
+          top: 10,
+          left: 10,
+          width: 300,
+          height: 100
+        })
+        expect(entries[0].borderBoxSize).toMatchObject({
+          inlineSize: 130,
+          blockSize: 330
+        })
+        expect(entries[0].contentBoxSize).toMatchObject({
+          inlineSize: 100,
+          blockSize: 300
+        })
+        done();
+      })
+      el.style.width = '300px';
+      el.style.height = '100px';
+      el.style.padding = '10px';
+      el.style.border = 'solid 5px red';
+      el.style.writingMode = 'vertical';
+      ro.observe(el);
+    })
+
+    test('Should switch sizes based on writing-mode:vertical-lr', (done): void => {
+      ro = new ResizeObserver((entries): void => {
+        expect(entries[0].contentRect).toMatchObject({
+          top: 10,
+          left: 10,
+          width: 300,
+          height: 100
+        })
+        expect(entries[0].borderBoxSize).toMatchObject({
+          inlineSize: 130,
+          blockSize: 330
+        })
+        expect(entries[0].contentBoxSize).toMatchObject({
+          inlineSize: 100,
+          blockSize: 300
+        })
+        done();
+      })
+      el.style.width = '300px';
+      el.style.height = '100px';
+      el.style.padding = '10px';
+      el.style.border = 'solid 5px red';
+      el.style.writingMode = 'vertical-lr';
+      ro.observe(el);
+    })
+
+    test('Should switch sizes based on writing-mode:tb', (done): void => {
+      ro = new ResizeObserver((entries): void => {
+        expect(entries[0].contentRect).toMatchObject({
+          top: 10,
+          left: 10,
+          width: 300,
+          height: 100
+        })
+        expect(entries[0].borderBoxSize).toMatchObject({
+          inlineSize: 130,
+          blockSize: 330
+        })
+        expect(entries[0].contentBoxSize).toMatchObject({
+          inlineSize: 100,
+          blockSize: 300
+        })
+        done();
+      })
+      el.style.width = '300px';
+      el.style.height = '100px';
+      el.style.padding = '10px';
+      el.style.border = 'solid 5px red';
+      el.style.writingMode = 'tb';
+      ro.observe(el);
+    })
+
+    test('Should switch sizes based on writing-mode:tb-rl', (done): void => {
+      ro = new ResizeObserver((entries): void => {
+        expect(entries[0].contentRect).toMatchObject({
+          top: 10,
+          left: 10,
+          width: 300,
+          height: 100
+        })
+        expect(entries[0].borderBoxSize).toMatchObject({
+          inlineSize: 130,
+          blockSize: 330
+        })
+        expect(entries[0].contentBoxSize).toMatchObject({
+          inlineSize: 100,
+          blockSize: 300
+        })
+        done();
+      })
+      el.style.width = '300px';
+      el.style.height = '100px';
+      el.style.padding = '10px';
+      el.style.border = 'solid 5px red';
+      el.style.writingMode = 'tb-rl';
+      ro.observe(el);
+    })
   })
 
 })

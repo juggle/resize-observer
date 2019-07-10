@@ -11,14 +11,15 @@ interface ResizeObserverSizeCollection {
 
 const cache = new Map();
 const scrollRegexp = /auto|scroll/;
+const verticalRegexp = /^tb|vertical/;
 const IE = (/msie|trident/i).test(navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
 // Helper to generate and freeze a ResizeObserverSize
-const size = (inlineSize: number = 0, blockSize: number = 0): ResizeObserverSize => {
+const size = (inlineSize: number = 0, blockSize: number = 0, switchSizes: boolean = false): ResizeObserverSize => {
   return Object.freeze({
-    inlineSize: inlineSize || 0, // never return NaN
-    blockSize: blockSize || 0    // never return NaN
+    inlineSize: (switchSizes ? blockSize : inlineSize) || 0, // never return NaN
+    blockSize: (switchSizes ? inlineSize : blockSize) || 0   // never return NaN
   });
 }
 
@@ -53,6 +54,9 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   // IE does not remove padding from width/height, when box-sizing is border-box.
   const removePadding = !IE && cs.boxSizing === 'border-box';
 
+  // Switch sizes if writing mode is vertical.
+  const switchSizes = verticalRegexp.test(cs.writingMode || '');
+
   // Could the element have any scrollbars?
   const canScrollVertically = !svg && scrollRegexp.test(cs.overflowY || '');
   const canScrollHorizontally = !svg && scrollRegexp.test(cs.overflowX || '');
@@ -80,8 +84,8 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
   const boxes = Object.freeze({
-    borderBoxSize: size(borderBoxWidth, borderBoxHeight),
-    contentBoxSize: size(contentWidth, contentHeight),
+    borderBoxSize: size(borderBoxWidth, borderBoxHeight, switchSizes),
+    contentBoxSize: size(contentWidth, contentHeight, switchSizes),
     contentRect: new DOMRectReadOnly(paddingLeft, paddingTop, contentWidth, contentHeight)
   });
 
