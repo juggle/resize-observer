@@ -1,6 +1,5 @@
 node_modules
 coverage
 lib
-main
 junit.xml
 .cache
