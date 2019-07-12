@@ -2,14 +2,14 @@
   "name": "@juggle/resize-observer",
   "version": "2.0.3",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
-  "main": "./main/ResizeObserver.js",
+  "main": "./lib/ResizeObserver.js",
   "module": "./lib/ResizeObserver.js",
   "source": "./lib/ResizeObserver.js",
   "files": [
-    "{lib,main}/**/*.{js,ts}"
+    "lib/**/*.{js,ts}"
   ],
   "scripts": {
-    "build": "rm -rf lib main && tsc --build tsconfig.module.json && tsc --build tsconfig.main.json",
+    "build": "rm -rf lib && tsc",
     "build-docs": "rm -f docs/*.* && parcel build docs/src/index.html --out-dir docs --public-url ./",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
     "test": "npm run lint && jest --coverage",
