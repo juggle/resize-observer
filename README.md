@@ -192,7 +192,7 @@ This allows for greater idle time, when the application itself is idle.
 - Dynamic stylesheet changes may not be noticed.*
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change, will not be detected.*
-- No support for **IE10** and below. **IE11** is supported, when bundled and transpiled into ES5. Additional polyfills may also be required, depending on tooling used.
+- No support for **IE10** and below. **IE11** is supported.
 
 \* If other interaction occurs, changes will be detected.
 
