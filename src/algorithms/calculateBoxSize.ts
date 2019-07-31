@@ -2,6 +2,7 @@ import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
 import { DOMRectReadOnly } from '../DOMRectReadOnly';
 import { isSVG, isHidden } from '../utils/element';
+import { global } from '../utils/global';
 
 interface ResizeObserverSizeCollection {
   borderBoxSize: ResizeObserverSize;
@@ -12,7 +13,7 @@ interface ResizeObserverSizeCollection {
 const cache = new Map();
 const scrollRegexp = /auto|scroll/;
 const verticalRegexp = /^tb|vertical/;
-const IE = (/msie|trident/i).test(navigator.userAgent);
+const IE = (/msie|trident/i).test(global.navigator && global.navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
 // Helper to generate and freeze a ResizeObserverSize

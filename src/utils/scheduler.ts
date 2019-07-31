@@ -1,10 +1,11 @@
 import { process } from '../ResizeObserverController';
 import { prettifyConsoleOutput } from './prettify';
+import { global } from './global';
 
 const CATCH_FRAMES = 60 / 5; // Fifth of a second
 
 // Keep original reference of raf to use later
-const requestAnimationFrame = window.requestAnimationFrame;
+const requestAnimationFrame = global.requestAnimationFrame;
 
 const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
 
@@ -103,24 +104,24 @@ class Scheduler {
   private observe (): void {
     const cb = (): void => this.observer && this.observer.observe(document.body, observerConfig);
     /* istanbul ignore next */
-    document.body ? cb() : window.addEventListener('DOMContentLoaded', cb);
+    document.body ? cb() : global.addEventListener('DOMContentLoaded', cb);
   }
 
   public start (): void {
     if (this.stopped) {
       this.stopped = false;
-      if ('MutationObserver' in window) {
+      if ('MutationObserver' in global) {
         this.observer = new MutationObserver(this.listener);
         this.observe();
       }
-      events.forEach((name): void => window.addEventListener(name, this.listener, true));
+      events.forEach((name): void => global.addEventListener(name, this.listener, true));
     }
   }
 
   public stop (): void {
     if (!this.stopped) {
       this.observer && this.observer.disconnect();
-      events.forEach((name): void => window.removeEventListener(name, this.listener, true));
+      events.forEach((name): void => global.removeEventListener(name, this.listener, true));
       this.stopped = true;
     }
   }
@@ -132,7 +133,7 @@ let rafIdBase = 0;
 // Override requestAnimationFrame to make sure
 // calculations are performed after any changes may occur.
 // * Is there another way to schedule without modifying the whole function?
-window.requestAnimationFrame = function (callback): number {
+global.requestAnimationFrame = function (callback): number {
   if (typeof callback !== 'function') {
     throw new Error('requestAnimationFrame expects 1 callback argument of type function.');
   }
@@ -143,10 +144,10 @@ window.requestAnimationFrame = function (callback): number {
 }
 // Override cancelAnimationFrame
 // as we need to handle custom removal
-window.cancelAnimationFrame = function (handle): void {
+global.cancelAnimationFrame = function (handle): void {
   rafSlot.delete(handle);
 }
-prettifyConsoleOutput(window.requestAnimationFrame);
-prettifyConsoleOutput(window.cancelAnimationFrame);
+prettifyConsoleOutput(global.requestAnimationFrame);
+prettifyConsoleOutput(global.cancelAnimationFrame);
 
 export { scheduler };
