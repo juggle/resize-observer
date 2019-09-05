@@ -12,6 +12,8 @@ const executeCallback = (): void => {
   }
 }
 
+// Use MutationObserver to run MicroTask
+// as it's available in all supported browsers
 if ('MutationObserver' in global) {
   const el = new Text();
   new MutationObserver(executeCallback).observe(el, { characterData: true });
