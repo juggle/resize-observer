@@ -1,7 +1,6 @@
 import { ResizeObserverController } from './ResizeObserverController';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
-import { POLYFILL_CONSOLE_OUTPUT } from './utils/prettify';
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-interface
@@ -43,7 +42,7 @@ class ResizeObserver {
   }
 
   public static toString (): string {
-    return POLYFILL_CONSOLE_OUTPUT;
+    return 'function ResizeObserver () { [polyfill code] }';
   }
 
 }
