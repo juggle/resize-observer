@@ -4,13 +4,11 @@ let cb: (() => void) | null;
 let trigger: (() => void | number);
 
 const executeCallback = (): void => {
-  if (cb) {
-    try {
-      cb();
-    }
-    finally {
-      cb = null;
-    }
+  try {
+    cb && cb();
+  }
+  finally {
+    cb = null;
   }
 }
 
