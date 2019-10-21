@@ -1,8 +1,9 @@
+import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
 import './helpers/offset';
 
 let el: HTMLElement;
-let ro: ResizeObserver;
+let ro: ResizeObserver | null;
 
 beforeEach((): void => {
   el = document.createElement('div');
@@ -13,6 +14,10 @@ beforeEach((): void => {
 afterEach((): void => {
   while (document.body.firstElementChild) {
     document.body.removeChild(document.body.firstElementChild);
+  }
+  if (ro) {
+    ro.disconnect();
+    ro = null;
   }
 })
 

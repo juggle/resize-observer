@@ -1,3 +1,4 @@
+import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
 import { ResizeObserverBoxOptions } from '../src/ResizeObserverBoxOptions';
 import './helpers/offset';
@@ -15,7 +16,7 @@ describe('Box Options', (): void => {
   };
 
   let el: HTMLElement;
-  let ro: ResizeObserver;
+  let ro: ResizeObserver | null;
 
   beforeEach((): void => {
     el = document.createElement('div');
@@ -27,6 +28,10 @@ describe('Box Options', (): void => {
   afterEach((): void => {
     while (document.body.firstElementChild) {
       document.body.removeChild(document.body.firstElementChild);
+    }
+    if (ro) {
+      ro.disconnect();
+      ro = null;
     }
   })
 
