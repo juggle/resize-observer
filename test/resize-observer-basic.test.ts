@@ -396,6 +396,14 @@ describe('Basics', (): void => {
     ro.observe(el);
   })
 
+  test('Observer should fire when text content changes', (done): void => {
+    ro = new ResizeObserver((): void => done())
+    ro.observe(el);
+    delay((): void => {
+      el.textContent = 'Hello';
+    })
+  })
+
   test('Observer should unobserve elements correctly.', (done): void => {
     const el2 = el.cloneNode() as HTMLElement;
     document.body.appendChild(el2);
