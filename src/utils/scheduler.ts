@@ -82,10 +82,8 @@ class Scheduler {
   public start (): void {
     if (this.stopped) {
       this.stopped = false;
-      if ('MutationObserver' in global) {
-        this.observer = new MutationObserver(this.listener);
-        this.observe();
-      }
+      this.observer = new MutationObserver(this.listener);
+      this.observe();
       events.forEach((name): void => global.addEventListener(name, this.listener, true));
     }
   }
