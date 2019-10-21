@@ -469,7 +469,7 @@ describe('Basics', (): void => {
       expect(e.type).toBe('error');
       expect(e.message).toBe('ResizeObserver loop completed with undelivered notifications.');
       done();
-    })
+    }, { once: true });
     ro = new ResizeObserver((entries): void => {
       entries.forEach((entry): void => {
         const target = entry.target as HTMLElement;
