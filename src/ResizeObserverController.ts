@@ -92,4 +92,6 @@ class ResizeObserverController {
   }
 }
 
-export { ResizeObserverController, resizeObservers, process };
+const isWatching = (): boolean => !!watching;
+
+export { ResizeObserverController, resizeObservers, process, isWatching };

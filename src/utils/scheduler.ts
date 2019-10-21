@@ -1,4 +1,4 @@
-import { process } from '../ResizeObserverController';
+import { process, isWatching } from '../ResizeObserverController';
 import { global } from './global';
 import { queueResizeObserver } from './queueResizeObserver';
 
@@ -53,11 +53,11 @@ class Scheduler {
       finally {
         scheduled = false;
         // Have any changes happened?
-        if (elementsHaveResized) {
+        if (elementsHaveResized && isWatching()) {
           this.run(60);
         }
         // Should we continue to check?
-        else if (frames) {
+        else if (frames && isWatching()) {
           this.run(frames - 1);
         }
         // Start listening again
