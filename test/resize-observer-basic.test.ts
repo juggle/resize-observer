@@ -542,28 +542,4 @@ describe('Basics', (): void => {
     expect(scheduler.stopped).toBe(true);
   })
 
-  test('Fake MutationObserver class to make sure it\'s called and used', (done): void => {
-    let callback: () => void;
-    class MutationObserver {
-      public constructor (cb: () => void) {
-        callback = (): void => {
-          cb();
-        };
-      }
-      public observe (): void {
-        callback();
-      }
-      public disconnect (): void {
-        done();
-      }
-    }
-    Object.defineProperty(window, 'MutationObserver', {
-      value: MutationObserver
-    });
-    ro = new ResizeObserver((entries, observer): void => {
-      observer.disconnect();
-    });
-    ro.observe(el);
-  })
-
 })
