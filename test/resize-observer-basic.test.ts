@@ -498,20 +498,6 @@ describe('Basics', (): void => {
     });
   })
 
-  test('RAF loops should not interrupt scheduler', (done): void => {
-    let frame = 0;
-    const loop = (): number => requestAnimationFrame((): void => {
-      frame += 1;
-      frame < 10 && loop();
-    })
-    loop();
-    ro = new ResizeObserver((): void => {
-      expect(frame).toBe(1);
-      done();
-    });
-    ro.observe(el);
-  })
-
   test('Scheduler should start and stop itself correctly.', (done): void => {
     // Stopped at start
     expect(scheduler.stopped).toBe(true);
