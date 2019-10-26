@@ -9,10 +9,12 @@ describe('Basics', (): void => {
   let el: HTMLElement;
   let ro: ResizeObserver | null;
 
-  beforeEach((): void => {
+  beforeEach((done): void => {
     el = document.createElement('div');
     el.style.width = '100px';
     document.body.appendChild(el);
+    // Make sure it's a clean frame to run the test on
+    requestAnimationFrame((): void => done());
   })
 
   afterEach((): void => {
