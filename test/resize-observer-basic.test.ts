@@ -513,8 +513,8 @@ describe('Basics', (): void => {
     // Creating an observer should not start the scheduler
     expect(scheduler.stopped).toBe(true);
     ro.observe(el);
-    // Observering will trigger a schedule, however,
-    // it will not start listening for other changes untill
+    // Observing will trigger a schedule, however,
+    // it will not start listening for other changes until
     // the processing is complete
     expect(scheduler.stopped).toBe(true);
     // After ~1s the observer should stop polling and move back to events
