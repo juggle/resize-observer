@@ -1,6 +1,6 @@
 {
   "name": "@juggle/resize-observer",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
   "main": "./lib/ResizeObserver.js",
   "module": "./lib/ResizeObserver.js",
