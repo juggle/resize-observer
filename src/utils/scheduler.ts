@@ -52,12 +52,15 @@ class Scheduler {
       }
       finally {
         scheduled = false;
+        if (!isWatching()) {
+          return;
+        }
         // Have any changes happened?
-        if (elementsHaveResized && isWatching()) {
+        if (elementsHaveResized) {
           this.run(60);
         }
         // Should we continue to check?
-        else if (frames && isWatching()) {
+        else if (frames) {
           this.run(frames - 1);
         }
         // Start listening again
@@ -69,7 +72,7 @@ class Scheduler {
   }
 
   public schedule (): void {
-    this.stop(); // Stop listeneing
+    this.stop(); // Stop listening
     this.run(CATCH_FRAMES); // Run schedule
   }
 
