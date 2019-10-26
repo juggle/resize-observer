@@ -5,7 +5,7 @@ const notify = (): void => callbacks.splice(0).forEach((cb): void => cb());
 
 const queueMicroTask = (callback: () => void): void => {
   if (!trigger) {
-    const el = new Text();
+    const el = document.createTextNode('');
     const config = { characterData: true };
     new MutationObserver((): void => notify()).observe(el, config);
     trigger = (): void => { el.textContent = ''; };
