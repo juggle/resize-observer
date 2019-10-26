@@ -17,7 +17,7 @@ const IE = (/msie|trident/i).test(global.navigator && global.navigator.userAgent
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
 // Helper to generate and freeze a ResizeObserverSize
-const size = (inlineSize: number = 0, blockSize: number = 0, switchSizes: boolean = false): ResizeObserverSize => {
+const size = (inlineSize = 0, blockSize = 0, switchSizes = false): ResizeObserverSize => {
   return Object.freeze({
     inlineSize: (switchSizes ? blockSize : inlineSize) || 0, // never return NaN
     blockSize: (switchSizes ? inlineSize : blockSize) || 0   // never return NaN

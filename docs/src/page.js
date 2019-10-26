@@ -40,10 +40,10 @@ if (!('toggleAttribute' in HTMLElement.prototype)) {
   HTMLElement.prototype.toggleAttribute = function (attr) {
     if (this.hasAttribute(attr)) {
       this.removeAttribute(attr);
+      return false;
     }
-    else {
-      this.setAttribute(attr, '');
-    }
+    this.setAttribute(attr, '');
+    return true;
   }
 }
 

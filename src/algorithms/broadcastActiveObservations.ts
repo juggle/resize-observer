@@ -35,7 +35,7 @@ const broadcastActiveObservations = (): number => {
     });
     ro.activeTargets.splice(0, ro.activeTargets.length);
   })
-  for (let callback of callbacks) {
+  for (const callback of callbacks) {
     callback();
   }
   return shallowestDepth;

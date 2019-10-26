@@ -59,7 +59,7 @@
     "jest-cli": "^24.8.0",
     "jest-junit": "^6.4.0",
     "jsdom": "^15.1.1",
-    "parcel-bundler": "^1.12.3",
+    "parcel-bundler": "^1.12.4",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.2"
   }
