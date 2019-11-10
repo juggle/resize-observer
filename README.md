@@ -184,9 +184,9 @@ This allows for greater idle time, when the application itself is idle.
 
 ## Limitations
 
-- Dynamic stylesheet changes may not be noticed.*
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change, will not be detected.*
+- Style changes from dev tools will only be noticed if they are inline styles.*
 
 
 ## Tested Browsers
