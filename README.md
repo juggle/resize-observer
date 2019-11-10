@@ -1,4 +1,8 @@
-# Resize Observer Polyfill
+<p align="center">
+  <img width="200" src="https://user-images.githubusercontent.com/1519516/68546547-4a6d1d80-03cf-11ea-8b9b-9acb34da4ba4.png" />
+</p>
+
+<h1 align="center">Resize Observer</h1>
 
 ![](https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge)
 ![](https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge)
