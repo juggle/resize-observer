@@ -89,8 +89,6 @@ const els = document.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el));
 ```
 
-> This is a **deprecated** feature and will possibly be removed in later versions.
-
 
 ## Switching between native and polyfilled versions
 
@@ -165,17 +163,6 @@ To cover these scenarios, there are two types of observation. The first is to li
 This allows for greater idle time, when the application itself is idle.
 
 
-## What's it good for?
-
-- Building responsive applications.
-- Creating self-aware, responsive Web Components.
-- Making 3rd party libraries more responsive. e.g. charts and grids.
-- Locking scroll position to the bottom of elements - useful for chat windows and logs.
-- Resizing iframes to match their content.
-- Canvas rendering.
-- Many other things!
-
-
 ## Features
 
 - Inbuilt resize loop protection.
@@ -184,7 +171,7 @@ This allows for greater idle time, when the application itself is idle.
 - Detects changes which occur during animation frame.
 - Includes support for latest draft spec - observing different box sizes.
 - Polls only when required, then shuts down automatically, reducing CPU usage.
-- No notification delay - Notifications are batched and delivered immediately, before the next paint.
+- Zero delay system - Notifications are batched and delivered immediately, before the next paint.
 
 
 ## Limitations
@@ -192,24 +179,32 @@ This allows for greater idle time, when the application itself is idle.
 - Dynamic stylesheet changes may not be noticed.*
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change, will not be detected.*
-- No support for **IE10** and below. **IE11** is supported.
-
-\* If other interaction occurs, changes will be detected.
 
 
 ## Tested Browsers
-| Browser Name     | Desktop | Mobile |
-| ---------------- | ------- | ------ |
-| Chrome           | ✓       | ✓      |
-| Safari           | ✓       | ✓      |
-| Firefox          | ✓       | ✓      |
-| Opera            | ✓       | ✓      |
-| Opera Mini       | N/A     | ✓      |
-| Samsung Internet | N/A     | ✓      |
-| IE11             | ✓       | N/A    |
-| Edge             | ✓       | ✓      |
+
+[chrome]: https://github.com/alrra/browser-logos/raw/master/src/chrome/chrome_64x64.png
+[safari]: https://github.com/alrra/browser-logos/raw/master/src/safari/safari_64x64.png
+[safari-ios]: https://github.com/alrra/browser-logos/raw/master/src/safari-ios/safari-ios_64x64.png
+[ff]: https://github.com/alrra/browser-logos/raw/master/src/firefox/firefox_64x64.png
+[opera]: https://github.com/alrra/browser-logos/raw/master/src/opera/opera_64x64.png
+[opera-mini]: https://github.com/alrra/browser-logos/raw/master/src/opera-mini/opera-mini_64x64.png
+[edge_12-18]: https://github.com/alrra/browser-logos/raw/master/src/archive/edge_12-18/edge_12-18_64x64.png
+[edge]: https://github.com/alrra/browser-logos/raw/master/src/edge/edge_64x64.png
+[samsung]: https://github.com/alrra/browser-logos/raw/master/src/samsung-internet/samsung-internet_64x64.png
+[ie]: https://github.com/alrra/browser-logos/raw/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_64x64.png
+
+### Desktop
+| ![chrome][chrome] | ![safari][safari] | ![ff][ff] | ![opera][opera] | ![edge][edge] | ![edge][edge_12-18] | ![IE][ie] |
+|--------|--------|---------|-------|------|------------|---------------------------------------|
+| Chrome | Safari | Firefox | Opera | Edge | Edge 12-18 | IE11<br/>IE 9-10 (with polyfills)\*\* |
+
+### Mobile
+| ![chrome][chrome] | ![safari][safari] | ![ff][ff] | ![opera][opera] | ![opera mini][opera-mini] | ![edge][edge_12-18] | ![samsung internet][samsung] |
+|--------|--------|---------|-------|------------|------|------------------|
+| Chrome | Safari | Firefox | Opera | Opera Mini | Edge | Samsung Internet |
 
 
-## TypeScript support
+\*If other interaction occurs, changes will be detected.
 
-This library is written in TypeScript and contains all definition files for support in TypeScript applications.
+\*\*IE10 requires additional polyfills for `Map` and `MutationObserver`. IE9 requires IE10 polyfills plus `requestAnimationFrame`. For more information, [see issue here](https://github.com/juggle/resize-observer/issues/64).
