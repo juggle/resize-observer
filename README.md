@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="200" src="https://user-images.githubusercontent.com/1519516/68546547-4a6d1d80-03cf-11ea-8b9b-9acb34da4ba4.png" />
+  <img width="160" src="https://user-images.githubusercontent.com/1519516/68546625-51e0f680-03d0-11ea-9955-9f0e1964ba0c.png" />
 </p>
 
 <h1 align="center">Resize Observer</h1>
