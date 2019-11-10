@@ -204,6 +204,7 @@ This allows for greater idle time, when the application itself is idle.
 |--------|--------|---------|-------|------------|------|------------------|
 | Chrome | Safari | Firefox | Opera | Opera Mini | Edge | Samsung Internet |
 
+---
 
 \*If other interaction occurs, changes will be detected.
 
