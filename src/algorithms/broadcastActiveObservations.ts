@@ -1,4 +1,4 @@
-import { resizeObservers } from '../ResizeObserverController';
+import { resizeObservers } from '../utils/resizeObservers';
 import { ResizeObserverDetail } from '../ResizeObserverDetail';
 import { ResizeObserverEntry } from '../ResizeObserverEntry';
 import { ResizeObservation } from '../ResizeObservation';

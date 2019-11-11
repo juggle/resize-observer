@@ -1,6 +1,10 @@
-import { process, isWatching } from '../ResizeObserverController';
+import { process } from './process';
 import { global } from './global';
 import { queueResizeObserver } from './queueResizeObserver';
+
+let watching = 0;
+
+const isWatching = (): boolean => !!watching;
 
 const CATCH_FRAMES = 60 / 5; // Fifth of a second
 
@@ -102,4 +106,10 @@ class Scheduler {
 
 const scheduler = new Scheduler();
 
-export { scheduler };
+const updateCount = (n: number): void => {
+  !watching && n > 0 && scheduler.start();
+  watching += n;
+  !watching && scheduler.stop();
+}
+
+export { scheduler, updateCount };
