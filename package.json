@@ -3,10 +3,9 @@
   "version": "2.5.0",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
   "type": "module",
-  "main": "./lib/ResizeObserver.js",
-  "module": "./lib/ResizeObserver.js",
-  "source": "./lib/ResizeObserver.js",
-  "types": "./lib/ResizeObserver.d.ts",
+  "main": "./lib/exports/ponyfill.js",
+  "module": "./lib/exports/ponyfill.js",
+  "types": "./lib/exports/ponyfill.d.ts",
   "files": [
     "lib/**/*.{js,ts}"
   ],
