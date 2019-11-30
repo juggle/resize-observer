@@ -1,6 +1,6 @@
 import { ResizeObservation } from '../ResizeObservation';
 import { ResizeObserverDetail } from '../ResizeObserverDetail';
-import { resizeObservers } from '../ResizeObserverController';
+import { resizeObservers } from '../utils/resizeObservers';
 import { calculateDepthForNode } from './calculateDepthForNode';
 import { cache as sizeCache } from './calculateBoxSize';
 
