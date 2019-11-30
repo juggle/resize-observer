@@ -7,6 +7,7 @@ import { ResizeObserverCallback } from './ResizeObserverCallback';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
 
 import { resizeObservers } from './utils/resizeObservers';
+import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 
 const observerMap = new Map<ResizeObserver, ResizeObserverDetail>();
 
@@ -35,7 +36,7 @@ class ResizeObserverController {
     if (observerMap.has(resizeObserver)) {
       const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
       if (getObservationIndex(detail.observationTargets, target) < 0) {
-        detail.observationTargets.push(new ResizeObservation(target, options && options.box));
+        detail.observationTargets.push(new ResizeObservation(target, options && options.box as ResizeObserverBoxOptions));
         updateCount(1);
         scheduler.schedule(); // Schedule next observation
       }
