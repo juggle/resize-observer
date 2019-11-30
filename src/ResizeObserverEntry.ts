@@ -10,12 +10,14 @@ class ResizeObserverEntry {
   public contentRect: DOMRectReadOnly;
   public borderBoxSize: ResizeObserverSize;
   public contentBoxSize: ResizeObserverSize;
+  public devicePixelContentBoxSize: ResizeObserverSize;
   public constructor (target: Element) {
     const boxes = calculateBoxSizes(target);
     this.target = target;
     this.contentRect = boxes.contentRect;
     this.borderBoxSize = boxes.borderBoxSize;
     this.contentBoxSize = boxes.contentBoxSize;
+    this.devicePixelContentBoxSize = boxes.devicePixelContentBoxSize;
   }
 }
 
