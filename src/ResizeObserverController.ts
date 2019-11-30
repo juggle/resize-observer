@@ -11,6 +11,7 @@ import { hasSkippedObservations } from './algorithms/hasSkippedObservations';
 import { deliverResizeLoopError } from './algorithms/deliverResizeLoopError';
 import { broadcastActiveObservations } from './algorithms/broadcastActiveObservations';
 import { gatherActiveObservationsAtDepth } from './algorithms/gatherActiveObservationsAtDepth';
+import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 
 const resizeObservers: ResizeObserverDetail[] = [];
 const observerMap = new Map();
@@ -64,7 +65,7 @@ class ResizeObserverController {
     if (observerMap.has(resizeObserver)) {
       const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
       if (getObservationIndex(detail.observationTargets, target) < 0) {
-        detail.observationTargets.push(new ResizeObservation(target, options && options.box));
+        detail.observationTargets.push(new ResizeObservation(target, options && options.box as ResizeObserverBoxOptions));
         updateCount(1);
         scheduler.schedule(); // Schedule next observation
       }
