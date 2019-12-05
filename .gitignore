@@ -3,3 +3,4 @@ coverage
 lib
 junit.xml
 .cache
+.rpt2_cache

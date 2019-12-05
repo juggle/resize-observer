@@ -3,15 +3,15 @@
   "version": "2.5.0",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
   "type": "module",
-  "main": "./lib/ResizeObserver.js",
-  "module": "./lib/ResizeObserver.js",
+  "main": "lib/ResizeObserver.js",
+  "module": "./lib/ResizeObserver.esm.js",
   "source": "./lib/ResizeObserver.js",
-  "types": "./lib/ResizeObserver.d.ts",
+  "types": "lib/ResizeObserver.d.ts",
   "files": [
     "lib/**/*.{js,ts}"
   ],
   "scripts": {
-    "build": "rm -rf lib && tsc",
+    "build": "rm -rf lib && rollup -c",
     "build-docs": "rm -f docs/*.* && parcel build docs/src/index.html --out-dir docs --public-url ./",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
     "test": "npm run lint && jest --coverage",
@@ -62,6 +62,8 @@
     "jest-junit": "^6.4.0",
     "jsdom": "^15.1.1",
     "parcel-bundler": "^1.12.4",
+    "rollup": "^1.27.8",
+    "rollup-plugin-typescript2": "^0.25.3",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.2"
   }
