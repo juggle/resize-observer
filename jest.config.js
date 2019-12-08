@@ -7,6 +7,6 @@ module.exports = {
   ],
   collectCoverageFrom: [
     'src/**/*.ts',
-    '!src/DOMInteractions.ts'
+    '!src/exports/*.ts'
   ]
 };

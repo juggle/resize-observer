@@ -2,16 +2,17 @@
   "name": "@juggle/resize-observer",
   "version": "2.5.0",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
-  "type": "module",
-  "main": "./lib/exports/ponyfill.js",
-  "module": "./lib/exports/ponyfill.js",
-  "types": "./lib/exports/ponyfill.d.ts",
+  "main": "lib/exports/resize-observer.umd.js",
+  "module": "lib/exports/resize-observer.js",
+  "types": "lib/exports/resize-observer.d.ts",
   "files": [
     "lib/**/*.{js,ts}"
   ],
   "scripts": {
-    "build": "rm -rf lib && tsc",
-    "build-docs": "rm -f docs/*.* && parcel build docs/src/index.html --out-dir docs --public-url ./",
+    "build": "rm -rf lib && npm run build:esm && npm run build:umd",
+    "build:esm": "tsc",
+    "build:umd": "rollup -c",
+    "build:docs": "rm -f docs/*.* && parcel build docs/src/index.html --out-dir docs --public-url ./",
     "ci-tests": "npm test -- --ci --runInBand && cat coverage/lcov.info | coveralls",
     "test": "npm run lint && jest --coverage",
     "lint": "eslint '{src,test}/**/*.ts'",
@@ -61,7 +62,11 @@
     "jest-junit": "^6.4.0",
     "jsdom": "^15.1.1",
     "parcel-bundler": "^1.12.4",
+    "rollup": "^1.27.9",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.2"
+  },
+  "publishConfig": {
+    "tag": "next"
   }
 }
