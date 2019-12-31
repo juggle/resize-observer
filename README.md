@@ -46,7 +46,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.contentBoxSize;
+    const { inlineSize, blockSize } = entry.contentBoxSize[0];
     console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
   });
 });
@@ -64,7 +64,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.borderBoxSize;
+    const { inlineSize, blockSize } = entry.borderBoxSize[0];
     console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
   });
 });
