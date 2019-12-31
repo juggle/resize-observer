@@ -28,7 +28,7 @@ npm i @juggle/resize-observer
 
 ## Basic usage
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Body has resized!');
@@ -41,7 +41,7 @@ This will use the [ponyfilled](https://github.com/sindresorhus/ponyfill) version
 
 ## Watching multiple elements
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
@@ -59,7 +59,7 @@ const els = document.querySelectorAll('.resizes');
 
 The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options include `border-box` and `content-box` (default).
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
@@ -83,7 +83,7 @@ const els = document.querySelectorAll('.resizes');
 Early versions of the API return a `contentRect`. This is still made available for backwards compatibility.
 
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
@@ -140,7 +140,7 @@ Resize Observers have inbuilt protection against infinite resize loops.
 If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window. Elements with undelivered notifications will be considered for delivery in the next loop.
 
 ```js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   // Changing the body size inside of the observer
