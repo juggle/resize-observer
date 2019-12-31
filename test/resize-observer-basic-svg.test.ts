@@ -6,12 +6,15 @@ import './helpers/offset';
 
 describe('SVGGraphicsElement', (): void => {
 
+  let root: SVGGraphicsElement;
   let el: SVGGraphicsElement;
   let ro: ResizeObserver | null;
 
   beforeEach((): void => {
+    root = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     el = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    document.body.appendChild(el);
+    document.body.appendChild(root);
+    root.appendChild(el);
     el.style.width = '100px';
     el.style.height = '100px';
   })
