@@ -10,10 +10,10 @@ describe('Box Options', (): void => {
   const DEFAULT_WIDTH = 100;
   const DEFAULT_HEIGHT = 200;
 
-  const initialBox = {
+  const initialBox = [{
     inlineSize: DEFAULT_WIDTH,
     blockSize: DEFAULT_HEIGHT
-  };
+  }];
 
   let el: HTMLElement;
   let ro: ResizeObserver | null;
@@ -91,14 +91,14 @@ describe('Box Options', (): void => {
           width: 300,
           height: 100
         })
-        expect(entries[0].borderBoxSize).toMatchObject({
+        expect(entries[0].borderBoxSize).toMatchObject([{
           inlineSize: 330,
           blockSize: 130
-        })
-        expect(entries[0].contentBoxSize).toMatchObject({
+        }])
+        expect(entries[0].contentBoxSize).toMatchObject([{
           inlineSize: 300,
           blockSize: 100
-        })
+        }])
         done();
       })
       el.style.width = '300px';
@@ -118,14 +118,14 @@ describe('Box Options', (): void => {
           width: 300,
           height: 100
         })
-        expect(entries[0].borderBoxSize).toMatchObject({
+        expect(entries[0].borderBoxSize).toMatchObject([{
           inlineSize: 130,
           blockSize: 330
-        })
-        expect(entries[0].contentBoxSize).toMatchObject({
+        }])
+        expect(entries[0].contentBoxSize).toMatchObject([{
           inlineSize: 100,
           blockSize: 300
-        })
+        }])
         done();
       })
       el.style.width = '300px';
@@ -144,14 +144,14 @@ describe('Box Options', (): void => {
           width: 300,
           height: 100
         })
-        expect(entries[0].borderBoxSize).toMatchObject({
+        expect(entries[0].borderBoxSize).toMatchObject([{
           inlineSize: 130,
           blockSize: 330
-        })
-        expect(entries[0].contentBoxSize).toMatchObject({
+        }])
+        expect(entries[0].contentBoxSize).toMatchObject([{
           inlineSize: 100,
           blockSize: 300
-        })
+        }])
         done();
       })
       el.style.width = '300px';
@@ -170,14 +170,14 @@ describe('Box Options', (): void => {
           width: 300,
           height: 100
         })
-        expect(entries[0].borderBoxSize).toMatchObject({
+        expect(entries[0].borderBoxSize).toMatchObject([{
           inlineSize: 130,
           blockSize: 330
-        })
-        expect(entries[0].contentBoxSize).toMatchObject({
+        }])
+        expect(entries[0].contentBoxSize).toMatchObject([{
           inlineSize: 100,
           blockSize: 300
-        })
+        }])
         done();
       })
       el.style.width = '300px';
@@ -196,14 +196,14 @@ describe('Box Options', (): void => {
           width: 300,
           height: 100
         })
-        expect(entries[0].borderBoxSize).toMatchObject({
+        expect(entries[0].borderBoxSize).toMatchObject([{
           inlineSize: 130,
           blockSize: 330
-        })
-        expect(entries[0].contentBoxSize).toMatchObject({
+        }])
+        expect(entries[0].contentBoxSize).toMatchObject([{
           inlineSize: 100,
           blockSize: 300
-        })
+        }])
         done();
       })
       el.style.width = '300px';
