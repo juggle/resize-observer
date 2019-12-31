@@ -51,8 +51,8 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
 
   const cs = getComputedStyle(target);
 
-  // If element is an SVG, handle things differently, using its bounding box.
-  const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
+  // If element has an SVG box, handle things differently, using its bounding box.
+  const svg = isSVG(target) && !(target as SVGElement).ownerSVGElement && (target as SVGGraphicsElement).getBBox();
 
   // IE does not remove padding from width/height, when box-sizing is border-box.
   const removePadding = !IE && cs.boxSizing === 'border-box';
