@@ -20,8 +20,6 @@ const ro = new ResizeObserver(entries => {
     const { inlineSize, blockSize } = entry.contentBoxSize[0];
     entry.target.setAttribute('dimensions', `${Math.round(inlineSize)} x ${Math.round(blockSize)}`);
   });
-}, {
-  clock: true
 });
 
 [...document.querySelectorAll('pre, code')].forEach(el => {
