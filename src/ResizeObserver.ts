@@ -46,5 +46,5 @@ class ResizeObserver {
   }
 
 }
-export default ResizeObserver;
+
 export { ResizeObserver };

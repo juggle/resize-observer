@@ -5,6 +5,7 @@ import { isSVG, isHidden } from '../utils/element';
 import { global } from '../utils/global';
 
 interface ResizeObserverSizeCollection {
+  devicePixelContentBoxSize: ResizeObserverSize;
   borderBoxSize: ResizeObserverSize;
   contentBoxSize: ResizeObserverSize;
   contentRect: DOMRectReadOnly;
@@ -26,6 +27,7 @@ const size = (inlineSize = 0, blockSize = 0, switchSizes = false): ResizeObserve
 
 // Return this when targets are hidden
 const zeroBoxes = Object.freeze({
+  devicePixelContentBoxSize: size(),
   borderBoxSize: size(),
   contentBoxSize: size(),
   contentRect: new DOMRectReadOnly(0, 0, 0, 0)
@@ -49,8 +51,8 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
 
   const cs = getComputedStyle(target);
 
-  // If element is an SVG, handle things differently, using its bounding box.
-  const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
+  // If element has an SVG box, handle things differently, using its bounding box.
+  const svg = isSVG(target) && (target as SVGElement).ownerSVGElement && (target as SVGGraphicsElement).getBBox();
 
   // IE does not remove padding from width/height, when box-sizing is border-box.
   const removePadding = !IE && cs.boxSizing === 'border-box';
@@ -85,6 +87,11 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
   const boxes = Object.freeze({
+    devicePixelContentBoxSize: size(
+      Math.round(contentWidth * devicePixelRatio),
+      Math.round(contentHeight * devicePixelRatio),
+      switchSizes
+    ),
     borderBoxSize: size(borderBoxWidth, borderBoxHeight, switchSizes),
     contentBoxSize: size(contentWidth, contentHeight, switchSizes),
     contentRect: new DOMRectReadOnly(paddingLeft, paddingTop, contentWidth, contentHeight)
@@ -101,8 +108,15 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
  * https://drafts.csswg.org/resize-observer-1/#calculate-box-size
  */
 const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize => {
-  const { borderBoxSize, contentBoxSize } = calculateBoxSizes(target);
-  return observedBox === ResizeObserverBoxOptions.BORDER_BOX ? borderBoxSize : contentBoxSize;
+  const { borderBoxSize, contentBoxSize, devicePixelContentBoxSize } = calculateBoxSizes(target);
+  switch (observedBox) {
+    case ResizeObserverBoxOptions.DEVICE_PIXEL_CONTENT_BOX:
+      return devicePixelContentBoxSize;
+    case ResizeObserverBoxOptions.BORDER_BOX:
+      return borderBoxSize;
+    default:
+      return contentBoxSize;
+  }
 };
 
 export { calculateBoxSize, calculateBoxSizes, cache };

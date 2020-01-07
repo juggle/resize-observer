@@ -12,7 +12,7 @@
     "skipLibCheck": true,
     "lib": ["dom", "es2015"]
   },
-  "include": [
-    "./src/**/*.ts"
+  "files": [
+    "./src/exports/resize-observer.ts"
   ]
 }

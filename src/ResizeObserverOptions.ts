@@ -7,7 +7,7 @@ import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
  * https://drafts.csswg.org/resize-observer-1/#dictdef-resizeobserveroptions
  */
 interface ResizeObserverOptions {
-  box?: 'content-box' | 'border-box' | ResizeObserverBoxOptions;
+  box?: 'content-box' | 'border-box' | 'device-pixel-content-box' | ResizeObserverBoxOptions;
 }
 
 export { ResizeObserverOptions };

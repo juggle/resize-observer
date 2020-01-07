@@ -1,7 +1,7 @@
 import 'core-js/features/symbol';
 import 'core-js/features/array/from';
 import 'core-js/features/dom-collections/iterator';
-import ResizeObserver from '../../lib/ResizeObserver';
+import { ResizeObserver } from '../../lib/ResizeObserver';
 
 window.ResizeObserver = ResizeObserver; // Override global so that people can play :)
 
@@ -17,7 +17,7 @@ const ro = new ResizeObserver(entries => {
       perfCount.innerText = ticks;
       return;
     }
-    const { inlineSize, blockSize } = entry.contentBoxSize;
+    const { inlineSize, blockSize } = entry.contentBoxSize[0];
     entry.target.setAttribute('dimensions', `${Math.round(inlineSize)} x ${Math.round(blockSize)}`);
   });
 });

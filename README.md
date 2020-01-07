@@ -18,7 +18,7 @@ A minimal library which polyfills the **ResizeObserver** API and is entirely bas
 It immediately detects when an element resizes and provides accurate sizing information back to the handler. Check out the [Example Playground](//juggle.studio/resize-observer) for more information on usage and performance.
 
 > The latest [Resize Observer specification](https://drafts.csswg.org/resize-observer-1/) is not yet finalised and is subject to change.
-> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
+> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes. Check the [release notes](https://github.com/juggle/resize-observer/releases) for more information.
 
 
 ## Installation
@@ -28,7 +28,7 @@ npm i @juggle/resize-observer
 
 ## Basic usage
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Body has resized!');
@@ -41,13 +41,13 @@ This will use the [ponyfilled](https://github.com/sindresorhus/ponyfill) version
 
 ## Watching multiple elements
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.contentBoxSize;
-    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
+    const { inlineSize: width, blockSize: height } = entry.contentBoxSize[0];
+    console.log(`Element ${index + 1}:`, `${width}x${height}`);
   });
 });
 
@@ -59,13 +59,13 @@ const els = document.querySelectorAll('.resizes');
 
 The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options include `border-box` and `content-box` (default).
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.borderBoxSize;
-    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
+    const { inlineSize: width, blockSize: height } = entry.borderBoxSize[0];
+    console.log(`Element ${index + 1}:`, `${width}x${height}`);
   });
 });
 
@@ -83,7 +83,7 @@ const els = document.querySelectorAll('.resizes');
 Early versions of the API return a `contentRect`. This is still made available for backwards compatibility.
 
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
@@ -140,7 +140,7 @@ Resize Observers have inbuilt protection against infinite resize loops.
 If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window. Elements with undelivered notifications will be considered for delivery in the next loop.
 
 ```js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   // Changing the body size inside of the observer
