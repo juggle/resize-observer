@@ -65,8 +65,5 @@
     "rollup": "^1.27.9",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.2"
-  },
-  "publishConfig": {
-    "tag": "next"
   }
 }
