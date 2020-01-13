@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "es5",
     "module": "es2015",
     "outDir": "./lib",
     "rootDir": "./src",
-    "composite": true,
+    "declaration": true,
     "removeComments": true,
     "strict": true,
     "alwaysStrict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["dom", "es2015"]
   },
-  "include": [
-    "./src/**/*.ts"
+  "files": [
+    "./src/exports/resize-observer.ts"
   ]
 }

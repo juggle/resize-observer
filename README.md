@@ -1,16 +1,24 @@
-# Resize Observer Polyfill
+<p align="center">
+  <img width="160" src="https://user-images.githubusercontent.com/1519516/68546625-51e0f680-03d0-11ea-9955-9f0e1964ba0c.png" />
+</p>
 
-![](https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge)
-![](https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge)
-![](https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
-![](https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge)
+<h1 align="center">Resize Observer</h1>
+
+<p align="center">
+  <img src="https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge" />
+  <img src="https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge" />
+  <img src="https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge" />
+  <img src="https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge" />
+</p>
+
+---
 
 A minimal library which polyfills the **ResizeObserver** API and is entirely based on the latest [Draft Specification](https://drafts.csswg.org/resize-observer-1/).
 
 It immediately detects when an element resizes and provides accurate sizing information back to the handler. Check out the [Example Playground](//juggle.studio/resize-observer) for more information on usage and performance.
 
 > The latest [Resize Observer specification](https://drafts.csswg.org/resize-observer-1/) is not yet finalised and is subject to change.
-> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes.
+> Any drastic changes to the specification will bump the major version of this library, as there will likely be breaking changes. Check the [release notes](https://github.com/juggle/resize-observer/releases) for more information.
 
 
 ## Installation
@@ -20,7 +28,7 @@ npm i @juggle/resize-observer
 
 ## Basic usage
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Body has resized!');
@@ -33,13 +41,13 @@ This will use the [ponyfilled](https://github.com/sindresorhus/ponyfill) version
 
 ## Watching multiple elements
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.contentBoxSize;
-    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
+    const { inlineSize: width, blockSize: height } = entry.contentBoxSize[0];
+    console.log(`Element ${index + 1}:`, `${width}x${height}`);
   });
 });
 
@@ -51,13 +59,13 @@ const els = document.querySelectorAll('.resizes');
 
 The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options include `border-box` and `content-box` (default).
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize, blockSize } = entry.borderBoxSize;
-    console.log(`Element ${index + 1}:`, `${inlineSize}x${blockSize}`);
+    const { inlineSize: width, blockSize: height } = entry.borderBoxSize[0];
+    console.log(`Element ${index + 1}:`, `${width}x${height}`);
   });
 });
 
@@ -75,7 +83,7 @@ const els = document.querySelectorAll('.resizes');
 Early versions of the API return a `contentRect`. This is still made available for backwards compatibility.
 
 ``` js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
@@ -88,8 +96,6 @@ const ro = new ResizeObserver((entries, observer) => {
 const els = document.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el));
 ```
-
-> This is a **deprecated** feature and will possibly be removed in later versions.
 
 
 ## Switching between native and polyfilled versions
@@ -134,7 +140,7 @@ Resize Observers have inbuilt protection against infinite resize loops.
 If an element's observed box size changes again within the same resize loop, the observation will be skipped and an error event will be dispatched on the window. Elements with undelivered notifications will be considered for delivery in the next loop.
 
 ```js
-import ResizeObserver from '@juggle/resize-observer';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const ro = new ResizeObserver((entries, observer) => {
   // Changing the body size inside of the observer
@@ -165,17 +171,6 @@ To cover these scenarios, there are two types of observation. The first is to li
 This allows for greater idle time, when the application itself is idle.
 
 
-## What's it good for?
-
-- Building responsive applications.
-- Creating self-aware, responsive Web Components.
-- Making 3rd party libraries more responsive. e.g. charts and grids.
-- Locking scroll position to the bottom of elements - useful for chat windows and logs.
-- Resizing iframes to match their content.
-- Canvas rendering.
-- Many other things!
-
-
 ## Features
 
 - Inbuilt resize loop protection.
@@ -184,32 +179,41 @@ This allows for greater idle time, when the application itself is idle.
 - Detects changes which occur during animation frame.
 - Includes support for latest draft spec - observing different box sizes.
 - Polls only when required, then shuts down automatically, reducing CPU usage.
-- No notification delay - Notifications are batched and delivered immediately, before the next paint.
+- Zero delay system - Notifications are batched and delivered immediately, before the next paint.
 
 
 ## Limitations
 
-- Dynamic stylesheet changes may not be noticed.*
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change, will not be detected.*
-- No support for **IE10** and below. **IE11** is supported, when bundled and transpiled into ES5. Additional polyfills may also be required, depending on tooling used.
-
-\* If other interaction occurs, changes will be detected.
+- Style changes from dev tools will only be noticed if they are inline styles.*
 
 
 ## Tested Browsers
-| Browser Name     | Desktop | Mobile |
-| ---------------- | ------- | ------ |
-| Chrome           | ✓       | ✓      |
-| Safari           | ✓       | ✓      |
-| Firefox          | ✓       | ✓      |
-| Opera            | ✓       | ✓      |
-| Opera Mini       | N/A     | ✓      |
-| Samsung Internet | N/A     | ✓      |
-| IE11             | ✓       | N/A    |
-| Edge             | ✓       | ✓      |
 
+[chrome]: https://github.com/alrra/browser-logos/raw/master/src/chrome/chrome_64x64.png
+[safari]: https://github.com/alrra/browser-logos/raw/master/src/safari/safari_64x64.png
+[safari-ios]: https://github.com/alrra/browser-logos/raw/master/src/safari-ios/safari-ios_64x64.png
+[ff]: https://github.com/alrra/browser-logos/raw/master/src/firefox/firefox_64x64.png
+[opera]: https://github.com/alrra/browser-logos/raw/master/src/opera/opera_64x64.png
+[opera-mini]: https://github.com/alrra/browser-logos/raw/master/src/opera-mini/opera-mini_64x64.png
+[edge_12-18]: https://github.com/alrra/browser-logos/raw/master/src/archive/edge_12-18/edge_12-18_64x64.png
+[edge]: https://github.com/alrra/browser-logos/raw/master/src/edge/edge_64x64.png
+[samsung]: https://github.com/alrra/browser-logos/raw/master/src/samsung-internet/samsung-internet_64x64.png
+[ie]: https://github.com/alrra/browser-logos/raw/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_64x64.png
 
-## TypeScript support
+### Desktop
+| ![chrome][chrome] | ![safari][safari] | ![ff][ff] | ![opera][opera] | ![edge][edge] | ![edge][edge_12-18] | ![IE][ie] |
+|--------|--------|---------|-------|------|------------|---------------------------------------|
+| Chrome | Safari | Firefox | Opera | Edge | Edge 12-18 | IE11<br/>IE 9-10 (with polyfills)\*\* |
 
-This library is written in TypeScript and contains all definition files for support in TypeScript applications.
+### Mobile
+| ![chrome][chrome] | ![safari][safari] | ![ff][ff] | ![opera][opera] | ![opera mini][opera-mini] | ![edge][edge_12-18] | ![samsung internet][samsung] |
+|--------|--------|---------|-------|------------|------|------------------|
+| Chrome | Safari | Firefox | Opera | Opera Mini | Edge | Samsung Internet |
+
+---
+
+\*If other interaction occurs, changes will be detected.
+
+\*\*IE10 requires additional polyfills for `Map` and `MutationObserver`. IE9 requires IE10 polyfills plus `requestAnimationFrame`. For more information, [see issue here](https://github.com/juggle/resize-observer/issues/64).

@@ -2,8 +2,10 @@ import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
 import { DOMRectReadOnly } from '../DOMRectReadOnly';
 import { isSVG, isHidden } from '../utils/element';
+import { global } from '../utils/global';
 
 interface ResizeObserverSizeCollection {
+  devicePixelContentBoxSize: ResizeObserverSize;
   borderBoxSize: ResizeObserverSize;
   contentBoxSize: ResizeObserverSize;
   contentRect: DOMRectReadOnly;
@@ -11,19 +13,21 @@ interface ResizeObserverSizeCollection {
 
 const cache = new Map();
 const scrollRegexp = /auto|scroll/;
-const IE = (/msie|trident/i).test(navigator.userAgent);
+const verticalRegexp = /^tb|vertical/;
+const IE = (/msie|trident/i).test(global.navigator && global.navigator.userAgent);
 const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0');
 
 // Helper to generate and freeze a ResizeObserverSize
-const size = (inlineSize: number = 0, blockSize: number = 0): ResizeObserverSize => {
+const size = (inlineSize = 0, blockSize = 0, switchSizes = false): ResizeObserverSize => {
   return Object.freeze({
-    inlineSize: inlineSize || 0, // never return NaN
-    blockSize: blockSize || 0    // never return NaN
+    inlineSize: (switchSizes ? blockSize : inlineSize) || 0, // never return NaN
+    blockSize: (switchSizes ? inlineSize : blockSize) || 0   // never return NaN
   });
 }
 
 // Return this when targets are hidden
 const zeroBoxes = Object.freeze({
+  devicePixelContentBoxSize: size(),
   borderBoxSize: size(),
   contentBoxSize: size(),
   contentRect: new DOMRectReadOnly(0, 0, 0, 0)
@@ -47,11 +51,14 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
 
   const cs = getComputedStyle(target);
 
-  // If element is an SVG, handle things differently, using its bounding box.
-  const svg = isSVG(target) && (target as SVGGraphicsElement).getBBox();
+  // If element has an SVG box, handle things differently, using its bounding box.
+  const svg = isSVG(target) && (target as SVGElement).ownerSVGElement && (target as SVGGraphicsElement).getBBox();
 
   // IE does not remove padding from width/height, when box-sizing is border-box.
   const removePadding = !IE && cs.boxSizing === 'border-box';
+
+  // Switch sizes if writing mode is vertical.
+  const switchSizes = verticalRegexp.test(cs.writingMode || '');
 
   // Could the element have any scrollbars?
   const canScrollVertically = !svg && scrollRegexp.test(cs.overflowY || '');
@@ -80,8 +87,13 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
   const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
   const boxes = Object.freeze({
-    borderBoxSize: size(borderBoxWidth, borderBoxHeight),
-    contentBoxSize: size(contentWidth, contentHeight),
+    devicePixelContentBoxSize: size(
+      Math.round(contentWidth * devicePixelRatio),
+      Math.round(contentHeight * devicePixelRatio),
+      switchSizes
+    ),
+    borderBoxSize: size(borderBoxWidth, borderBoxHeight, switchSizes),
+    contentBoxSize: size(contentWidth, contentHeight, switchSizes),
     contentRect: new DOMRectReadOnly(paddingLeft, paddingTop, contentWidth, contentHeight)
   });
 
@@ -96,8 +108,15 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
  * https://drafts.csswg.org/resize-observer-1/#calculate-box-size
  */
 const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize => {
-  const { borderBoxSize, contentBoxSize } = calculateBoxSizes(target);
-  return observedBox === ResizeObserverBoxOptions.BORDER_BOX ? borderBoxSize : contentBoxSize;
+  const { borderBoxSize, contentBoxSize, devicePixelContentBoxSize } = calculateBoxSizes(target);
+  switch (observedBox) {
+    case ResizeObserverBoxOptions.DEVICE_PIXEL_CONTENT_BOX:
+      return devicePixelContentBoxSize;
+    case ResizeObserverBoxOptions.BORDER_BOX:
+      return borderBoxSize;
+    default:
+      return contentBoxSize;
+  }
 };
 
 export { calculateBoxSize, calculateBoxSizes, cache };

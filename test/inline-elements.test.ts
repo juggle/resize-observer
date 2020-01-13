@@ -1,3 +1,4 @@
+import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
 import { delay } from './helpers/delay';
 import './helpers/offset';
@@ -5,7 +6,7 @@ import './helpers/offset';
 describe('Inline elements', (): void => {
 
   let el: HTMLElement;
-  let ro: ResizeObserver;
+  let ro: ResizeObserver | null;
 
   const createElement = (name: string): void => {
     el = document.createElement(name);
@@ -23,6 +24,7 @@ describe('Inline elements', (): void => {
       }
       if (ro) {
         ro.disconnect();
+        ro = null;
       }
     })
 

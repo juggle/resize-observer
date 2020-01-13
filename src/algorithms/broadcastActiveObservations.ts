@@ -1,4 +1,4 @@
-import { resizeObservers } from '../ResizeObserverController';
+import { resizeObservers } from '../utils/resizeObservers';
 import { ResizeObserverDetail } from '../ResizeObserverDetail';
 import { ResizeObserverEntry } from '../ResizeObserverEntry';
 import { ResizeObservation } from '../ResizeObservation';
@@ -35,7 +35,7 @@ const broadcastActiveObservations = (): number => {
     });
     ro.activeTargets.splice(0, ro.activeTargets.length);
   })
-  for (let callback of callbacks) {
+  for (const callback of callbacks) {
     callback();
   }
   return shallowestDepth;

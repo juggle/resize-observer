@@ -1,3 +1,4 @@
+import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
 import { scheduler } from '../src/utils/scheduler';
 import { delay } from './helpers/delay';
@@ -8,10 +9,12 @@ describe('Basics', (): void => {
   let el: HTMLElement;
   let ro: ResizeObserver | null;
 
-  beforeEach((): void => {
+  beforeEach((done): void => {
     el = document.createElement('div');
     el.style.width = '100px';
     document.body.appendChild(el);
+    // Make sure it's a clean frame to run the test on
+    requestAnimationFrame((): void => done());
   })
 
   afterEach((): void => {
@@ -395,6 +398,14 @@ describe('Basics', (): void => {
     ro.observe(el);
   })
 
+  test('Observer should fire when text content changes', (done): void => {
+    ro = new ResizeObserver((): void => done())
+    ro.observe(el);
+    delay((): void => {
+      el.textContent = 'Hello';
+    })
+  })
+
   test('Observer should unobserve elements correctly.', (done): void => {
     const el2 = el.cloneNode() as HTMLElement;
     document.body.appendChild(el2);
@@ -468,7 +479,7 @@ describe('Basics', (): void => {
       expect(e.type).toBe('error');
       expect(e.message).toBe('ResizeObserver loop completed with undelivered notifications.');
       done();
-    })
+    }, { once: true });
     ro = new ResizeObserver((entries): void => {
       entries.forEach((entry): void => {
         const target = entry.target as HTMLElement;
@@ -497,20 +508,6 @@ describe('Basics', (): void => {
     });
   })
 
-  test('RAF loops should not interrupt scheduler', (done): void => {
-    let frame = 0;
-    const loop = (): number => requestAnimationFrame((): void => {
-      frame += 1;
-      frame < 10 && loop();
-    })
-    loop();
-    ro = new ResizeObserver((): void => {
-      expect(frame).toBe(1);
-      done();
-    });
-    ro.observe(el);
-  })
-
   test('Scheduler should start and stop itself correctly.', (done): void => {
     // Stopped at start
     expect(scheduler.stopped).toBe(true);
@@ -518,8 +515,8 @@ describe('Basics', (): void => {
     // Creating an observer should not start the scheduler
     expect(scheduler.stopped).toBe(true);
     ro.observe(el);
-    // Observering will trigger a schedule, however,
-    // it will not start listening for other changes untill
+    // Observing will trigger a schedule, however,
+    // it will not start listening for other changes until
     // the processing is complete
     expect(scheduler.stopped).toBe(true);
     // After ~1s the observer should stop polling and move back to events
@@ -539,30 +536,6 @@ describe('Basics', (): void => {
     expect(scheduler.stopped).toBe(true);
     scheduler.stop();
     expect(scheduler.stopped).toBe(true);
-  })
-
-  test('Fake MutationObserver class to make sure it\'s called and used', (done): void => {
-    let callback: () => void;
-    class MutationObserver {
-      public constructor (cb: () => void) {
-        callback = (): void => {
-          cb();
-        };
-      }
-      public observe (): void {
-        callback();
-      }
-      public disconnect (): void {
-        done();
-      }
-    }
-    Object.defineProperty(window, 'MutationObserver', {
-      value: MutationObserver
-    });
-    ro = new ResizeObserver((entries, observer): void => {
-      observer.disconnect();
-    });
-    ro.observe(el);
   })
 
 })
