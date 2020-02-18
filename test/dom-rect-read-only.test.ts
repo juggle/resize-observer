@@ -48,6 +48,22 @@ describe('DOMRectReadOnly', (): void => {
       height: 20
     });
   });
+  it('Should support toJSON()', () => {
+    const rect = new DOMRectReadOnly(5, 10, 15, 20);
+    expect('toJSON' in rect).toBeTruthy;
+    const rectJSON = rect.toJSON();
+    expect('toJSON' in rectJSON).toBeFalsy;
+    expect(rectJSON).toMatchObject({
+      x: 5,
+      y: 10,
+      top: 10,
+      left: 5,
+      bottom: 30,
+      right: 20,
+      width: 15,
+      height: 20
+    });
+  });
   it('Should support DOMRectReadOnly.fromRect()', (): void => {
     rect = DOMRectReadOnly.fromRect({
       x: 1,
