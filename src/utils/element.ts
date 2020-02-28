@@ -11,6 +11,12 @@ const isHidden = (target: Element): boolean => {
   return !(offsetWidth || offsetHeight || target.getClientRects().length);
 }
 
+// Checks if an object is an Element
+const isElement = (obj: unknown): boolean => {
+  const scope = (obj as Element)?.ownerDocument?.defaultView;
+  return !!(scope && obj instanceof (scope as unknown as typeof globalThis).Element);
+};
+
 const isReplacedElement = (target: Element): boolean => {
   switch (target.tagName) {
     case 'INPUT':
@@ -32,5 +38,6 @@ const isReplacedElement = (target: Element): boolean => {
 export {
   isSVG,
   isHidden,
+  isElement,
   isReplacedElement
 };

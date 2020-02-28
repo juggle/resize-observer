@@ -65,6 +65,15 @@ describe('Basics', (): void => {
     expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
   })
 
+  test('Throw error when a null target is passed to observe()', (): void => {
+    const fn = (): void => {
+      ro = new ResizeObserver((): void => {});
+      // @ts-ignore
+      ro.observe(null);
+    };
+    expect(fn).toThrowError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
+  })
+
   test('Throw error when no target is passed to unobserve()', (): void => {
     const fn = (): void => {
       ro = new ResizeObserver((): void => {});
