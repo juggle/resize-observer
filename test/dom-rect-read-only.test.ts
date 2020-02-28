@@ -48,7 +48,7 @@ describe('DOMRectReadOnly', (): void => {
       height: 20
     });
   });
-  it('Should support toJSON()', () => {
+  it('Should support toJSON()', (): void => {
     const rect = new DOMRectReadOnly(5, 10, 15, 20);
     expect('toJSON' in rect).toBeTruthy;
     const rectJSON = rect.toJSON();
