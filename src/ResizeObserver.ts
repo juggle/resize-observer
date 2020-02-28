@@ -1,6 +1,7 @@
 import { ResizeObserverController } from './ResizeObserverController';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
+import { isElement } from './utils/element';
 
 /**
  * https://drafts.csswg.org/resize-observer-1/#resize-observer-interface
@@ -21,7 +22,7 @@ class ResizeObserver {
     if (arguments.length === 0) {
       throw new TypeError(`Failed to execute 'observe' on 'ResizeObserver': 1 argument required, but only 0 present.`)
     }
-    if (target instanceof Element === false) {
+    if (!isElement(target)) {
       throw new TypeError(`Failed to execute 'observe' on 'ResizeObserver': parameter 1 is not of type 'Element`);
     }
     ResizeObserverController.observe(this, target, options);
