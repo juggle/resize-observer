@@ -50,20 +50,20 @@
   },
   "homepage": "https://juggle.studio/resize-observer/",
   "devDependencies": {
-    "@types/jest": "^24.0.15",
-    "@typescript-eslint/eslint-plugin": "^1.11.0",
-    "@typescript-eslint/parser": "^1.11.0",
-    "core-js": "^3.1.4",
-    "coveralls": "^3.0.4",
+    "@types/jest": "^24.9.1",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "core-js": "^3.6.4",
+    "coveralls": "^3.0.9",
     "cssnano": "^4.1.10",
-    "eslint": "^6.0.1",
-    "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
+    "eslint": "^6.8.0",
+    "jest": "^24.9.0",
+    "jest-cli": "^24.9.0",
     "jest-junit": "^6.4.0",
-    "jsdom": "^15.1.1",
+    "jsdom": "^15.2.1",
     "parcel-bundler": "^1.12.4",
-    "rollup": "^1.27.9",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.2"
+    "rollup": "^1.32.0",
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.8.2"
   }
 }
