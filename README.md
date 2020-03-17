@@ -57,7 +57,7 @@ const els = document.querySelectorAll('.resizes');
 
 ## Watching different box sizes
 
-The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options include `border-box` and `content-box` (default).
+The latest standards allow for watching different box sizes. The box size option can be specified when observing an element. Options include `border-box`, `device-pixel-content-box` and `content-box` (default).
 ``` js
 import { ResizeObserver } from '@juggle/resize-observer';
 
