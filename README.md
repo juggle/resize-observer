@@ -64,8 +64,8 @@ import { ResizeObserver } from '@juggle/resize-observer';
 const ro = new ResizeObserver((entries, observer) => {
   console.log('Elements resized:', entries.length);
   entries.forEach((entry, index) => {
-    const { inlineSize: width, blockSize: height } = entry.borderBoxSize[0];
-    console.log(`Element ${index + 1}:`, `${width}x${height}`);
+    const [size] = entry.borderBoxSize;
+    console.log(`Element ${index + 1}:`, `${size.inlineSize}x${size.blockSize}`);
   });
 });
 
@@ -77,6 +77,8 @@ const observerOptions = {
 const els = document.querySelectorAll('.resizes');
 [...els].forEach(el => ro.observe(el, observerOptions));
 ```
+*From the spec:*
+> The box size properties are exposed as sequences in order to support elements that have multiple fragments, which occur in [multi-column](https://www.w3.org/TR/css3-multicol/#) scenarios. However the current definitions of content rect and border box do not mention how those boxes are affected by multi-column layout. In this spec, there will only be a single ResizeObserverSize returned in the sequences, which will correspond to the dimensions of the first column. A future version of this spec will extend the returned sequences to contain the per-fragment size information.
 
 ## Using the legacy version (`contentRect`)
 
