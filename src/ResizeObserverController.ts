@@ -55,7 +55,7 @@ class ResizeObserverController {
   // Informs the controller to disconnect an observer.
   public static disconnect (resizeObserver: ResizeObserver): void {
     const detail = observerMap.get(resizeObserver) as ResizeObserverDetail;
-    detail.observationTargets.forEach((ot): void => this.unobserve(resizeObserver, ot.target));
+    detail.observationTargets.slice().forEach((ot): void => this.unobserve(resizeObserver, ot.target));
     detail.activeTargets.splice(0, detail.activeTargets.length);
   }
 }
