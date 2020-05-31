@@ -463,14 +463,14 @@ describe('Basics', (): void => {
     delay(done);
   })
 
-  test('Observer should not observe after a disconnect.', (done): void => {
+  test('Observer should observe after a disconnect.', (done): void => {
+    let count = 0;
     ro = new ResizeObserver((): void => {
-      expect(false).toBe(true); // Should not fire
+      count++ && done();
     });
     ro.observe(el);
     ro.disconnect();
     ro.observe(el);
-    delay(done);
   })
 
   test('Observer should allow disconnect and unobserve to be called.', (done): void => {
