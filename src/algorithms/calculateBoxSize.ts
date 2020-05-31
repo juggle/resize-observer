@@ -11,7 +11,7 @@ interface ResizeObserverSizeCollection {
   contentRect: DOMRectReadOnly;
 }
 
-const cache = new Map();
+const cache = new WeakMap<Element, ResizeObserverSizeCollection>();
 const scrollRegexp = /auto|scroll/;
 const verticalRegexp = /^tb|vertical/;
 const IE = (/msie|trident/i).test(global.navigator && global.navigator.userAgent);
@@ -36,11 +36,11 @@ const zeroBoxes = Object.freeze({
 /**
  * Gets all box sizes of an element.
  */
-const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
+const calculateBoxSizes = (target: Element, forceRecalculation = false): ResizeObserverSizeCollection => {
 
   // Check cache to prevent recalculating styles.
-  if (cache.has(target)) {
-    return cache.get(target);
+  if (cache.has(target) && !forceRecalculation) {
+    return cache.get(target) as ResizeObserverSizeCollection;
   }
 
   // If the target is hidden, send zero
@@ -107,8 +107,8 @@ const calculateBoxSizes = (target: Element): ResizeObserverSizeCollection => {
  * 
  * https://drafts.csswg.org/resize-observer-1/#calculate-box-size
  */
-const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions): ResizeObserverSize => {
-  const { borderBoxSize, contentBoxSize, devicePixelContentBoxSize } = calculateBoxSizes(target);
+const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions, forceRecalculation?: boolean): ResizeObserverSize => {
+  const { borderBoxSize, contentBoxSize, devicePixelContentBoxSize } = calculateBoxSizes(target, forceRecalculation);
   switch (observedBox) {
     case ResizeObserverBoxOptions.DEVICE_PIXEL_CONTENT_BOX:
       return devicePixelContentBoxSize;
@@ -119,4 +119,4 @@ const calculateBoxSize = (target: Element, observedBox: ResizeObserverBoxOptions
   }
 };
 
-export { calculateBoxSize, calculateBoxSizes, cache };
+export { calculateBoxSize, calculateBoxSizes };

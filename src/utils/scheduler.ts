@@ -6,7 +6,7 @@ let watching = 0;
 
 const isWatching = (): boolean => !!watching;
 
-const CATCH_FRAMES = 60 / 5; // Fifth of a second
+const CATCH_PERIOD = 250; // ms
 
 const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
 
@@ -31,23 +31,25 @@ const events = [
   'focus'
 ];
 
+const time = (timeout = 0) => Date.now() + timeout;
+
 let scheduled = false;
 class Scheduler {
 
   private observer: MutationObserver | undefined;
   private listener: () => void;
-  public stopped: boolean = true;
+  public stopped = true;
 
   public constructor () {
     this.listener = (): void => this.schedule();
   }
 
-
-  public run (frames: number): void {
+  private run (timeout = CATCH_PERIOD): void {
     if (scheduled) {
       return;
     }
     scheduled = true;
+    const until = time(timeout);
     queueResizeObserver((): void => {
       let elementsHaveResized = false;
       try {
@@ -56,16 +58,17 @@ class Scheduler {
       }
       finally {
         scheduled = false;
+        timeout = until - time();
         if (!isWatching()) {
           return;
         }
         // Have any changes happened?
         if (elementsHaveResized) {
-          this.run(60);
+          this.run(1000);
         }
         // Should we continue to check?
-        else if (frames) {
-          this.run(frames - 1);
+        else if (timeout > 0) {
+          this.run(timeout);
         }
         // Start listening again
         else {
@@ -77,7 +80,7 @@ class Scheduler {
 
   public schedule (): void {
     this.stop(); // Stop listening
-    this.run(CATCH_FRAMES); // Run schedule
+    this.run(); // Run schedule
   }
 
   private observe (): void {
