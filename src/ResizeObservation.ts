@@ -28,7 +28,7 @@ class ResizeObservation {
   }
 
   public isActive (): boolean {
-    const size = calculateBoxSize(this.target, this.observedBox);
+    const size = calculateBoxSize(this.target, this.observedBox, true);
     if (skipNotifyOnElement(this.target)) {
       this.lastReportedSize = size;
     }
