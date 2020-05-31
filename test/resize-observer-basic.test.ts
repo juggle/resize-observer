@@ -464,9 +464,8 @@ describe('Basics', (): void => {
   })
 
   test('Observer should observe after a disconnect.', (done): void => {
-    let count = 0;
     ro = new ResizeObserver((): void => {
-      count++ && done();
+      done();
     });
     ro.observe(el);
     ro.disconnect();
