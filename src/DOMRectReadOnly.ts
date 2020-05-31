@@ -5,6 +5,17 @@ interface Rectangle {
   readonly height: number;
 }
 
+type DOMRectJSON = {
+  x: number,
+  y: number,
+  top: number,
+  right: number,
+  bottom: number,
+  left: number,
+  width: number,
+  height: number,
+}
+
 /**
  * Implementation of DOMRectReadOnly.
  * Native DOMRectReadOnly is not available in all browsers.
@@ -29,7 +40,7 @@ class DOMRectReadOnly {
     this.right = this.left + this.width;
     return Object.freeze(this);
   }
-  public toJSON (): object {
+  public toJSON (): DOMRectJSON {
     const { x, y, top, right, bottom, left, width, height } = this;
     return { x, y, top, right, bottom, left, width, height };
   }

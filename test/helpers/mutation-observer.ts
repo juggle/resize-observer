@@ -14,7 +14,7 @@ Object.defineProperty(window, 'MutationObserver', {
       })
     }
     public disconnect (): void {
-      this.callback = (): void => {};
+      this.callback = (): void => { /* do nothing */ };
     }
   }
 });
