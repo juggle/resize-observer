@@ -3,6 +3,7 @@ module.exports = {
   output: {
     file: 'lib/exports/resize-observer.umd.js',
     format: 'umd',
-    name: 'window'
+    name: 'window',
+    extend: true,
   }
 };
