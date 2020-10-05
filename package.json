@@ -1,5 +1,5 @@
 {
-  "name": "@juggle/resize-observer",
+  "name": "@anilanar/resize-observer",
   "version": "3.2.0",
   "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
   "main": "lib/exports/resize-observer.umd.js",

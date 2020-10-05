@@ -1,2 +1,2 @@
-export { ResizeObserver } from '../ResizeObserver';
-export { ResizeObserverEntry } from '../ResizeObserverEntry';
+export { ResizeObserver } from "../ResizeObserver";
+export { ResizeObserverEntry } from "../ResizeObserverEntry";
