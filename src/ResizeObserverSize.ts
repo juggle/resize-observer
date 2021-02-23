@@ -6,7 +6,7 @@ import { freeze } from './utils/freeze';
  * https://drafts.csswg.org/resize-observer-1/#resizeobserversize 
  */
 class ResizeObserverSize {
-  readonly inlineSize:  number;
+  readonly inlineSize: number;
   readonly blockSize: number;
   constructor (inlineSize: number, blockSize: number) {
     this.inlineSize = inlineSize;
