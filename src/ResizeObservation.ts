@@ -16,7 +16,7 @@ class ResizeObservation {
 
   public target: Element;
   public observedBox: ResizeObserverBoxOptions;
-  public lastReportedSize: ResizeObserverSize;
+  public lastReportedSize: ResizeObserverSize; // Todo: update to FrozenArray
 
   public constructor (target: Element, observedBox?: ResizeObserverBoxOptions) {
     this.target = target;

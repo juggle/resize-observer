@@ -1,3 +1,5 @@
+import { freeze } from './utils/freeze';
+
 interface Rectangle {
   readonly x: number;
   readonly y: number;
@@ -38,7 +40,7 @@ class DOMRectReadOnly {
     this.left = this.x;
     this.bottom = this.top + this.height;
     this.right = this.left + this.width;
-    return Object.freeze(this);
+    return freeze(this);
   }
   public toJSON (): DOMRectJSON {
     const { x, y, top, right, bottom, left, width, height } = this;
