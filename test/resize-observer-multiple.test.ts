@@ -1,5 +1,6 @@
 import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
+import { delay } from './helpers/delay';
 import './helpers/offset';
 
 let el: HTMLElement;
@@ -23,7 +24,7 @@ afterEach((): void => {
 
 describe('Multiple HTMLElement', (): void => {
 
-  test('Should return the correct entries and observer arguments, when an observation has occured.', (done): void => {
+  test('Should return the correct entries and observer arguments, when an observation has occurred.', (done): void => {
     const el2 = el.cloneNode() as HTMLElement;
     document.body.appendChild(el2);
     ro = new ResizeObserver((entries, observer): void => {
@@ -60,18 +61,25 @@ describe('Multiple Observers', (): void => {
   })
 
   test('Observers observing nothing should not be fired when others are.', (done): void => {
+    let calls = 0;
     const ro1 = new ResizeObserver((): void => {
       expect(false).toBe(true); // Should never be called
     });
-    const ro2 = new ResizeObserver((entries, observer): void => {
-      expect(entries).toHaveLength(1);
-      expect(entries[0].target).toBe(el);
-      expect(observer).toBe(ro2);
-      observer.disconnect();
-      ro1.disconnect();
-      done();
+    const ro2 = new ResizeObserver((): void => {
+      calls++;
+      expect(calls).toBe(1); // Should only ever be called once
     });
     ro2.observe(el);
+    const ro3 = new ResizeObserver((entries, observer): void => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(observer).toBe(ro3);
+      observer.disconnect();
+      ro1.disconnect();
+      ro2.disconnect();
+      done();
+    });
+    delay(() => ro3.observe(el)); // delay to check ro2 on the next cycle
   })
   
 })
