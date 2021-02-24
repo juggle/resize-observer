@@ -5,8 +5,8 @@
 <h1 align="center">Resize Observer</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge" />
-  <img src="https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge" />
+  <img src="https://img.shields.io/circleci/project/github/juggle/resize-observer/v3.svg?logo=circleci&style=for-the-badge" />
+  <img src="https://img.shields.io/coveralls/github/juggle/resize-observer/v3.svg?logoColor=white&style=for-the-badge" />
   <img src="https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge" />
   <img src="https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge" />
 </p>
