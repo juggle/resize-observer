@@ -2,6 +2,7 @@ import { ResizeObserverBoxOptions } from '../ResizeObserverBoxOptions';
 import { ResizeObserverSize } from '../ResizeObserverSize';
 import { DOMRectReadOnly } from '../DOMRectReadOnly';
 import { isSVG, isHidden } from '../utils/element';
+import { freeze } from '../utils/freeze';
 import { global } from '../utils/global';
 
 interface ResizeObserverSizeCollection {
@@ -19,14 +20,14 @@ const parseDimension = (pixel: string | null): number => parseFloat(pixel || '0'
 
 // Helper to generate and freeze a ResizeObserverSize
 const size = (inlineSize = 0, blockSize = 0, switchSizes = false): ResizeObserverSize => {
-  return Object.freeze({
-    inlineSize: (switchSizes ? blockSize : inlineSize) || 0, // never return NaN
-    blockSize: (switchSizes ? inlineSize : blockSize) || 0   // never return NaN
-  });
+  return new ResizeObserverSize(
+    (switchSizes ? blockSize : inlineSize) || 0,
+    (switchSizes ? inlineSize : blockSize) || 0
+  );
 }
 
 // Return this when targets are hidden
-const zeroBoxes = Object.freeze({
+const zeroBoxes = freeze({
   devicePixelContentBoxSize: size(),
   borderBoxSize: size(),
   contentBoxSize: size(),
@@ -86,7 +87,7 @@ const calculateBoxSizes = (target: Element, forceRecalculation = false): ResizeO
   const borderBoxWidth = contentWidth + horizontalPadding + verticalScrollbarThickness + horizontalBorderArea;
   const borderBoxHeight = contentHeight + verticalPadding + horizontalScrollbarThickness + verticalBorderArea;
 
-  const boxes = Object.freeze({
+  const boxes = freeze({
     devicePixelContentBoxSize: size(
       Math.round(contentWidth * devicePixelRatio),
       Math.round(contentHeight * devicePixelRatio),
