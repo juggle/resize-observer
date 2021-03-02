@@ -218,4 +218,4 @@ This allows for greater idle time, when the application itself is idle.
 
 \*If other interaction occurs, changes will be detected.
 
-\*\*IE10 requires additional polyfills for `Map` and `MutationObserver`. IE9 requires IE10 polyfills plus `requestAnimationFrame`. For more information, [see issue here](https://github.com/juggle/resize-observer/issues/64).
+\*\*IE10 requires additional polyfills for `WeakMap`, `MutationObserver` and `devicePixelRatio`. IE9 requires IE10 polyfills plus `requestAnimationFrame`. For more information, [see issue here](https://github.com/juggle/resize-observer/issues/64).
