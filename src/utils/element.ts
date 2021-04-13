@@ -14,7 +14,7 @@ const isHidden = (target: Element): boolean => {
 // Checks if an object is an Element
 const isElement = (obj: unknown): boolean => {
   if (obj instanceof Element) {
-    return true
+    return true;
   }
   const scope = (obj as Element)?.ownerDocument?.defaultView;
   return !!(scope && obj instanceof (scope as unknown as typeof globalThis).Element);
