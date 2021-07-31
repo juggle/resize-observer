@@ -36,9 +36,15 @@ const isReplacedElement = (target: Element): boolean => {
   return false;
 }
 
+const isDocument = (node: Node | Document | DocumentFragment): node is Document | DocumentFragment => {
+  const t =  node && node.nodeType;
+  return t === 9 || t === 11;
+}
+
 export {
   isSVG,
   isHidden,
   isElement,
+  isDocument,
   isReplacedElement
 };
