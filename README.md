@@ -162,8 +162,6 @@ Notifications are scheduled after all other changes have occurred and all other 
 
 ![resize observer notification schedule](https://user-images.githubusercontent.com/1519516/52825568-20433500-30b5-11e9-9854-4cee13a09a7d.jpg)
 
-
-
 ## How are differences detected?
 
 To prevent constant polling, every frame. The DOM is queried whenever an event occurs which could cause an element to change its size. This could be when an element is clicked, a DOM Node is added, or, when an animation is running.
@@ -172,24 +170,31 @@ To cover these scenarios, there are two types of observation. The first is to li
 
 This allows for greater idle time, when the application itself is idle.
 
-
 ## Features
 
 - Inbuilt resize loop protection.
+- Supports observing different box sizes.
 - Supports pseudo classes `:hover`, `:active` and `:focus`.
 - Supports transitions and animations, including infinite and long-running.
-- Detects changes which occur during animation frame.
-- Includes support for latest draft spec - observing different box sizes.
 - Polls only when required, then shuts down automatically, reducing CPU usage.
 - Zero delay system - Notifications are batched and delivered immediately, before the next paint.
 
+## Detects
+
+- Any changes made via user-interaction e.g. clicking/tapping, typing, focusing, hovering etc.
+- Any changes made via DOM modification e.g. adding/removing attributes/elements/text.
+- Any changes made via animations/transitions
+- Any changes made via window resizing
+- Any changes made inside shadow roots
+- Any changes made inside iframes
+- Any changes made inside other windows/documents
 
 ## Limitations
 
 - Transitions with initial delays cannot be detected.*
-- Animations and transitions with long periods of no change, will not be detected.*
-- Style changes from dev tools will only be noticed if they are inline styles.*
-
+- Animations and transitions with long periods of no change (> 250ms), will not be detected.*
+- Style changes which occur for print cannot be detected ([More info](https://github.com/juggle/resize-observer/issues/46)).
+- Style changes from in-memory stylesheets cannot be detected. This includes modifications via the CSSSOM and adopting stylesheets.
 
 ## Tested Browsers
 
