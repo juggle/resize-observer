@@ -194,7 +194,7 @@ This allows for greater idle time, when the application itself is idle.
 - Transitions with initial delays cannot be detected.*
 - Animations and transitions with long periods of no change (> 250ms), will not be detected.*
 - Style changes which occur for print cannot be detected ([More info](https://github.com/juggle/resize-observer/issues/46)).
-- Style changes from in-memory stylesheets cannot be detected. This includes modifications via the CSSSOM and adopting stylesheets.
+- Style changes from in-memory stylesheets cannot be detected. This includes modifications via the CSSOM and adopting stylesheets.
 
 ## Tested Browsers
 
