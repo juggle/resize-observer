@@ -4,9 +4,9 @@ module.exports = [{
   input: 'src/exports/resize-observer.ts',
   output: {
     file: 'lib/resize-observer.mjs',
-    format: 'esm'
+    format: 'esm',
   },
-  plugins: [typescript()]
+  plugins: [typescript({ removeComments: true })]
 }, {
   input: 'src/exports/resize-observer.ts',
   output: {
@@ -15,5 +15,5 @@ module.exports = [{
     name: 'window',
     extend: true,
   },
-  plugins: [typescript()]
+  plugins: [typescript({ removeComments: true })]
 }];
