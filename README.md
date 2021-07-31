@@ -5,8 +5,8 @@
 <h1 align="center">Resize Observer</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/circleci/project/github/juggle/resize-observer/master.svg?logo=circleci&style=for-the-badge" />
-  <img src="https://img.shields.io/coveralls/github/juggle/resize-observer.svg?logoColor=white&style=for-the-badge" />
+  <img src="https://img.shields.io/circleci/project/github/juggle/resize-observer/v3.svg?logo=circleci&style=for-the-badge" />
+  <img src="https://img.shields.io/coveralls/github/juggle/resize-observer/v3.svg?logoColor=white&style=for-the-badge" />
   <img src="https://img.shields.io/bundlephobia/minzip/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge" />
   <img src="https://img.shields.io/npm/l/@juggle/resize-observer.svg?colorB=%233399ff&style=for-the-badge" />
 </p>
@@ -218,4 +218,4 @@ This allows for greater idle time, when the application itself is idle.
 
 \*If other interaction occurs, changes will be detected.
 
-\*\*IE10 requires additional polyfills for `Map` and `MutationObserver`. IE9 requires IE10 polyfills plus `requestAnimationFrame`. For more information, [see issue here](https://github.com/juggle/resize-observer/issues/64).
+\*\*IE10 requires additional polyfills for `WeakMap`, `MutationObserver` and `devicePixelRatio`. IE9 requires IE10 polyfills plus `requestAnimationFrame`. For more information, [see issue here](https://github.com/juggle/resize-observer/issues/64).
