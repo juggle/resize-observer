@@ -1,5 +1,6 @@
 // Tests if target is an SVGGraphicsElement
-const isSVG = (target: Element): boolean => target instanceof SVGElement && 'getBBox' in target;
+const isSVG = (target: Element | SVGGraphicsElement): target is SVGGraphicsElement =>
+  target instanceof SVGElement && 'getBBox' in target;
 
 // Checks to see if element is hidden (has no display)
 const isHidden = (target: Element): boolean => {
