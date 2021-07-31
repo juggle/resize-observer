@@ -13,7 +13,7 @@ const isHidden = (target: Element): boolean => {
 }
 
 // Checks if an object is an Element
-const isElement = (obj: unknown): boolean => {
+const isElement = (obj: unknown): obj is Element => {
   if (obj instanceof Element) {
     return true;
   }
