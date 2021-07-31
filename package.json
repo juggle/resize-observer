@@ -1,7 +1,7 @@
 {
   "name": "@juggle/resize-observer",
-  "version": "3.3.1",
-  "description": "Polyfills the ResizeObserver API and supports box size options from the latest spec",
+  "version": "4.0.0-1",
+  "description": "Polyfills the latest ResizeObserver API",
   "main": "lib/exports/resize-observer.umd.js",
   "module": "lib/exports/resize-observer.js",
   "types": "lib/exports/resize-observer.d.ts",
@@ -65,5 +65,8 @@
     "rollup": "^2.39.1",
     "ts-jest": "^26.5.2",
     "typescript": "^3.9.9"
+  },
+  "publishConfig": {
+    "tag": "next"
   }
 }
