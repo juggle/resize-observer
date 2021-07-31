@@ -1,11 +1,10 @@
-import { scheduler, updateCount } from './utils/scheduler';
-
 import { ResizeObserver } from './ResizeObserver';
 import { ResizeObservation } from './ResizeObservation';
 import { ResizeObserverDetail } from './ResizeObserverDetail';
 import { ResizeObserverCallback } from './ResizeObserverCallback';
 import { ResizeObserverOptions } from './ResizeObserverOptions';
 
+import { registerAddition, registerRemoval } from  './utils/register';
 import { resizeObservers } from './utils/resizeObservers';
 import { ResizeObserverBoxOptions } from './ResizeObserverBoxOptions';
 
@@ -37,8 +36,7 @@ class ResizeObserverController {
     if (getObservationIndex(detail.observationTargets, target) < 0) {
       firstObservation && resizeObservers.push(detail);
       detail.observationTargets.push(new ResizeObservation(target, options && options.box as ResizeObserverBoxOptions));
-      updateCount(1);
-      scheduler.schedule(); // Schedule next observation
+      registerAddition(target);
     }
   }
   // Informs the controller to stop watching a target.
@@ -49,7 +47,7 @@ class ResizeObserverController {
     if (index >= 0) {
       lastObservation && resizeObservers.splice(resizeObservers.indexOf(detail), 1);
       detail.observationTargets.splice(index, 1);
-      updateCount(-1);
+      registerRemoval(target);
     }
   }
   // Informs the controller to disconnect an observer.
