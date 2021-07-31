@@ -7,7 +7,6 @@
     "declaration": true,
     "declarationDir": "./lib/types",
     "emitDeclarationOnly": true,
-    "removeComments": true,
     "strict": true,
     "alwaysStrict": true,
     "esModuleInterop": true,
