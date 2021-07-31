@@ -18,6 +18,10 @@ const documentEvents = [
   'mousedown',
   'mouseover',
   'mouseout',
+  'touchstart',
+  'touchend',
+  'touchmove',
+  'touchcancel',
   'blur',
   'focus'
 ];
