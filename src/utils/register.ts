@@ -1,5 +1,6 @@
 import { scheduler } from "./scheduler";
 import { documentEvents } from './events';
+import { isDocument } from "./element";
 
 /**
  * Global count of all observed elements.
@@ -42,7 +43,7 @@ const mo = new MutationObserver(handleEvent);
  */
 const getDocument = (node: Node): Document | ShadowRoot | null => {
   const root = node.getRootNode ? node.getRootNode({ composed: node.nodeType === 11 }) : node.ownerDocument;
-  if (root && root !== node && !(/9|11/).test(root.nodeType.toString())) {
+  if (root && root !== node && !isDocument(root)) {
     return getDocument(root);
   }
   return root as Document | ShadowRoot | null;
