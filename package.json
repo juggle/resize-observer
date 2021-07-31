@@ -2,11 +2,11 @@
   "name": "@juggle/resize-observer",
   "version": "4.0.0-1",
   "description": "Polyfills the latest ResizeObserver API",
-  "main": "lib/exports/resize-observer.umd.js",
-  "module": "lib/exports/resize-observer.js",
-  "types": "lib/exports/resize-observer.d.ts",
+  "main": "lib/resize-observer.js",
+  "module": "lib/resize-observer.mjs",
+  "types": "lib/types/exports/resize-observer.d.ts",
   "files": [
-    "lib/**/*.{js,ts}"
+    "lib/**/*.{mjs,js,ts}"
   ],
   "scripts": {
     "build": "rm -rf lib && npm run build:esm && npm run build:umd",
@@ -50,6 +50,7 @@
   },
   "homepage": "https://juggle.studio/resize-observer/",
   "devDependencies": {
+    "@rollup/plugin-typescript": "^8.2.5",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.15.2",
     "@typescript-eslint/parser": "^4.15.2",
