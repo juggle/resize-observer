@@ -1,7 +1,7 @@
 import 'core-js/features/symbol';
 import 'core-js/features/array/from';
 import 'core-js/features/dom-collections/iterator';
-import { ResizeObserver } from '../../lib/ResizeObserver';
+import { ResizeObserver } from '../../lib/resize-observer';
 
 window.ResizeObserver = ResizeObserver; // Override global so that people can play :)
 
