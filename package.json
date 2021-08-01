@@ -2,9 +2,14 @@
   "name": "@juggle/resize-observer",
   "version": "4.0.0-2",
   "description": "Polyfills the latest ResizeObserver API",
-  "main": "lib/resize-observer.js",
-  "module": "lib/resize-observer.mjs",
-  "types": "lib/types/exports/resize-observer.d.ts",
+  "main": "./lib/resize-observer.js",
+  "module": "./lib/resize-observer.mjs",
+  "types": "./lib/types/exports/resize-observer.d.ts",
+  "exports": {
+    "require": "./lib/resize-observer.js",
+    "import": "./lib/resize-observer.mjs",
+    "default": "./lib/resize-observer.js"
+  },
   "files": [
     "lib/**/*.{mjs,js,ts}"
   ],
