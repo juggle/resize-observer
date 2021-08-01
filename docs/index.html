@@ -13,7 +13,7 @@ import { ResizeObserver } from '@juggle/resize-observer';
 const ro = new ResizeObserver((entries, observer) => {
   for (const entry of entries) {
     const { width, height } = entry.contentRect; // legacy
-    const { inlineSize, blockSize } = entry.contentBoxSize;
+    const [{ inlineSize, blockSize }] = entry.contentBoxSize;
     console.log(entry.target, `${inlineSize} x ${blockSize}`);
   }
 });
