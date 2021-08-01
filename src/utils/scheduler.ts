@@ -1,7 +1,5 @@
 import { process } from './process';
-import { global } from './global';
 import { queueResizeObserver } from './queueResizeObserver';
-import { windowEvents } from './events';
 
 const CATCH_PERIOD = 250; // ms
 
@@ -55,7 +53,5 @@ class Scheduler {
 }
 
 const scheduler = new Scheduler();
-
-windowEvents.forEach(event => global.addEventListener(event, () => scheduler.schedule()));
 
 export { scheduler };

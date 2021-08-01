@@ -1,6 +1,6 @@
-import { scheduler } from "./scheduler";
-import { documentEvents } from './events';
-import { isDocument } from "./element";
+import { scheduler } from './scheduler';
+import { documentEvents, windowEvents } from './events';
+import { isDocument } from './element';
 
 /**
  * Global count of all observed elements.
@@ -8,23 +8,35 @@ import { isDocument } from "./element";
 let observedElements = 0;
 
 /**
- * Event state of the Document or Shadow Root.
- * This determines if the document is know and if
- * any event listeners have been attached.
+ * Collection of known documents
  */
-const eventState = new WeakMap<DocumentOrShadowRoot, boolean>();
+const documents: (Document|ShadowRoot)[] = [];
+
+/**
+ * Collection of known windows
+ */
+const windows: Window[] = [];
+
+/**
+ * Checks to see if the document is already known
+ * @param document Document object to check
+ */
+const isKnownDocument = (document: Document | ShadowRoot) => {
+  return documents.indexOf(document) >= 0;
+}
+
+/**
+ * Checks to see if the window is already known
+ * @param window Window object to check
+ */
+const isKnownWindow = (window: Window) => {
+  return windows.indexOf(window) >= 0;
+}
 
 /**
  * Default config for the global mutation observer.
  */
 const observerConfig = { attributes: true, characterData: true, childList: true, subtree: true };
-
-/**
- * Checks to see if the root element is known
- * and if event listeners are active.
- * @param root root element to test
- */
-const isActive = (root: DocumentOrShadowRoot) => eventState.get(root) === true;
 
 /**
  * Global event handler for all document events.
@@ -43,36 +55,63 @@ const mo = new MutationObserver(handleEvent);
  */
 const getDocument = (node: Node): Document | ShadowRoot | null => {
   const root = node.getRootNode ? node.getRootNode({ composed: node.nodeType === 11 }) : node.ownerDocument;
-  if (root && root !== node && !isDocument(root)) {
-    return getDocument(root);
+  if (root && root !== node) {
+    return isDocument(root) ? root as Document | ShadowRoot : getDocument(root);
   }
-  return root as Document | ShadowRoot | null;
+  return null;
 }
 
 /**
- * Attaches event listeners to root node
- * @param root Root node to attach event listeners to
- * @returns {void}
+ * Add a window to the list of known windows
+ * @param window Window to add
  */
-const attachListeners = (root: Document | ShadowRoot): void => {
-  for (const event of documentEvents) {
-    root.addEventListener(event, handleEvent);
+const addWindow = (window: Window) => {
+  if (!isKnownWindow(window)) {
+    windows.push(window);
+    for (const event of windowEvents) {
+      window.addEventListener(event, handleEvent);
+    }
   }
-  mo.observe(root, observerConfig);
-  eventState.set(root, true);
 }
 
 /**
- * Observes interactions on the root of the provides node.
- * @param node Node of which root to observe
+ * Adds a document to the list of known documents
+ * @param document Document to add
+ */
+const addDocument = (document: Document | ShadowRoot) => {
+  if (!isKnownDocument(document)) {
+    documents.push(document);
+    for (const event of documentEvents) {
+      document.addEventListener(event, handleEvent);
+    }
+    mo.observe(document, observerConfig);
+  }
+}
+
+/**
+ * Observes interactions and mutations on root and ancestor documents.
+ * This enables event handling in multiple scopes,
+ * allowing consistent scheduling.
+ * @param element Element being observed
  * @returns {void}
  */
-const observeNodeRoot = (node: Node) => {
-  const root = getDocument(node);
-  if (root && !isActive(root)) {
-    attachListeners(root);
-    const next = getDocument(root);
-    next && next !== root && observeNodeRoot(root);
+const observeElementTree = (element: Element) => {
+  let document = getDocument(element);
+  let window = element.ownerDocument?.defaultView;
+  while (window) {
+    addWindow(window);
+    addDocument(window.document);
+    try {
+      // Try to go up through the parent windows to improve detection of changes
+      window = window === window.parent ? null : window.parent as typeof window;
+    }
+    catch {
+      window = null;
+    }
+  }
+  while (document) {
+    addDocument(document);
+    document = getDocument(document);
   }
 }
 
@@ -82,8 +121,9 @@ const observeNodeRoot = (node: Node) => {
  * @returns {void}
  */
 const registerAddition = (element: Element) => {
-  observeNodeRoot(element);
+  observeElementTree(element);
   observedElements++;
+  handleEvent();
 }
 
 /**
