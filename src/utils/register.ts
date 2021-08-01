@@ -69,7 +69,7 @@ const addWindow = (window: Window) => {
   if (!isKnownWindow(window)) {
     windows.push(window);
     for (const event of windowEvents) {
-      window.addEventListener(event, handleEvent);
+      window.addEventListener(event, handleEvent, true);
     }
   }
 }
@@ -82,7 +82,7 @@ const addDocument = (document: Document | ShadowRoot) => {
   if (!isKnownDocument(document)) {
     documents.push(document);
     for (const event of documentEvents) {
-      document.addEventListener(event, handleEvent);
+      document.addEventListener(event, handleEvent, true);
     }
     mo.observe(document, observerConfig);
   }
