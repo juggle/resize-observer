@@ -8,30 +8,20 @@ import { isDocument } from './element';
 let observedElements = 0;
 
 /**
- * Collection of known documents
+ * Collection of known documents.
+ * 
+ * *Using WeakMap here as it's used elsewhere
+ * and prevents loading WeakSet polyfill*.
  */
-const documents: (Document|ShadowRoot)[] = [];
+const documents = new WeakMap<Document | ShadowRoot>();
 
 /**
  * Collection of known windows
+ * 
+ * *Using WeakMap here as it's used elsewhere
+ * and prevents loading WeakSet polyfill*.
  */
-const windows: Window[] = [];
-
-/**
- * Checks to see if the document is already known
- * @param document Document object to check
- */
-const isKnownDocument = (document: Document | ShadowRoot) => {
-  return documents.indexOf(document) >= 0;
-}
-
-/**
- * Checks to see if the window is already known
- * @param window Window object to check
- */
-const isKnownWindow = (window: Window) => {
-  return windows.indexOf(window) >= 0;
-}
+const windows = new WeakMap<Window>();
 
 /**
  * Default config for the global mutation observer.
@@ -66,8 +56,8 @@ const getDocument = (node: Node): Document | ShadowRoot | null => {
  * @param window Window to add
  */
 const addWindow = (window: Window) => {
-  if (!isKnownWindow(window)) {
-    windows.push(window);
+  if (!windows.has(window)) {
+    windows.set(window, 1);
     for (const event of windowEvents) {
       window.addEventListener(event, handleEvent, true);
     }
@@ -79,8 +69,8 @@ const addWindow = (window: Window) => {
  * @param document Document to add
  */
 const addDocument = (document: Document | ShadowRoot) => {
-  if (!isKnownDocument(document)) {
-    documents.push(document);
+  if (!documents.has(document)) {
+    documents.set(document, 1);
     for (const event of documentEvents) {
       document.addEventListener(event, handleEvent, true);
     }
