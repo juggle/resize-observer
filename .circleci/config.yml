@@ -2,7 +2,7 @@ version: 2
 jobs:
   test:
     docker: # use the docker executor type; machine and macos executors are also supported
-      - image: circleci/node:10
+      - image: cimg/node:16.14
     steps:
       - checkout
       - run:
