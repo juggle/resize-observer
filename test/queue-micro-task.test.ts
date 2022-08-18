@@ -1,4 +1,3 @@
-import './helpers/mutation-observer';
 import { queueMicroTask } from '../src/utils/queueMicroTask';
 
 describe('queueMicroTask', (): void => {

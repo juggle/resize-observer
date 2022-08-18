@@ -1,4 +1,3 @@
-import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
 import { scheduler } from '../src/utils/scheduler';
 import { delay } from './helpers/delay';
@@ -99,28 +98,50 @@ describe('Basics', (): void => {
     expect(fn).toThrowError(`Failed to execute 'unobserve' on 'ResizeObserver': parameter 1 is not of type 'Element`);
   })
 
-  test('Observer should not fire initially when size is 0,0', (done): void => {
-    ro = new ResizeObserver((): void => {
-      expect(false).toBe(true); // Should not fire
+  test('Observer should fire initially when size is 0,0', (done): void => {
+    ro = new ResizeObserver((entries): void => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0
+      });
+      done();
     })
     el.style.width = '0';
     el.style.height = '0';
     ro.observe(el);
-    delay(done);
   })
 
-  test('Observer should not fire initially when display:none', (done): void => {
-    ro = new ResizeObserver((): void => {
-      expect(false).toBe(true); // Should not fire
+  test('Observer should fire initially when display:none', (done): void => {
+    ro = new ResizeObserver((entries): void => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0
+      });
+      done();
     })
     el.style.display = 'none';
     ro.observe(el);
-    delay(done);
   })
 
-  test('Observer should not fire initially when parent element is display:none', (done): void => {
-    ro = new ResizeObserver((): void => {
-      expect(false).toBe(true); // Should not fire
+  test('Observer should fire initially when parent element is display:none', (done): void => {
+    ro = new ResizeObserver((entries): void => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(child);
+      expect(entries[0].contentRect).toMatchObject({
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0
+      });
+      done();
     })
     const child = document.createElement('div');
     el.style.display = 'none';
@@ -129,18 +150,24 @@ describe('Basics', (): void => {
     expect(el.style.display).toBe('none');
     expect(child.style.display).toBe('block');
     ro.observe(child);
-    delay(done);
   })
 
-  test('Observer should not fire when an element has no document', (done): void => {
+  test('Observer should still fire when an element has no document', (done): void => {
     el = el.cloneNode() as HTMLElement;
-    ro = new ResizeObserver((): void => {
-      expect(false).toBe(true); // Should not fire
+    ro = new ResizeObserver((entries): void => {
+      expect(entries).toHaveLength(1);
+      expect(entries[0].target).toBe(el);
+      expect(entries[0].contentRect).toMatchObject({
+        top: 0,
+        left: 0,
+        width: 0,
+        height: 0
+      });
+      done();
     })
     el.style.width = '0';
     el.style.height = '0';
     ro.observe(el);
-    delay(done);
   })
 
   test('Observer callback.this should be observer', (done): void => {
@@ -183,7 +210,11 @@ describe('Basics', (): void => {
   })
 
   test('Observer should fire when element size changes', (done): void => {
+    let count = 0;
     ro = new ResizeObserver((entries): void => {
+      if (!count++) {
+        return; // skip first callback
+      }
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -229,7 +260,11 @@ describe('Basics', (): void => {
   })
 
   test('Observer should fire when only the width changes', (done): void => {
+    let count = 0;
     ro = new ResizeObserver((entries): void => {
+      if (!count++) {
+        return; // skip first callback
+      }
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -249,7 +284,11 @@ describe('Basics', (): void => {
   })
 
   test('Observer should fire when only the height changes', (done): void => {
+    let count = 0;
     ro = new ResizeObserver((entries): void => {
+      if (!count++) {
+        return; // skip first callback
+      }
       expect(entries).toHaveLength(1);
       expect(entries[0].target).toBe(el);
       expect(entries[0].contentRect).toMatchObject({
@@ -415,7 +454,7 @@ describe('Basics', (): void => {
   })
 
   test.skip('Observer should fire when text content changes', (): void => {
-    // Get MutationObserver to notify correctly in tests
+    // Text doesn't seem so change element dimension
   })
 
   test('Observer should unobserve elements correctly.', (done): void => {

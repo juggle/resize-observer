@@ -22,8 +22,8 @@ class ResizeObservation {
     this.target = target;
     this.observedBox = observedBox || ResizeObserverBoxOptions.CONTENT_BOX;
     this.lastReportedSize = {
-      inlineSize: 0,
-      blockSize: 0
+      inlineSize: -1,
+      blockSize: -1
     }
   }
 

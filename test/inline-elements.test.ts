@@ -1,4 +1,3 @@
-import './helpers/mutation-observer';
 import { ResizeObserver } from '../src/ResizeObserver';
 import { delay } from './helpers/delay';
 import './helpers/offset';
