@@ -8,7 +8,7 @@ import { gatherActiveObservationsAtDepth } from '../algorithms/gatherActiveObser
  * Runs through the algorithms and
  * broadcasts and changes that are returned.
  */
-const process = (): boolean => {
+const processAlgorithm = (): boolean => {
   let depth = 0;
   gatherActiveObservationsAtDepth(depth);
   while (hasActiveObservations()) {
@@ -21,4 +21,4 @@ const process = (): boolean => {
   return depth > 0;
 }
 
-export { process };
+export { processAlgorithm as process };
